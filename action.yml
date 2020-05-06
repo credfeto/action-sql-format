@@ -1,0 +1,8 @@
+name: 'Reformat SQL Files'
+description: 'Reformats SQL files'
+branding:
+  icon: 'git-merge'
+  color: 'gray-dark'
+runs:
+  using: 'docker'
+  image: 'Dockerfile'

@@ -1,0 +1,52 @@
+name: Standardise MSSQL Format [FF-2107]
+
+on:
+  push:
+    branches-ignore:
+    - "release/*"
+    - "hotfix/*"
+    paths:
+    - '**.sql'
+
+jobs:
+  standardise-tsql-files:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+      with:
+        fetch-depth: 0
+    - name: Configure Git
+      run: |
+        git config --local user.email "credfeto@users.noreply.github.com"
+        git config --local user.name "fun-sqlfmt[bot]"
+    - name: What Branch Is This
+      run: |
+        echo Current Branch ${GITHUB_REF#refs/heads/}
+        echo ::set-env name=GIT_BRANCH::$(echo ${GITHUB_REF#refs/heads/})
+    - name: Install MoreUtils
+      run: |
+        sudo apt-get install moreutils
+    - name: Install Nuget
+      run: |
+        sudo apt-get install nuget
+    - name: Get TSQL Formatter
+      run: |
+        curl http://architectshack.com/GetFile.aspx?Page=PoorMansTSqlFormatter\&File=SqlFormatter.1.6.10.zip --output sqlformatter.zip 
+        ls
+        unzip sqlformatter.zip *.exe -d sqlformatter
+        chmod +x sqlformatter/SqlFormatter.exe
+    - name: Reformat
+      run: |
+        find ./ -iname '*.sql' -type f -exec bash -c 'sqlformatter/SqlFormatter.exe "$0" /is:"    " /tc /sk /r /sac /mw:120 /b- /bjo /cb:1 /st:4 /eil- /ecs- /ecl /uk /sb:2 /ebc /ebe' {} \;
+    - name: Convert tabs to spaces
+      run: |
+        find ./ -iname '*.sql' -type f -exec bash -c 'expand -t 4 "$0" | sponge "$0"' {} \;
+    - name: Commit files
+      run: |
+        git status
+        git commit --all -m"[FF-2107] Reformat SQL Files to common format." || true
+    - name: Push
+      run: |
+        git push "https://${{github.actor}}:${{secrets.SOURCE_PUSH_TOKEN}}@github.com/${{github.repository}}.git" "HEAD:${{ env.GIT_BRANCH }}"
