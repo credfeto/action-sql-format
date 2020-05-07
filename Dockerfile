@@ -5,9 +5,8 @@ RUN curl http://architectshack.com/GetFile.aspx?Page=PoorMansTSqlFormatter\&File
 RUN unzip sqlformatter.zip *.exe -d sqlformatter
 RUN ls sqlformatter/
 RUN chmod +x sqlformatter/SqlFormatter.exe
-COPY config/Sqlformatter.exe.config sqlformatter/SqlFormatter.exe.config
-RUN mono -O=all --aot sqlformatter/SqlFormatter.exe
-
+COPY config/Sqlformatter.exe.config /qlFormatter.exe.config
+COPY sqlformatter/SqlFormatter.exe /SqlFormatter.exe
 COPY reformat /reformat
 
 ENTRYPOINT ["/reformat"]
