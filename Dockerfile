@@ -6,7 +6,7 @@ RUN unzip sqlformatter.zip *.exe
 RUN ls sqlformatter/
 RUN chmod +x sqlformatter/SqlFormatter.exe
 COPY config/Sqlformatter.exe.config /SqlFormatter.exe.config
-COPY sqlformatter/SqlFormatter.exe /SqlFormatter.exe
+COPY SqlFormatter.exe /SqlFormatter.exe
 COPY reformat /reformat
 
 ENTRYPOINT ["/reformat"]
