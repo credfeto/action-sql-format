@@ -5,6 +5,7 @@ RUN curl http://architectshack.com/GetFile.aspx?Page=PoorMansTSqlFormatter\&File
 RUN unzip sqlformatter.zip *.exe
 RUN chmod +x SqlFormatter.exe
 COPY config/Sqlformatter.exe.config /SqlFormatter.exe.config
+RUN ls
 COPY SqlFormatter.exe /SqlFormatter.exe
 COPY reformat /reformat
 
