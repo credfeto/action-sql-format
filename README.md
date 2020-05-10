@@ -1,5 +1,7 @@
 # Reformat SQL Files
 
+Reformats TSQL files using Poor Man's TSQL Formatter
+
 ## How to use it?
 This is a Github action, so it has to be added to a github workflow.  
 
@@ -13,10 +15,19 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       # Checkout the source code so we have some files to look at.
-      - uses: actions/checkout@v1
+      - uses: actions/checkout@v2
+      with:
+        fetch-depth: 0
       # Run the reformat action
       - name: Reformat SQL Files
         uses: credfeto/action-sql-format@master
+      - name: Commit files
+        run: |
+          git config --local user.email "<githubusername>@users.noreply.github.com"
+          git config --local user.name "SQL Reformat Bot"
+          git commit --all -m"Reformat SQL Files to common format." || true
+      - name: Push
+        run: git push "https://${{github.actor}}:${{secrets.SOURCE_PUSH_TOKEN}}@github.com/${{github.repository}}.git" "HEAD:${{ env.GIT_BRANCH }}"
 ```
 
-On each push, it will now install the version of dotnet core specified in src/global.json, install it and build the source
+On each push, it will reformat the SQL.  Note you'll need to commit and push any commits back to your github repo. 

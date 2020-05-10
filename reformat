@@ -21,3 +21,5 @@ find ./ -iname '*.sql' -type f -exec bash -c 'mono sqlformatter/SqlFormatter.exe
 echo Converting tabs to spaces
 find ./ -iname '*.sql' -type f -exec bash -c 'expand -t 4 "$0" | sponge "$0"' {} \;
 
+rm -fr sqlformatter
+rm -fr sqlformatter.zip
