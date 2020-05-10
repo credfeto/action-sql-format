@@ -13,7 +13,7 @@ echo             \<supportedRuntime version=\"v4.0.30319\" /\> >> sqlformatter/S
 #echo             \<supportedRuntime version=\"v4.0\"/\> >> sqlformatter/SqlFormatter.exe.config
 echo     \</startup\>  >> sqlformatter/SqlFormatter.exe.config
 echo \</configuration\> >> sqlformatter/SqlFormatter.exe.config
-cat sqlformatter/SqlFormatter.exe.config
+
 
 echo Reformatting files
 find ./ -iname '*.sql' -type f -exec bash -c 'mono sqlformatter/SqlFormatter.exe "$0" /is:"    " /tc /sk /r /sac /mw:120 /b- /bjo /cb:1 /st:4 /eil- /ecs- /ecl /uk /sb:2 /ebc /ebe' {} \;
