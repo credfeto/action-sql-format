@@ -1,6 +1,6 @@
 # Reformat SQL Files
 
-Reformats TSQL files using Poor Man's TSQL Formatter
+Reformats TSQL files using [Poor Man's TSQL Formatter](http://architectshack.com/PoorMansTSqlFormatter.ashx).
 
 ## How to use it?
 This is a Github action, so it has to be added to a github workflow.  
