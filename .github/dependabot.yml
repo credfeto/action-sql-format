@@ -18,9 +18,9 @@ updates:
     prefix: "[FF-1429]"
   rebase-strategy: "auto"
   labels:
-   - "docker"
-   - "dependencies"
-   - "Changelog Not Required"
+  - "docker"
+  - "dependencies"
+  - "Changelog Not Required"
 
 - package-ecosystem: github-actions
   directory: "/"
@@ -39,7 +39,7 @@ updates:
     prefix: "[FF-1429]"
   rebase-strategy: "auto"
   labels:
-   - "github-actions"
-   - "dependencies"
-   - "Changelog Not Required"
+  - "github-actions"
+  - "dependencies"
+  - "Changelog Not Required"
 
