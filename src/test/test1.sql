@@ -1,17 +1,4 @@
 -- Needs Reformatting
-
-
-
-select
-*
-from
-dbo.example                  ex
-                                       where
-
-ex.id < 
-
-
-
-252;
-
-
+SELECT *
+FROM dbo.example ex
+WHERE ex.id < 252;
