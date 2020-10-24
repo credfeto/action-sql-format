@@ -1,9 +1,6 @@
-FROM ubuntu:latest
+FROM alpine:3.1.2
 
-RUN apt-get update \
-    && apt-get install -y moreutils curl unzip mono-complete --no-install-recommends \
-    && apt-get clean \
-    && rm -rf /var/lib/apt/lists/*
+RUN apk --no-cache add moreutils curl unzip mono-complete --no-install-recommends
 
 COPY reformat /reformat
 
