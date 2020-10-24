@@ -15,10 +15,10 @@ echo     \</startup\>  >> sqlformatter/SqlFormatter.exe.config
 echo \</configuration\> >> sqlformatter/SqlFormatter.exe.config
 
 echo Checking Mono
-mono -v
+mono --version
 
 echo Checking SQL Formatter
-mono sqlformatter/SqlFormatter.exe /h
+mono --aot sqlformatter/SqlFormatter.exe /h
 
 echo Reformatting files
 find ./ -iname '*.sql' -type f -exec bash -c 'mono sqlformatter/SqlFormatter.exe "$0" /is:"    " /tc /sk /r /sac /mw:999999999 /b- /bjo /cb:1 /st:4 /eil- /ecs- /ecl /uk /sb:2 /ebc /ebe' {} \;
