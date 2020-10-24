@@ -3,7 +3,7 @@ set -eu
 
 echo Restoring tool
 curl http://architectshack.com/GetFile.aspx?Page=PoorMansTSqlFormatter\&File=SqlFormatter.1.6.10.zip --output sqlformatter.zip 
-unzip sqlformatter.zip *.exe -d sqlformatter
+unzip sqlformatter.zip SqlFormatter.exe -d sqlformatter
 chmod +x sqlformatter/SqlFormatter.exe
 echo \<?xml version=\"1.0\" encoding=\"utf-8\"?\> > sqlformatter/SqlFormatter.exe.config
 echo \<configuration\> >> sqlformatter/SqlFormatter.exe.config
