@@ -1,9 +1,7 @@
-FROM ubuntu:latest
+FROM alpine:3.12.1
 
-RUN apt-get update \
-    && apt-get install -y moreutils curl unzip mono-complete --no-install-recommends \
-    && apt-get clean \
-    && rm -rf /var/lib/apt/lists/*
+RUN echo "@testing http://dl-4.alpinelinux.org/alpine/edge/testing" >> /etc/apk/repositories
+RUN apk --no-cache add bash moreutils curl unzip mono@testing
 
 COPY reformat /reformat
 
