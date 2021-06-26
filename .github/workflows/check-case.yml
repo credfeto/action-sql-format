@@ -6,7 +6,7 @@ jobs:
     name: check-file-case-sensitivity
     steps:
       # Checkout the source code so we have some files to look at.
-      - uses: actions/checkout@v1
+      - uses: actions/checkout@v2.3.4
       # Run the actual merge conflict finder
       - name: Check Case Sensitivity
         uses: credfeto/action-case-checker@master

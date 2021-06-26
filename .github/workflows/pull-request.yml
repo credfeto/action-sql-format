@@ -20,7 +20,7 @@ jobs:
         path: ./.github/PULL_REQUEST_TEMPLATE.md
     - run: |
         echo COMMIT_MSG=`git log -1 --pretty=%B` >> $GITHUB_ENV
-    - uses: repo-sync/pull-request@v2
+    - uses: repo-sync/pull-request@v2.6
       with:
         source_branch: ""                     # If blank, default: triggered branch
         destination_branch: "master"          # If blank, default: master
@@ -29,6 +29,4 @@ jobs:
         pr_draft: true                        # Creates pull request as draft
         pr_title: "${{ env.COMMIT_MSG }}"
         pr_body: "${{ steps.pr-template.outputs.content }}"
-        #pr_reviewer: "wei,worker"             # Comma-separated list (no spaces)
-        #pr_milestone: "Milestone 1"           # Milestone name
         github_token: ${{ secrets.GITHUB_TOKEN }}

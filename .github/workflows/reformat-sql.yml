@@ -1,4 +1,4 @@
-name: Standardise YAML format
+name: Standardise MSSQL Format [FF-2107]
 
 on:
   push:
@@ -6,11 +6,10 @@ on:
     - "release/*"
     - "hotfix/*"
     paths:
-    - '**.yml'
-    - '**.yaml'
+    - '**.sql'
 
 jobs:
-  standardise-yaml-files:
+  standardise-tsql-files:
 
     runs-on: ubuntu-latest
 
@@ -22,13 +21,13 @@ jobs:
     - run: |
         echo Current Branch ${GITHUB_REF#refs/heads/}
         echo GIT_BRANCH=$(echo ${GITHUB_REF#refs/heads/}) >> $GITHUB_ENV
-        echo User: ${{github.actor}}
-    - uses: credfeto/action-yaml-format@v1.2
+    - name: Reformat
+      uses: credfeto/action-sql-format@v1.2
     - uses: stefanzweifel/git-auto-commit-action@v4.11.0
       with:
-        commit_message: "[FF-2107] Reformat YAML Files to common format"
-        file_pattern: "*.yml"
-        commit_user_name: "fun-ymlfmt[bot]"
+        commit_message: "[FF-2107] Reformat SQL Files to common format"
+        file_pattern: "*.sql"
+        commit_user_name: "fun-sqlfmt[bot]"
         commit_user_email: "credfeto@users.noreply.github.com"
-        commit_author: "fun-ymlfmt[bot] <credfeto@users.noreply.github.com>"
+        commit_author: "fun-sqlfmt[bot] <credfeto@users.noreply.github.com>"
         skip_dirty_check: false
