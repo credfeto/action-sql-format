@@ -20,7 +20,7 @@ jobs:
         fetch-depth: 0
       # Run the reformat action
       - name: Reformat SQL Files
-        uses: credfeto/action-sql-format@master
+        uses: credfeto/action-sql-format@v1.3.1
       - name: Commit files
         run: |
           git config --local user.email "<githubusername>@users.noreply.github.com"

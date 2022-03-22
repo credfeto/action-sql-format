@@ -9,6 +9,7 @@ Please ADD ALL Changes to the UNRELASED SECTION and not a specific release
 ### Added
 ### Fixed
 ### Changed
+- Updated to alpine 3.15.1
 ### Removed
 ### Deployment Changes
 
