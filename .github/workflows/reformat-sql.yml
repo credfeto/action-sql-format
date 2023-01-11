@@ -30,7 +30,7 @@ jobs:
       - uses: actions/checkout@v3.3.0
         with:
           fetch-depth: 0
-          token: ${{secrets.SOURCE_PUSH_TOKEN}}
+          token: ${{ github.token }}
       - name: Reformat
         uses: credfeto/action-sql-format@v1.3.1
       - uses: stefanzweifel/git-auto-commit-action@v4.16.0
