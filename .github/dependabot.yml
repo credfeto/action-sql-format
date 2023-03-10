@@ -16,7 +16,7 @@ updates:
   allow:
   - dependency-type: all
   commit-message:
-    prefix: "[FF-1429]"
+    prefix: "[Dependencies]"
   rebase-strategy: "auto"
   labels:
   - "docker"
