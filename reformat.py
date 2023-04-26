@@ -14,6 +14,8 @@ def write_file(file_name, content):
         f.write(content)
 
 
+print('Hello')
+
 # Pretty print input files
 for file in sys.argv[1:]:
     print("* " + file + ":")
