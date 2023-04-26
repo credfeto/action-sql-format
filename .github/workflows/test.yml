@@ -14,23 +14,22 @@ permissions:
   contents: write
 
 jobs:
-  Test:
+  test:
 
-    if: |-
-        ${{github.event.pull_request.draft == false
-        && ( !startsWith(github.head_ref, 'release/')
-        && !startsWith(github.head_ref, 'hotfix/') )
-        && github.actor != 'dependabot[bot]'}}
     runs-on: ubuntu-latest
 
     steps:
-      - run: sudo chown -R "$USER:$USER" "$GITHUB_WORKSPACE"
       - uses: actions/checkout@v3.3.0
         with:
           fetch-depth: 0
           token: ${{secrets.SOURCE_PUSH_TOKEN}}
       - name: Reformat
         uses: ./.github/..
+      - if: |-
+          ${{github.event.pull_request.draft == false
+          && ( !startsWith(github.head_ref, 'release/')
+          && !startsWith(github.head_ref, 'hotfix/') )
+          && github.actor != 'dependabot[bot]'}}
       - uses: stefanzweifel/git-auto-commit-action@v4.16.0
         with:
           commit_message: "[Reformat] SQL Files to common format"
