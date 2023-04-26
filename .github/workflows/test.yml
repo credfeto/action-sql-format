@@ -15,7 +15,6 @@ permissions:
 
 jobs:
   test:
-
     runs-on: ubuntu-latest
 
     steps:
@@ -38,4 +37,3 @@ jobs:
           commit_user_email: "credfeto@users.noreply.github.com"
           commit_author: "fun-sqlfmt[bot] <credfeto@users.noreply.github.com>"
           skip_dirty_check: false
-

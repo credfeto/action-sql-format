@@ -1,5 +1,3 @@
 #!/bin/sh -l
 set -eu
-
-echo Reformatting files
 find ./ -iname '*.sql' -type f | xargs python3 ./reformat.py
