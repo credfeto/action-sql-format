@@ -1,0 +1,42 @@
+name: "Test: Workflow"
+
+on:
+  push:
+    branches-ignore:
+      - "release/*"
+      - "hotfix/*"
+
+concurrency:
+  group: ${{github.workflow}}-${{github.ref}}-test
+  cancel-in-progress: true
+
+permissions:
+  contents: write
+
+jobs:
+  Test:
+
+    if: |-
+        ${{github.event.pull_request.draft == false
+        && ( !startsWith(github.head_ref, 'release/')
+        && !startsWith(github.head_ref, 'hotfix/') )
+        && github.actor != 'dependabot[bot]'}}
+    runs-on: ubuntu-latest
+
+    steps:
+      - run: sudo chown -R "$USER:$USER" "$GITHUB_WORKSPACE"
+      - uses: actions/checkout@v3.3.0
+        with:
+          fetch-depth: 0
+          token: ${{secrets.SOURCE_PUSH_TOKEN}}
+      - name: Reformat
+        uses: ./.github/..
+      - uses: stefanzweifel/git-auto-commit-action@v4.16.0
+        with:
+          commit_message: "[Reformat] SQL Files to common format"
+          file_pattern: "*.sql"
+          commit_user_name: "fun-sqlfmt[bot]"
+          commit_user_email: "credfeto@users.noreply.github.com"
+          commit_author: "fun-sqlfmt[bot] <credfeto@users.noreply.github.com>"
+          skip_dirty_check: false
+
