@@ -1,3 +1,4 @@
 #! /bin/bash
 set -eu
 find ./ -iname '*.sql' -type f -exec bash -c 'python3 reformat.py "$0"' {} \;
+echo "Done"
