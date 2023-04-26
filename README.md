@@ -1,12 +1,11 @@
 # Reformat SQL Files
 
-Reformats TSQL files using [Poor Man's TSQL Formatter](http://architectshack.com/PoorMansTSqlFormatter.ashx).
-
 ## How to use it?
-This is a Github action, so it has to be added to a github workflow.  
+This is a GitHub action, so it has to be added to a GitHub workflow.  
 
-A simple example of running this action on all pushes to the repository would be
+A simple example of running this action on all pushes to the repository would be to
 add a `reformatsql.yml` file under `.github/workflows` with the following content
+
 ```yaml
 on: [push]
 
@@ -14,20 +13,25 @@ jobs:
   reformat-sql:
     runs-on: ubuntu-latest
     steps:
-      # Checkout the source code so we have some files to look at.
+      # Checkout the source code there are have some files to look at.
       - uses: actions/checkout@v2
-      with:
-        fetch-depth: 0
+        with:
+          fetch-depth: 0
+          token: ${{secrets.SOURCE_PUSH_TOKEN}}
+          
       # Run the reformat action
       - name: Reformat SQL Files
-        uses: credfeto/action-sql-format@v1.3.1
-      - name: Commit files
-        run: |
-          git config --local user.email "<githubusername>@users.noreply.github.com"
-          git config --local user.name "SQL Reformat Bot"
-          git commit --all -m"Reformat SQL Files to common format." || true
-      - name: Push
-        run: git push "https://${{github.actor}}:${{secrets.SOURCE_PUSH_TOKEN}}@github.com/${{github.repository}}.git" "HEAD:${{ env.GIT_BRANCH }}"
+        uses: credfeto/action-sql-format@v1.4.0
+        
+      # Commit any changes to the repo
+      - uses: stefanzweifel/git-auto-commit-action@v4.16.0
+        with:
+          commit_message: "[Reformat] SQL Files to common format"
+          file_pattern: "*.sql"
+          commit_user_name: "sqlfmt[bot]"
+          commit_user_email: "github-username@users.noreply.github.com"
+          commit_author: "sqlfmt[bot] <github-username@users.noreply.github.com>"
+          skip_dirty_check: false
 ```
 
-On each push, it will reformat the SQL.  Note you'll need to commit and push any commits back to your github repo. 
+On each push, it will reformat the SQL.  Note you'll need to commit and push any commits back to your GithHub repo. 
