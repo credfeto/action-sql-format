@@ -19,6 +19,7 @@ Releases that have at least been deployed to staging, BUT NOT necessarily releas
 ## [1.4.0] - 2023-04-26
 ### Changed
 - Updated to alpine 3.15.1
+- Switched to use python sqlparse for formatting.
 
 ## [1.3.0] - 2021-12-20
 ### Changed
@@ -30,7 +31,7 @@ Releases that have at least been deployed to staging, BUT NOT necessarily releas
 
 ## [1.1.0] - 2020-05-21
 ### Changed
-- Workaround for formmatting binary data with a max width set
+- Workaround for formatting binary data with a max width set
 
 ## [1.0.0] - 2020-05-10
-- Intial version
+- Initial version
