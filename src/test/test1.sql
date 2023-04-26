@@ -1,4 +1,4 @@
--- Needs Reformatting
+-- This is a comment
 
 SELECT *
 FROM [dbo].[Example] ex
