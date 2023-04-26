@@ -2,4 +2,4 @@
 set -eu
 
 echo Reformatting files
-find ./ -iname '*.sql' -type f -exec python3 -c 'reformat.py "$0"' {} \;
+find ./ -iname '*.sql' -type f | xargs python3 ./reformat.py
