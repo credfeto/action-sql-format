@@ -2,4 +2,4 @@
 set -eu
 
 echo Reformatting files
-find ./ -iname '*.sql' -type f -exec bash -c 'python "$0"' {} \;
+find ./ -iname '*.sql' -type f -exec bash -c 'python3 "$0"' {} \;
