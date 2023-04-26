@@ -1,24 +1,4 @@
-#!/bin/sh -l
+#! /bin/bash
 set -eu
-
-echo Restoring tool
-curl http://architectshack.com/GetFile.aspx?Page=PoorMansTSqlFormatter\&File=SqlFormatter.1.6.10.zip --output sqlformatter.zip 
-unzip sqlformatter.zip SqlFormatter.exe -d sqlformatter
-chmod +x sqlformatter/SqlFormatter.exe
-echo \<?xml version=\"1.0\" encoding=\"utf-8\"?\> > sqlformatter/SqlFormatter.exe.config
-echo \<configuration\> >> sqlformatter/SqlFormatter.exe.config
-echo     \<startup\> >> sqlformatter/SqlFormatter.exe.config
-#echo             \<supportedRuntime version=\"v2.0.50727\"/\> >> sqlformatter/SqlFormatter.exe.config
-echo             \<supportedRuntime version=\"v4.0.30319\" /\> >> sqlformatter/SqlFormatter.exe.config
-#echo             \<supportedRuntime version=\"v4.0\"/\> >> sqlformatter/SqlFormatter.exe.config
-echo     \</startup\>  >> sqlformatter/SqlFormatter.exe.config
-echo \</configuration\> >> sqlformatter/SqlFormatter.exe.config
-
-echo Reformatting files
-find ./ -iname '*.sql' -type f -exec bash -c 'mono sqlformatter/SqlFormatter.exe "$0" /is:"    " /tc /sk /r /sac /mw:999999999 /b- /bjo /cb:1 /st:4 /eil- /ecs- /ecl /uk /sb:2 /ebc /ebe' {} \;
-
-echo Converting tabs to spaces
-find ./ -iname '*.sql' -type f -exec bash -c 'expand -t 4 "$0" | sponge "$0"' {} \;
-
-rm -fr sqlformatter
-rm -fr sqlformatter.zip
+find ./ -iname '*.sql' -type f -exec bash -c 'python3 reformat.py "$0"' {} \;
+echo "Done"

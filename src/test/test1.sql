@@ -1,4 +1,5 @@
 -- Needs Reformatting
+
 SELECT *
-FROM dbo.example ex
-WHERE ex.id < 252;
+FROM [dbo].[Example] ex
+WHERE ex.[id] < 252;

@@ -1,8 +1,11 @@
-FROM alpine:3.17.3
+FROM python:3.11.3-alpine3.17
 
-RUN echo "@testing http://dl-4.alpinelinux.org/alpine/edge/testing" >> /etc/apk/repositories \
-    apk --no-cache add bash moreutils curl unzip mono@testing
+RUN apk --no-cache add bash
 
 COPY reformat /reformat
+COPY reformat.py /reformat.py
+COPY requirements.txt /requirements.txt
+
+RUN pip install --no-cache-dir -r requirements.txt
 
 ENTRYPOINT ["/reformat"]
