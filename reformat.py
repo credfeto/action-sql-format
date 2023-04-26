@@ -1,4 +1,5 @@
 import sys
+import sqlparse
 
 
 def read_file(file_name):
@@ -20,14 +21,13 @@ print('Hello')
 for file in sys.argv[1:]:
     print("* " + file + ":")
     original = read_file(file)
-    formatted = original
-    # formatted = sqlparse.format(original, reindent=True, keyword_case='upper',
-    #                             strip_comments=False,
-    #                             re_indent=True,
-    #                             use_space_around_operators=True,
-    #                             indent_tabs=False,
-    #                             indent_width=2,
-    #                             comma_first=False)
+    formatted = sqlparse.format(original, reindent=True, keyword_case='upper',
+                                strip_comments=False,
+                                re_indent=True,
+                                use_space_around_operators=True,
+                                indent_tabs=False,
+                                indent_width=2,
+                                comma_first=False)
 
     if original == formatted:
         print("  - Unchanged")
