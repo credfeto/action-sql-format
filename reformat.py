@@ -9,6 +9,7 @@ args = parser.parse_args()
 
 # Pretty print input files
 for file in args.file:
+    print("* " + file.name + ":");
     original = file.read()
     formatted = sqlparse.format(original, reindent=True, keyword_case='upper',
                                 strip_comments=False,
@@ -19,9 +20,9 @@ for file in args.file:
                                 comma_first=False)
 
     if original == formatted:
-        print(file.name + ": Unchanged")
+        print("  - Unchanged")
     else:
-        print(file.name + ": Changed")
+        print("  - Changed")
         with open(file.name, "w") as f:
 
             # write to file
