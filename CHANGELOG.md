@@ -8,8 +8,9 @@ Please ADD ALL Changes to the UNRELEASED SECTION and not a specific release
 ## [Unreleased]
 ### Added
 ### Fixed
+- Running on non-hosted runners
 ### Changed
-- Updated to alpine 3.15.1
+- Updated to alpine 3.17
 ### Removed
 ### Deployment Changes
 

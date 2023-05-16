@@ -1,11 +1,12 @@
 FROM python:3.11.3-alpine3.17
 
-RUN apk --no-cache add bash
+WORKDIR /app
+COPY reformat .
+COPY reformat.py .
+COPY requirements.txt .
 
-COPY reformat /reformat
-COPY reformat.py /reformat.py
-COPY requirements.txt /requirements.txt
+RUN \
+ apk --no-cache add bash; \
+ pip install --no-cache-dir -r requirements.txt
 
-RUN pip install --no-cache-dir -r requirements.txt
-
-ENTRYPOINT ["/reformat"]
+ENTRYPOINT ["/app/reformat"]
