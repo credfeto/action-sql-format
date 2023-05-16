@@ -21,7 +21,7 @@ jobs:
           
       # Run the reformat action
       - name: Reformat SQL Files
-        uses: credfeto/action-sql-format@v1.4.0
+        uses: credfeto/action-sql-format@v1.4.1
         
       # Commit any changes to the repo
       - uses: stefanzweifel/git-auto-commit-action@v4.16.0
