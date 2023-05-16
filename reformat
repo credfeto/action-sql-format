@@ -11,6 +11,8 @@ echo "Reformatter..."
 ls -la /app/reformat.py
 echo "^^^^^^"
 
+python3 --version
+
 set -eu
-find ./ -iname '*.sql' -type f -exec bash -c '/app/reformat.py "$0"' {} \;
+find ./ -iname '*.sql' -type f -exec python -c '/app/reformat.py "$0"' {} \;
 echo "Done"
