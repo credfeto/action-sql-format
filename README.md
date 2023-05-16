@@ -35,3 +35,14 @@ jobs:
 ```
 
 On each push, it will reformat the SQL.  Note you'll need to commit and push any commits back to your GithHub repo. 
+
+## Contributors
+
+<!-- ALL-CONTRIBUTORS-LIST:START - Do not remove or modify this section -->
+<!-- prettier-ignore-start -->
+<!-- markdownlint-disable -->
+
+<!-- markdownlint-restore -->
+<!-- prettier-ignore-end -->
+
+<!-- ALL-CONTRIBUTORS-LIST:END -->
