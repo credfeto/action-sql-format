@@ -5,6 +5,10 @@ BASEDIR="$(dirname "$(readlink -f "$0")")"
 echo "BASEDIR: $BASEDIR"
 ls -la "$BASEDIR"
 
+echo "Reformatter..."
+ls -la /app/reformat.py
+echo "^^^^^^"
+
 set -eu
 find ./ -iname '*.sql' -type f -exec bash -c '/app/reformat.py "$0"' {} \;
 echo "Done"
