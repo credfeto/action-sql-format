@@ -5,6 +5,8 @@ BASEDIR="$(dirname "$(readlink -f "$0")")"
 echo "BASEDIR: $BASEDIR"
 ls -la "$BASEDIR"
 
+ls -la /usr/bin/py*
+
 echo "Reformatter..."
 ls -la /app/reformat.py
 echo "^^^^^^"
