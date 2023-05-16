@@ -9,6 +9,4 @@ RUN \
  apk --no-cache add bash; \
  pip install --no-cache-dir -r requirements.txt
 
-USER nobody
-
 ENTRYPOINT ["/app/reformat"]
