@@ -1,18 +1,5 @@
 #! /bin/sh
 
-BASEDIR="$(dirname "$(readlink -f "$0")")"
-
-echo "BASEDIR: $BASEDIR"
-ls -la "$BASEDIR"
-
-ls -la /usr/bin/py*
-
-echo "Reformatter..."
-ls -la /app/reformat.py
-echo "^^^^^^"
-
-python3 --version
-
 set -eu
 find ./ -iname '*.sql' -type f -exec python3 -c '/app/reformat.py "$0"' {} \;
 echo "Done"
