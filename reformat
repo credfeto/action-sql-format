@@ -2,6 +2,9 @@
 
 BASEDIR="$(dirname "$(readlink -f "$0")")"
 
+echo "BASEDIR: $BASEDIR"
+ls -la "$BASEDIR"
+
 set -eu
-find ./ -iname '*.sql' -type f -exec bash -c '$BASEDIR/reformat.py "$0"' {} \;
+find ./ -iname '*.sql' -type f -exec bash -c 'reformat.py "$0"' {} \;
 echo "Done"
