@@ -6,5 +6,5 @@ echo "BASEDIR: $BASEDIR"
 ls -la "$BASEDIR"
 
 set -eu
-find ./ -iname '*.sql' -type f -exec bash -c 'reformat.py "$0"' {} \;
+find ./ -iname '*.sql' -type f -exec bash -c '/app/reformat.py "$0"' {} \;
 echo "Done"
