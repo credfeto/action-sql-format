@@ -1,7 +1,5 @@
 FROM python:3.11.3-alpine3.17
 
-USER nobody
-
 RUN apk --no-cache add bash
 
 COPY reformat /reformat
@@ -11,5 +9,7 @@ COPY requirements.txt /requirements.txt
 RUN \
   pip install --no-cache-dir -r requirements.txt \
   chmod +x reformat.py
+
+USER nobody
 
 ENTRYPOINT ["/reformat"]
