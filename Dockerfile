@@ -1,6 +1,6 @@
 FROM python:3.11.3-alpine3.17
 
-USER reformat
+USER nobody
 
 RUN apk --no-cache add bash
 
