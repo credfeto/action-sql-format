@@ -29,7 +29,7 @@ jobs:
           && ( !startsWith(github.head_ref, 'release/')
           && !startsWith(github.head_ref, 'hotfix/') )
           && github.actor != 'dependabot[bot]'}}
-        uses: stefanzweifel/git-auto-commit-action@v4.16.0
+        uses: stefanzweifel/git-auto-commit-action@v5.0.0
         with:
           commit_message: "[Reformat] SQL Files to common format"
           file_pattern: "*.sql"
