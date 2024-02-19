@@ -15,10 +15,10 @@ process() {
   FILE=$1
   echo "Processing $FILE..."
   echo " * Sqlformatter"
-  mono /app/Sqlformatter.exe "$FILE" /is:"    " /tc /sk /r /sac /mw:999999999 /b- /bjo /cb:1 /st:4 /eil- /ecs- /ecl /uk /sb:2 /ebc /ebe
+  mono /app/Sqlformatter.exe "$FILE" /is:"    " /tc /sk /r /sac /mw:999999999 /b- /bjo /cb:1 /st:4 /eil- /ecs- /ecl /uk /sb:2 /ebc /ebe || die "ERROR: Sqlformatter failed"
 
   echo " * Converting tabs to spaces"
-  expand -t 4 "$FILE" | sponge "$FILE"
+  (expand -t 4 "$FILE" | sponge "$FILE") || die "ERROR: expand failed"
 }
 
 for(FOUND in $(find ./ -iname '*.sql' -type f)); do
