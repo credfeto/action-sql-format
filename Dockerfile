@@ -13,8 +13,7 @@ RUN apk --no-cache add bash moreutils && \
     cert-sync /etc/ssl/certs/ca-certificates.crt && \
     apk del .build-dependencies
 
-RUN chmod +x /SqlFormatter.exe && \
-    rm -f sqlformatter.zip
+RUN chmod +x /SqlFormatter.exe
 
 # pip install --no-cache-dir -r requirements.txt
 
