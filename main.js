@@ -9,7 +9,7 @@
 `,I}else return I+" at index "+(this.index-1);function B(c,g){var l=String(c);return Array(g-l.length+1).join(" ")+l}};function r(n,I,C){if(n instanceof E)var a=n,C=I;else var a=E.fromCompiled(n,I);this.grammar=a,this.options={keepHistory:!1,lexer:a.lexer||new s};for(var R in C||{})this.options[R]=C[R];this.lexer=this.options.lexer,this.lexerState=void 0;var T=new t(a,0),h=this.table=[T];T.wants[a.start]=[],T.predict(a.start),T.process(),this.current=0}r.fail={},r.prototype.feed=function(n){var I=this.lexer;I.reset(n,this.lexerState);for(var C;;){try{if(C=I.next(),!C)break}catch(m){var h=new t(this.grammar,this.current+1);this.table.push(h);var a=new Error(this.reportLexerError(m));throw a.offset=this.current,a.token=m.token,a}var R=this.table[this.current];this.options.keepHistory||delete this.table[this.current-1];var T=this.current+1,h=new t(this.grammar,T);this.table.push(h);for(var B=C.text!==void 0?C.text:C.value,c=I.constructor===s?C.value:C,g=R.scannable,l=g.length;l--;){var Q=g[l],L=Q.rule.symbols[Q.dot];if(L.test?L.test(c):L.type?L.type===C.type:L.literal===B){var w=Q.nextState({data:c,token:C,isToken:!0,reference:T-1});h.states.push(w)}}if(h.process(),h.states.length===0){var a=new Error(this.reportError(C));throw a.offset=this.current,a.token=C,a}this.options.keepHistory&&(R.lexerState=I.save()),this.current++}return R&&(this.lexerState=I.save()),this.results=this.finish(),this},r.prototype.reportLexerError=function(n){var I,C,a=n.token;return a?(I="input "+JSON.stringify(a.text[0])+" (lexer error)",C=this.lexer.formatError(a,"Syntax error")):(I="input (lexer error)",C=n.message),this.reportErrorCommon(C,I)},r.prototype.reportError=function(n){var I=(n.type?n.type+" token: ":"")+JSON.stringify(n.value!==void 0?n.value:n),C=this.lexer.formatError(n,"Syntax error");return this.reportErrorCommon(C,I)},r.prototype.reportErrorCommon=function(n,I){var C=[];C.push(n);var a=this.table.length-2,R=this.table[a],T=R.states.filter(function(B){var c=B.rule.symbols[B.dot];return c&&typeof c!="string"});if(T.length===0)C.push("Unexpected "+I+`. I did not expect any more input. Here is the state of my parse table:
 `),this.displayStateStack(R.states,C);else{C.push("Unexpected "+I+`. Instead, I was expecting to see one of the following:
 `);var h=T.map(function(B){return this.buildFirstStateStack(B,[])||[B]},this);h.forEach(function(B){var c=B[0],g=c.rule.symbols[c.dot],l=this.getSymbolDisplay(g);C.push("A "+l+" based on:"),this.displayStateStack(B,C)},this)}return C.push(""),C.join(`
-`)},r.prototype.displayStateStack=function(n,I){for(var C,a=0,R=0;R<n.length;R++){var T=n[R],h=T.rule.toString(T.dot);h===C?a++:(a>0&&I.push("    ^ "+a+" more lines identical to this"),a=0,I.push("    "+h)),C=h}},r.prototype.getSymbolDisplay=function(n){return i(n)},r.prototype.buildFirstStateStack=function(n,I){if(I.indexOf(n)!==-1)return null;if(n.wantedBy.length===0)return[n];var C=n.wantedBy[0],a=[n].concat(I),R=this.buildFirstStateStack(C,a);return R===null?null:[n].concat(R)},r.prototype.save=function(){var n=this.table[this.current];return n.lexerState=this.lexerState,n},r.prototype.restore=function(n){var I=n.index;this.current=I,this.table[I]=n,this.table.splice(I+1),this.lexerState=n.lexerState,this.results=this.finish()},r.prototype.rewind=function(n){if(!this.options.keepHistory)throw new Error("set option `keepHistory` to enable rewinding");this.restore(this.table[n])},r.prototype.finish=function(){var n=[],I=this.grammar.start,C=this.table[this.table.length-1];return C.states.forEach(function(a){a.rule.name===I&&a.dot===a.rule.symbols.length&&a.reference===0&&a.data!==r.fail&&n.push(a)}),n.map(function(a){return a.data})};function i(n){var I=typeof n;if(I==="string")return n;if(I==="object"){if(n.literal)return JSON.stringify(n.literal);if(n instanceof RegExp)return"character matching "+n;if(n.type)return n.type+" token";if(n.test)return"token matching "+String(n.test);throw new Error("Unknown symbol type: "+n)}}function o(n){var I=typeof n;if(I==="string")return n;if(I==="object"){if(n.literal)return JSON.stringify(n.literal);if(n instanceof RegExp)return n.toString();if(n.type)return"%"+n.type;if(n.test)return"<"+String(n.test)+">";throw new Error("Unknown symbol type: "+n)}}return{Parser:r,Grammar:E,Rule:e}})});var Vi=N(KE=>{"use strict";Object.defineProperty(KE,"__esModule",{value:!0});KE.toCommandProperties=KE.toCommandValue=void 0;function mD(e){return e==null?"":typeof e=="string"||e instanceof String?e:JSON.stringify(e)}KE.toCommandValue=mD;function GD(e){return Object.keys(e).length?{title:e.title,file:e.file,line:e.startLine,endLine:e.endLine,col:e.startColumn,endColumn:e.endColumn}:{}}KE.toCommandProperties=GD});var ZT=N(pe=>{"use strict";var bD=pe&&pe.__createBinding||(Object.create?function(e,A,t,E){E===void 0&&(E=t),Object.defineProperty(e,E,{enumerable:!0,get:function(){return A[t]}})}:function(e,A,t,E){E===void 0&&(E=t),e[E]=A[t]}),YD=pe&&pe.__setModuleDefault||(Object.create?function(e,A){Object.defineProperty(e,"default",{enumerable:!0,value:A})}:function(e,A){e.default=A}),HD=pe&&pe.__importStar||function(e){if(e&&e.__esModule)return e;var A={};if(e!=null)for(var t in e)t!=="default"&&Object.hasOwnProperty.call(e,t)&&bD(A,e,t);return YD(A,e),A};Object.defineProperty(pe,"__esModule",{value:!0});pe.issue=pe.issueCommand=void 0;var kD=HD(require("os")),qT=Vi();function KT(e,A,t){let E=new UI(e,A,t);process.stdout.write(E.toString()+kD.EOL)}pe.issueCommand=KT;function VD(e,A=""){KT(e,{},A)}pe.issue=VD;var XT="::",UI=class{constructor(A,t,E){A||(A="missing.command"),this.command=A,this.properties=t,this.message=E}toString(){let A=XT+this.command;if(this.properties&&Object.keys(this.properties).length>0){A+=" ";let t=!0;for(let E in this.properties)if(this.properties.hasOwnProperty(E)){let s=this.properties[E];s&&(t?t=!1:A+=",",A+=`${E}=${WD(s)}`)}}return A+=`${XT}${xD(this.message)}`,A}};function xD(e){return qT.toCommandValue(e).replace(/%/g,"%25").replace(/\r/g,"%0D").replace(/\n/g,"%0A")}function WD(e){return qT.toCommandValue(e).replace(/%/g,"%25").replace(/\r/g,"%0D").replace(/\n/g,"%0A").replace(/:/g,"%3A").replace(/,/g,"%2C")}});function Ir(){return xi>Wi.length-16&&(zT.default.randomFillSync(Wi),xi=0),Wi.slice(xi,xi+=16)}var zT,Wi,xi,pI=ZA(()=>{zT=ut(require("crypto")),Wi=new Uint8Array(256),xi=Wi.length});var jT,$T=ZA(()=>{jT=/^(?:[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}|00000000-0000-0000-0000-000000000000)$/i});function JD(e){return typeof e=="string"&&jT.test(e)}var Wt,Cr=ZA(()=>{$T();Wt=JD});function vD(e,A=0){let t=(GA[e[A+0]]+GA[e[A+1]]+GA[e[A+2]]+GA[e[A+3]]+"-"+GA[e[A+4]]+GA[e[A+5]]+"-"+GA[e[A+6]]+GA[e[A+7]]+"-"+GA[e[A+8]]+GA[e[A+9]]+"-"+GA[e[A+10]]+GA[e[A+11]]+GA[e[A+12]]+GA[e[A+13]]+GA[e[A+14]]+GA[e[A+15]]).toLowerCase();if(!Wt(t))throw TypeError("Stringified UUID is invalid");return t}var GA,Jt,ar=ZA(()=>{Cr();GA=[];for(let e=0;e<256;++e)GA.push((e+256).toString(16).substr(1));Jt=vD});function XD(e,A,t){let E=A&&t||0,s=A||new Array(16);e=e||{};let r=e.node||Ah,i=e.clockseq!==void 0?e.clockseq:MI;if(r==null||i==null){let R=e.random||(e.rng||Ir)();r==null&&(r=Ah=[R[0]|1,R[1],R[2],R[3],R[4],R[5]]),i==null&&(i=MI=(R[6]<<8|R[7])&16383)}let o=e.msecs!==void 0?e.msecs:Date.now(),n=e.nsecs!==void 0?e.nsecs:PI+1,I=o-yI+(n-PI)/1e4;if(I<0&&e.clockseq===void 0&&(i=i+1&16383),(I<0||o>yI)&&e.nsecs===void 0&&(n=0),n>=1e4)throw new Error("uuid.v1(): Can't create more than 10M uuids/sec");yI=o,PI=n,MI=i,o+=122192928e5;let C=((o&268435455)*1e4+n)%4294967296;s[E++]=C>>>24&255,s[E++]=C>>>16&255,s[E++]=C>>>8&255,s[E++]=C&255;let a=o/4294967296*1e4&268435455;s[E++]=a>>>8&255,s[E++]=a&255,s[E++]=a>>>24&15|16,s[E++]=a>>>16&255,s[E++]=i>>>8|128,s[E++]=i&255;for(let R=0;R<6;++R)s[E+R]=r[R];return A||Jt(s)}var Ah,MI,yI,PI,eh,th=ZA(()=>{pI();ar();yI=0,PI=0;eh=XD});function qD(e){if(!Wt(e))throw TypeError("Invalid UUID");let A,t=new Uint8Array(16);return t[0]=(A=parseInt(e.slice(0,8),16))>>>24,t[1]=A>>>16&255,t[2]=A>>>8&255,t[3]=A&255,t[4]=(A=parseInt(e.slice(9,13),16))>>>8,t[5]=A&255,t[6]=(A=parseInt(e.slice(14,18),16))>>>8,t[7]=A&255,t[8]=(A=parseInt(e.slice(19,23),16))>>>8,t[9]=A&255,t[10]=(A=parseInt(e.slice(24,36),16))/1099511627776&255,t[11]=A/4294967296&255,t[12]=A>>>24&255,t[13]=A>>>16&255,t[14]=A>>>8&255,t[15]=A&255,t}var Ji,FI=ZA(()=>{Cr();Ji=qD});function KD(e){e=unescape(encodeURIComponent(e));let A=[];for(let t=0;t<e.length;++t)A.push(e.charCodeAt(t));return A}function vi(e,A,t){function E(s,r,i,o){if(typeof s=="string"&&(s=KD(s)),typeof r=="string"&&(r=Ji(r)),r.length!==16)throw TypeError("Namespace must be array-like (16 iterable integer values, 0-255)");let n=new Uint8Array(16+s.length);if(n.set(r),n.set(s,r.length),n=t(n),n[6]=n[6]&15|A,n[8]=n[8]&63|128,i){o=o||0;for(let I=0;I<16;++I)i[o+I]=n[I];return i}return Jt(n)}try{E.name=e}catch{}return E.DNS=ZD,E.URL=zD,E}var ZD,zD,wI=ZA(()=>{ar();FI();ZD="6ba7b810-9dad-11d1-80b4-00c04fd430c8",zD="6ba7b811-9dad-11d1-80b4-00c04fd430c8"});function jD(e){return Array.isArray(e)?e=Buffer.from(e):typeof e=="string"&&(e=Buffer.from(e,"utf8")),Eh.default.createHash("md5").update(e).digest()}var Eh,sh,rh=ZA(()=>{Eh=ut(require("crypto"));sh=jD});var $D,ih,nh=ZA(()=>{wI();rh();$D=vi("v3",48,sh),ih=$D});function Ad(e,A,t){e=e||{};let E=e.random||(e.rng||Ir)();if(E[6]=E[6]&15|64,E[8]=E[8]&63|128,A){t=t||0;for(let s=0;s<16;++s)A[t+s]=E[s];return A}return Jt(E)}var oh,Ih=ZA(()=>{pI();ar();oh=Ad});function ed(e){return Array.isArray(e)?e=Buffer.from(e):typeof e=="string"&&(e=Buffer.from(e,"utf8")),Ch.default.createHash("sha1").update(e).digest()}var Ch,ah,Rh=ZA(()=>{Ch=ut(require("crypto"));ah=ed});var td,Th,hh=ZA(()=>{wI();Rh();td=vi("v5",80,ah),Th=td});var Bh,ch=ZA(()=>{Bh="00000000-0000-0000-0000-000000000000"});function Ed(e){if(!Wt(e))throw TypeError("Invalid UUID");return parseInt(e.substr(14,1),16)}var gh,Sh=ZA(()=>{Cr();gh=Ed});var lh={};vR(lh,{NIL:()=>Bh,parse:()=>Ji,stringify:()=>Jt,v1:()=>eh,v3:()=>ih,v4:()=>oh,v5:()=>Th,validate:()=>Wt,version:()=>gh});var Nh=ZA(()=>{th();nh();Ih();hh();ch();Sh();Cr();ar();FI()});var Lh=N(Me=>{"use strict";var sd=Me&&Me.__createBinding||(Object.create?function(e,A,t,E){E===void 0&&(E=t),Object.defineProperty(e,E,{enumerable:!0,get:function(){return A[t]}})}:function(e,A,t,E){E===void 0&&(E=t),e[E]=A[t]}),rd=Me&&Me.__setModuleDefault||(Object.create?function(e,A){Object.defineProperty(e,"default",{enumerable:!0,value:A})}:function(e,A){e.default=A}),uh=Me&&Me.__importStar||function(e){if(e&&e.__esModule)return e;var A={};if(e!=null)for(var t in e)t!=="default"&&Object.hasOwnProperty.call(e,t)&&sd(A,e,t);return rd(A,e),A};Object.defineProperty(Me,"__esModule",{value:!0});Me.prepareKeyValueMessage=Me.issueFileCommand=void 0;var Qh=uh(require("fs")),mI=uh(require("os")),id=(Nh(),qR(lh)),Oh=Vi();function nd(e,A){let t=process.env[`GITHUB_${e}`];if(!t)throw new Error(`Unable to find environment variable for file command ${e}`);if(!Qh.existsSync(t))throw new Error(`Missing file at path: ${t}`);Qh.appendFileSync(t,`${Oh.toCommandValue(A)}${mI.EOL}`,{encoding:"utf8"})}Me.issueFileCommand=nd;function od(e,A){let t=`ghadelimiter_${id.v4()}`,E=Oh.toCommandValue(A);if(e.includes(t))throw new Error(`Unexpected input: name should not contain the delimiter "${t}"`);if(E.includes(t))throw new Error(`Unexpected input: value should not contain the delimiter "${t}"`);return`${e}<<${t}${mI.EOL}${E}${mI.EOL}${t}`}Me.prepareKeyValueMessage=od});var Dh=N(ZE=>{"use strict";Object.defineProperty(ZE,"__esModule",{value:!0});ZE.checkBypass=ZE.getProxyUrl=void 0;function Id(e){let A=e.protocol==="https:";if(fh(e))return;let t=(()=>A?process.env.https_proxy||process.env.HTTPS_PROXY:process.env.http_proxy||process.env.HTTP_PROXY)();if(t)try{return new URL(t)}catch{if(!t.startsWith("http://")&&!t.startsWith("https://"))return new URL(`http://${t}`)}else return}ZE.getProxyUrl=Id;function fh(e){if(!e.hostname)return!1;let A=e.hostname;if(Cd(A))return!0;let t=process.env.no_proxy||process.env.NO_PROXY||"";if(!t)return!1;let E;e.port?E=Number(e.port):e.protocol==="http:"?E=80:e.protocol==="https:"&&(E=443);let s=[e.hostname.toUpperCase()];typeof E=="number"&&s.push(`${s[0]}:${E}`);for(let r of t.split(",").map(i=>i.trim().toUpperCase()).filter(i=>i))if(r==="*"||s.some(i=>i===r||i.endsWith(`.${r}`)||r.startsWith(".")&&i.endsWith(`${r}`)))return!0;return!1}ZE.checkBypass=fh;function Cd(e){let A=e.toLowerCase();return A==="localhost"||A.startsWith("127.")||A.startsWith("[::1]")||A.startsWith("[0:0:0:0:0:0:0:1]")}});var ph=N(zE=>{"use strict";var QH=require("net"),ad=require("tls"),GI=require("http"),dh=require("https"),Rd=require("events"),uH=require("assert"),Td=require("util");zE.httpOverHttp=hd;zE.httpsOverHttp=Bd;zE.httpOverHttps=cd;zE.httpsOverHttps=gd;function hd(e){var A=new Ot(e);return A.request=GI.request,A}function Bd(e){var A=new Ot(e);return A.request=GI.request,A.createSocket=_h,A.defaultPort=443,A}function cd(e){var A=new Ot(e);return A.request=dh.request,A}function gd(e){var A=new Ot(e);return A.request=dh.request,A.createSocket=_h,A.defaultPort=443,A}function Ot(e){var A=this;A.options=e||{},A.proxyOptions=A.options.proxy||{},A.maxSockets=A.options.maxSockets||GI.Agent.defaultMaxSockets,A.requests=[],A.sockets=[],A.on("free",function(E,s,r,i){for(var o=Uh(s,r,i),n=0,I=A.requests.length;n<I;++n){var C=A.requests[n];if(C.host===o.host&&C.port===o.port){A.requests.splice(n,1),C.request.onSocket(E);return}}E.destroy(),A.removeSocket(E)})}Td.inherits(Ot,Rd.EventEmitter);Ot.prototype.addRequest=function(A,t,E,s){var r=this,i=bI({request:A},r.options,Uh(t,E,s));if(r.sockets.length>=this.maxSockets){r.requests.push(i);return}r.createSocket(i,function(o){o.on("free",n),o.on("close",I),o.on("agentRemove",I),A.onSocket(o);function n(){r.emit("free",o,i)}function I(C){r.removeSocket(o),o.removeListener("free",n),o.removeListener("close",I),o.removeListener("agentRemove",I)}})};Ot.prototype.createSocket=function(A,t){var E=this,s={};E.sockets.push(s);var r=bI({},E.proxyOptions,{method:"CONNECT",path:A.host+":"+A.port,agent:!1,headers:{host:A.host+":"+A.port}});A.localAddress&&(r.localAddress=A.localAddress),r.proxyAuth&&(r.headers=r.headers||{},r.headers["Proxy-Authorization"]="Basic "+new Buffer(r.proxyAuth).toString("base64")),vt("making CONNECT request");var i=E.request(r);i.useChunkedEncodingByDefault=!1,i.once("response",o),i.once("upgrade",n),i.once("connect",I),i.once("error",C),i.end();function o(a){a.upgrade=!0}function n(a,R,T){process.nextTick(function(){I(a,R,T)})}function I(a,R,T){if(i.removeAllListeners(),R.removeAllListeners(),a.statusCode!==200){vt("tunneling socket could not be established, statusCode=%d",a.statusCode),R.destroy();var h=new Error("tunneling socket could not be established, statusCode="+a.statusCode);h.code="ECONNRESET",A.request.emit("error",h),E.removeSocket(s);return}if(T.length>0){vt("got illegal response body from proxy"),R.destroy();var h=new Error("got illegal response body from proxy");h.code="ECONNRESET",A.request.emit("error",h),E.removeSocket(s);return}return vt("tunneling connection has established"),E.sockets[E.sockets.indexOf(s)]=R,t(R)}function C(a){i.removeAllListeners(),vt(`tunneling socket could not be established, cause=%s
+`)},r.prototype.displayStateStack=function(n,I){for(var C,a=0,R=0;R<n.length;R++){var T=n[R],h=T.rule.toString(T.dot);h===C?a++:(a>0&&I.push("    ^ "+a+" more lines identical to this"),a=0,I.push("    "+h)),C=h}},r.prototype.getSymbolDisplay=function(n){return i(n)},r.prototype.buildFirstStateStack=function(n,I){if(I.indexOf(n)!==-1)return null;if(n.wantedBy.length===0)return[n];var C=n.wantedBy[0],a=[n].concat(I),R=this.buildFirstStateStack(C,a);return R===null?null:[n].concat(R)},r.prototype.save=function(){var n=this.table[this.current];return n.lexerState=this.lexerState,n},r.prototype.restore=function(n){var I=n.index;this.current=I,this.table[I]=n,this.table.splice(I+1),this.lexerState=n.lexerState,this.results=this.finish()},r.prototype.rewind=function(n){if(!this.options.keepHistory)throw new Error("set option `keepHistory` to enable rewinding");this.restore(this.table[n])},r.prototype.finish=function(){var n=[],I=this.grammar.start,C=this.table[this.table.length-1];return C.states.forEach(function(a){a.rule.name===I&&a.dot===a.rule.symbols.length&&a.reference===0&&a.data!==r.fail&&n.push(a)}),n.map(function(a){return a.data})};function i(n){var I=typeof n;if(I==="string")return n;if(I==="object"){if(n.literal)return JSON.stringify(n.literal);if(n instanceof RegExp)return"character matching "+n;if(n.type)return n.type+" token";if(n.test)return"token matching "+String(n.test);throw new Error("Unknown symbol type: "+n)}}function o(n){var I=typeof n;if(I==="string")return n;if(I==="object"){if(n.literal)return JSON.stringify(n.literal);if(n instanceof RegExp)return n.toString();if(n.type)return"%"+n.type;if(n.test)return"<"+String(n.test)+">";throw new Error("Unknown symbol type: "+n)}}return{Parser:r,Grammar:E,Rule:e}})});var Vi=N(KE=>{"use strict";Object.defineProperty(KE,"__esModule",{value:!0});KE.toCommandProperties=KE.toCommandValue=void 0;function mD(e){return e==null?"":typeof e=="string"||e instanceof String?e:JSON.stringify(e)}KE.toCommandValue=mD;function GD(e){return Object.keys(e).length?{title:e.title,file:e.file,line:e.startLine,endLine:e.endLine,col:e.startColumn,endColumn:e.endColumn}:{}}KE.toCommandProperties=GD});var ZT=N(pe=>{"use strict";var bD=pe&&pe.__createBinding||(Object.create?function(e,A,t,E){E===void 0&&(E=t),Object.defineProperty(e,E,{enumerable:!0,get:function(){return A[t]}})}:function(e,A,t,E){E===void 0&&(E=t),e[E]=A[t]}),YD=pe&&pe.__setModuleDefault||(Object.create?function(e,A){Object.defineProperty(e,"default",{enumerable:!0,value:A})}:function(e,A){e.default=A}),HD=pe&&pe.__importStar||function(e){if(e&&e.__esModule)return e;var A={};if(e!=null)for(var t in e)t!=="default"&&Object.hasOwnProperty.call(e,t)&&bD(A,e,t);return YD(A,e),A};Object.defineProperty(pe,"__esModule",{value:!0});pe.issue=pe.issueCommand=void 0;var kD=HD(require("os")),qT=Vi();function KT(e,A,t){let E=new UI(e,A,t);process.stdout.write(E.toString()+kD.EOL)}pe.issueCommand=KT;function VD(e,A=""){KT(e,{},A)}pe.issue=VD;var XT="::",UI=class{constructor(A,t,E){A||(A="missing.command"),this.command=A,this.properties=t,this.message=E}toString(){let A=XT+this.command;if(this.properties&&Object.keys(this.properties).length>0){A+=" ";let t=!0;for(let E in this.properties)if(this.properties.hasOwnProperty(E)){let s=this.properties[E];s&&(t?t=!1:A+=",",A+=`${E}=${WD(s)}`)}}return A+=`${XT}${xD(this.message)}`,A}};function xD(e){return qT.toCommandValue(e).replace(/%/g,"%25").replace(/\r/g,"%0D").replace(/\n/g,"%0A")}function WD(e){return qT.toCommandValue(e).replace(/%/g,"%25").replace(/\r/g,"%0D").replace(/\n/g,"%0A").replace(/:/g,"%3A").replace(/,/g,"%2C")}});function Ir(){return xi>Wi.length-16&&(zT.default.randomFillSync(Wi),xi=0),Wi.slice(xi,xi+=16)}var zT,Wi,xi,pI=ZA(()=>{zT=ut(require("crypto")),Wi=new Uint8Array(256),xi=Wi.length});var jT,$T=ZA(()=>{jT=/^(?:[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}|00000000-0000-0000-0000-000000000000)$/i});function JD(e){return typeof e=="string"&&jT.test(e)}var Wt,Cr=ZA(()=>{$T();Wt=JD});function vD(e,A=0){let t=(GA[e[A+0]]+GA[e[A+1]]+GA[e[A+2]]+GA[e[A+3]]+"-"+GA[e[A+4]]+GA[e[A+5]]+"-"+GA[e[A+6]]+GA[e[A+7]]+"-"+GA[e[A+8]]+GA[e[A+9]]+"-"+GA[e[A+10]]+GA[e[A+11]]+GA[e[A+12]]+GA[e[A+13]]+GA[e[A+14]]+GA[e[A+15]]).toLowerCase();if(!Wt(t))throw TypeError("Stringified UUID is invalid");return t}var GA,Jt,ar=ZA(()=>{Cr();GA=[];for(let e=0;e<256;++e)GA.push((e+256).toString(16).substr(1));Jt=vD});function XD(e,A,t){let E=A&&t||0,s=A||new Array(16);e=e||{};let r=e.node||Ah,i=e.clockseq!==void 0?e.clockseq:MI;if(r==null||i==null){let R=e.random||(e.rng||Ir)();r==null&&(r=Ah=[R[0]|1,R[1],R[2],R[3],R[4],R[5]]),i==null&&(i=MI=(R[6]<<8|R[7])&16383)}let o=e.msecs!==void 0?e.msecs:Date.now(),n=e.nsecs!==void 0?e.nsecs:PI+1,I=o-yI+(n-PI)/1e4;if(I<0&&e.clockseq===void 0&&(i=i+1&16383),(I<0||o>yI)&&e.nsecs===void 0&&(n=0),n>=1e4)throw new Error("uuid.v1(): Can't create more than 10M uuids/sec");yI=o,PI=n,MI=i,o+=122192928e5;let C=((o&268435455)*1e4+n)%4294967296;s[E++]=C>>>24&255,s[E++]=C>>>16&255,s[E++]=C>>>8&255,s[E++]=C&255;let a=o/4294967296*1e4&268435455;s[E++]=a>>>8&255,s[E++]=a&255,s[E++]=a>>>24&15|16,s[E++]=a>>>16&255,s[E++]=i>>>8|128,s[E++]=i&255;for(let R=0;R<6;++R)s[E+R]=r[R];return A||Jt(s)}var Ah,MI,yI,PI,eh,th=ZA(()=>{pI();ar();yI=0,PI=0;eh=XD});function qD(e){if(!Wt(e))throw TypeError("Invalid UUID");let A,t=new Uint8Array(16);return t[0]=(A=parseInt(e.slice(0,8),16))>>>24,t[1]=A>>>16&255,t[2]=A>>>8&255,t[3]=A&255,t[4]=(A=parseInt(e.slice(9,13),16))>>>8,t[5]=A&255,t[6]=(A=parseInt(e.slice(14,18),16))>>>8,t[7]=A&255,t[8]=(A=parseInt(e.slice(19,23),16))>>>8,t[9]=A&255,t[10]=(A=parseInt(e.slice(24,36),16))/1099511627776&255,t[11]=A/4294967296&255,t[12]=A>>>24&255,t[13]=A>>>16&255,t[14]=A>>>8&255,t[15]=A&255,t}var Ji,FI=ZA(()=>{Cr();Ji=qD});function KD(e){e=unescape(encodeURIComponent(e));let A=[];for(let t=0;t<e.length;++t)A.push(e.charCodeAt(t));return A}function vi(e,A,t){function E(s,r,i,o){if(typeof s=="string"&&(s=KD(s)),typeof r=="string"&&(r=Ji(r)),r.length!==16)throw TypeError("Namespace must be array-like (16 iterable integer values, 0-255)");let n=new Uint8Array(16+s.length);if(n.set(r),n.set(s,r.length),n=t(n),n[6]=n[6]&15|A,n[8]=n[8]&63|128,i){o=o||0;for(let I=0;I<16;++I)i[o+I]=n[I];return i}return Jt(n)}try{E.name=e}catch{}return E.DNS=ZD,E.URL=zD,E}var ZD,zD,wI=ZA(()=>{ar();FI();ZD="6ba7b810-9dad-11d1-80b4-00c04fd430c8",zD="6ba7b811-9dad-11d1-80b4-00c04fd430c8"});function jD(e){return Array.isArray(e)?e=Buffer.from(e):typeof e=="string"&&(e=Buffer.from(e,"utf8")),Eh.default.createHash("md5").update(e).digest()}var Eh,sh,rh=ZA(()=>{Eh=ut(require("crypto"));sh=jD});var $D,ih,nh=ZA(()=>{wI();rh();$D=vi("v3",48,sh),ih=$D});function Ad(e,A,t){e=e||{};let E=e.random||(e.rng||Ir)();if(E[6]=E[6]&15|64,E[8]=E[8]&63|128,A){t=t||0;for(let s=0;s<16;++s)A[t+s]=E[s];return A}return Jt(E)}var oh,Ih=ZA(()=>{pI();ar();oh=Ad});function ed(e){return Array.isArray(e)?e=Buffer.from(e):typeof e=="string"&&(e=Buffer.from(e,"utf8")),Ch.default.createHash("sha1").update(e).digest()}var Ch,ah,Rh=ZA(()=>{Ch=ut(require("crypto"));ah=ed});var td,Th,hh=ZA(()=>{wI();Rh();td=vi("v5",80,ah),Th=td});var Bh,ch=ZA(()=>{Bh="00000000-0000-0000-0000-000000000000"});function Ed(e){if(!Wt(e))throw TypeError("Invalid UUID");return parseInt(e.substr(14,1),16)}var gh,Sh=ZA(()=>{Cr();gh=Ed});var lh={};vR(lh,{NIL:()=>Bh,parse:()=>Ji,stringify:()=>Jt,v1:()=>eh,v3:()=>ih,v4:()=>oh,v5:()=>Th,validate:()=>Wt,version:()=>gh});var Nh=ZA(()=>{th();nh();Ih();hh();ch();Sh();Cr();ar();FI()});var Lh=N(Me=>{"use strict";var sd=Me&&Me.__createBinding||(Object.create?function(e,A,t,E){E===void 0&&(E=t),Object.defineProperty(e,E,{enumerable:!0,get:function(){return A[t]}})}:function(e,A,t,E){E===void 0&&(E=t),e[E]=A[t]}),rd=Me&&Me.__setModuleDefault||(Object.create?function(e,A){Object.defineProperty(e,"default",{enumerable:!0,value:A})}:function(e,A){e.default=A}),uh=Me&&Me.__importStar||function(e){if(e&&e.__esModule)return e;var A={};if(e!=null)for(var t in e)t!=="default"&&Object.hasOwnProperty.call(e,t)&&sd(A,e,t);return rd(A,e),A};Object.defineProperty(Me,"__esModule",{value:!0});Me.prepareKeyValueMessage=Me.issueFileCommand=void 0;var Qh=uh(require("fs")),mI=uh(require("os")),id=(Nh(),qR(lh)),Oh=Vi();function nd(e,A){let t=process.env[`GITHUB_${e}`];if(!t)throw new Error(`Unable to find environment variable for file command ${e}`);if(!Qh.existsSync(t))throw new Error(`Missing file at path: ${t}`);Qh.appendFileSync(t,`${Oh.toCommandValue(A)}${mI.EOL}`,{encoding:"utf8"})}Me.issueFileCommand=nd;function od(e,A){let t=`ghadelimiter_${id.v4()}`,E=Oh.toCommandValue(A);if(e.includes(t))throw new Error(`Unexpected input: name should not contain the delimiter "${t}"`);if(E.includes(t))throw new Error(`Unexpected input: value should not contain the delimiter "${t}"`);return`${e}<<${t}${mI.EOL}${E}${mI.EOL}${t}`}Me.prepareKeyValueMessage=od});var Dh=N(ZE=>{"use strict";Object.defineProperty(ZE,"__esModule",{value:!0});ZE.checkBypass=ZE.getProxyUrl=void 0;function Id(e){let A=e.protocol==="https:";if(fh(e))return;let t=(()=>A?process.env.https_proxy||process.env.HTTPS_PROXY:process.env.http_proxy||process.env.HTTP_PROXY)();if(t)try{return new URL(t)}catch{if(!t.startsWith("http://")&&!t.startsWith("https://"))return new URL(`http://${t}`)}else }ZE.getProxyUrl=Id;function fh(e){if(!e.hostname)return!1;let A=e.hostname;if(Cd(A))return!0;let t=process.env.no_proxy||process.env.NO_PROXY||"";if(!t)return!1;let E;e.port?E=Number(e.port):e.protocol==="http:"?E=80:e.protocol==="https:"&&(E=443);let s=[e.hostname.toUpperCase()];typeof E=="number"&&s.push(`${s[0]}:${E}`);for(let r of t.split(",").map(i=>i.trim().toUpperCase()).filter(i=>i))if(r==="*"||s.some(i=>i===r||i.endsWith(`.${r}`)||r.startsWith(".")&&i.endsWith(`${r}`)))return!0;return!1}ZE.checkBypass=fh;function Cd(e){let A=e.toLowerCase();return A==="localhost"||A.startsWith("127.")||A.startsWith("[::1]")||A.startsWith("[0:0:0:0:0:0:0:1]")}});var ph=N(zE=>{"use strict";var QH=require("net"),ad=require("tls"),GI=require("http"),dh=require("https"),Rd=require("events"),uH=require("assert"),Td=require("util");zE.httpOverHttp=hd;zE.httpsOverHttp=Bd;zE.httpOverHttps=cd;zE.httpsOverHttps=gd;function hd(e){var A=new Ot(e);return A.request=GI.request,A}function Bd(e){var A=new Ot(e);return A.request=GI.request,A.createSocket=_h,A.defaultPort=443,A}function cd(e){var A=new Ot(e);return A.request=dh.request,A}function gd(e){var A=new Ot(e);return A.request=dh.request,A.createSocket=_h,A.defaultPort=443,A}function Ot(e){var A=this;A.options=e||{},A.proxyOptions=A.options.proxy||{},A.maxSockets=A.options.maxSockets||GI.Agent.defaultMaxSockets,A.requests=[],A.sockets=[],A.on("free",function(E,s,r,i){for(var o=Uh(s,r,i),n=0,I=A.requests.length;n<I;++n){var C=A.requests[n];if(C.host===o.host&&C.port===o.port){A.requests.splice(n,1),C.request.onSocket(E);return}}E.destroy(),A.removeSocket(E)})}Td.inherits(Ot,Rd.EventEmitter);Ot.prototype.addRequest=function(A,t,E,s){var r=this,i=bI({request:A},r.options,Uh(t,E,s));if(r.sockets.length>=this.maxSockets){r.requests.push(i);return}r.createSocket(i,function(o){o.on("free",n),o.on("close",I),o.on("agentRemove",I),A.onSocket(o);function n(){r.emit("free",o,i)}function I(C){r.removeSocket(o),o.removeListener("free",n),o.removeListener("close",I),o.removeListener("agentRemove",I)}})};Ot.prototype.createSocket=function(A,t){var E=this,s={};E.sockets.push(s);var r=bI({},E.proxyOptions,{method:"CONNECT",path:A.host+":"+A.port,agent:!1,headers:{host:A.host+":"+A.port}});A.localAddress&&(r.localAddress=A.localAddress),r.proxyAuth&&(r.headers=r.headers||{},r.headers["Proxy-Authorization"]="Basic "+new Buffer(r.proxyAuth).toString("base64")),vt("making CONNECT request");var i=E.request(r);i.useChunkedEncodingByDefault=!1,i.once("response",o),i.once("upgrade",n),i.once("connect",I),i.once("error",C),i.end();function o(a){a.upgrade=!0}function n(a,R,T){process.nextTick(function(){I(a,R,T)})}function I(a,R,T){if(i.removeAllListeners(),R.removeAllListeners(),a.statusCode!==200){vt("tunneling socket could not be established, statusCode=%d",a.statusCode),R.destroy();var h=new Error("tunneling socket could not be established, statusCode="+a.statusCode);h.code="ECONNRESET",A.request.emit("error",h),E.removeSocket(s);return}if(T.length>0){vt("got illegal response body from proxy"),R.destroy();var h=new Error("got illegal response body from proxy");h.code="ECONNRESET",A.request.emit("error",h),E.removeSocket(s);return}return vt("tunneling connection has established"),E.sockets[E.sockets.indexOf(s)]=R,t(R)}function C(a){i.removeAllListeners(),vt(`tunneling socket could not be established, cause=%s
 `,a.message,a.stack);var R=new Error("tunneling socket could not be established, cause="+a.message);R.code="ECONNRESET",A.request.emit("error",R),E.removeSocket(s)}};Ot.prototype.removeSocket=function(A){var t=this.sockets.indexOf(A);if(t!==-1){this.sockets.splice(t,1);var E=this.requests.shift();E&&this.createSocket(E,function(s){E.request.onSocket(s)})}};function _h(e,A){var t=this;Ot.prototype.createSocket.call(t,e,function(E){var s=e.request.getHeader("host"),r=bI({},t.options,{socket:E,servername:s?s.replace(/:.*$/,""):e.host}),i=ad.connect(0,r);t.sockets[t.sockets.indexOf(E)]=i,A(i)})}function Uh(e,A,t){return typeof e=="string"?{host:e,port:A,localAddress:t}:e}function bI(e){for(var A=1,t=arguments.length;A<t;++A){var E=arguments[A];if(typeof E=="object")for(var s=Object.keys(E),r=0,i=s.length;r<i;++r){var o=s[r];E[o]!==void 0&&(e[o]=E[o])}}return e}var vt;process.env.NODE_DEBUG&&/\btunnel\b/.test(process.env.NODE_DEBUG)?vt=function(){var e=Array.prototype.slice.call(arguments);typeof e[0]=="string"?e[0]="TUNNEL: "+e[0]:e.unshift("TUNNEL:"),console.error.apply(console,e)}:vt=function(){};zE.debug=vt});var yh=N((LH,Mh)=>{Mh.exports=ph()});var $=N((fH,Ph)=>{Ph.exports={kClose:Symbol("close"),kDestroy:Symbol("destroy"),kDispatch:Symbol("dispatch"),kUrl:Symbol("url"),kWriting:Symbol("writing"),kResuming:Symbol("resuming"),kQueue:Symbol("queue"),kConnect:Symbol("connect"),kConnecting:Symbol("connecting"),kHeadersList:Symbol("headers list"),kKeepAliveDefaultTimeout:Symbol("default keep alive timeout"),kKeepAliveMaxTimeout:Symbol("max keep alive timeout"),kKeepAliveTimeoutThreshold:Symbol("keep alive timeout threshold"),kKeepAliveTimeoutValue:Symbol("keep alive timeout"),kKeepAlive:Symbol("keep alive"),kHeadersTimeout:Symbol("headers timeout"),kBodyTimeout:Symbol("body timeout"),kServerName:Symbol("server name"),kLocalAddress:Symbol("local address"),kHost:Symbol("host"),kNoRef:Symbol("no ref"),kBodyUsed:Symbol("used"),kRunning:Symbol("running"),kBlocking:Symbol("blocking"),kPending:Symbol("pending"),kSize:Symbol("size"),kBusy:Symbol("busy"),kQueued:Symbol("queued"),kFree:Symbol("free"),kConnected:Symbol("connected"),kClosed:Symbol("closed"),kNeedDrain:Symbol("need drain"),kReset:Symbol("reset"),kDestroyed:Symbol.for("nodejs.stream.destroyed"),kMaxHeadersSize:Symbol("max headers size"),kRunningIdx:Symbol("running index"),kPendingIdx:Symbol("pending index"),kError:Symbol("error"),kClients:Symbol("clients"),kClient:Symbol("client"),kParser:Symbol("parser"),kOnDestroyed:Symbol("destroy callbacks"),kPipelining:Symbol("pipelining"),kSocket:Symbol("socket"),kHostHeader:Symbol("host header"),kConnector:Symbol("connector"),kStrictContentLength:Symbol("strict content length"),kMaxRedirections:Symbol("maxRedirections"),kMaxRequests:Symbol("maxRequestsPerClient"),kProxy:Symbol("proxy agent options"),kCounter:Symbol("socket request counter"),kInterceptors:Symbol("dispatch interceptors"),kMaxResponseSize:Symbol("max response size"),kHTTP2Session:Symbol("http2Session"),kHTTP2SessionState:Symbol("http2Session state"),kHTTP2BuildRequest:Symbol("http2 build request"),kHTTP1BuildRequest:Symbol("http1 build request"),kHTTP2CopyHeaders:Symbol("http2 copy headers"),kHTTPConnVersion:Symbol("http connection version"),kRetryHandlerDefaultRetry:Symbol("retry agent default retry"),kConstruct:Symbol("constructable")}});var z=N((DH,Fh)=>{"use strict";var hA=class extends Error{constructor(A){super(A),this.name="UndiciError",this.code="UND_ERR"}},Rr=class extends hA{constructor(A){super(A),Error.captureStackTrace(this,Rr),this.name="ConnectTimeoutError",this.message=A||"Connect Timeout Error",this.code="UND_ERR_CONNECT_TIMEOUT"}},Tr=class extends hA{constructor(A){super(A),Error.captureStackTrace(this,Tr),this.name="HeadersTimeoutError",this.message=A||"Headers Timeout Error",this.code="UND_ERR_HEADERS_TIMEOUT"}},hr=class extends hA{constructor(A){super(A),Error.captureStackTrace(this,hr),this.name="HeadersOverflowError",this.message=A||"Headers Overflow Error",this.code="UND_ERR_HEADERS_OVERFLOW"}},Br=class extends hA{constructor(A){super(A),Error.captureStackTrace(this,Br),this.name="BodyTimeoutError",this.message=A||"Body Timeout Error",this.code="UND_ERR_BODY_TIMEOUT"}},cr=class extends hA{constructor(A,t,E,s){super(A),Error.captureStackTrace(this,cr),this.name="ResponseStatusCodeError",this.message=A||"Response Status Code Error",this.code="UND_ERR_RESPONSE_STATUS_CODE",this.body=s,this.status=t,this.statusCode=t,this.headers=E}},gr=class extends hA{constructor(A){super(A),Error.captureStackTrace(this,gr),this.name="InvalidArgumentError",this.message=A||"Invalid Argument Error",this.code="UND_ERR_INVALID_ARG"}},Sr=class extends hA{constructor(A){super(A),Error.captureStackTrace(this,Sr),this.name="InvalidReturnValueError",this.message=A||"Invalid Return Value Error",this.code="UND_ERR_INVALID_RETURN_VALUE"}},lr=class extends hA{constructor(A){super(A),Error.captureStackTrace(this,lr),this.name="AbortError",this.message=A||"Request aborted",this.code="UND_ERR_ABORTED"}},Nr=class extends hA{constructor(A){super(A),Error.captureStackTrace(this,Nr),this.name="InformationalError",this.message=A||"Request information",this.code="UND_ERR_INFO"}},Qr=class extends hA{constructor(A){super(A),Error.captureStackTrace(this,Qr),this.name="RequestContentLengthMismatchError",this.message=A||"Request body length does not match content-length header",this.code="UND_ERR_REQ_CONTENT_LENGTH_MISMATCH"}},ur=class extends hA{constructor(A){super(A),Error.captureStackTrace(this,ur),this.name="ResponseContentLengthMismatchError",this.message=A||"Response body length does not match content-length header",this.code="UND_ERR_RES_CONTENT_LENGTH_MISMATCH"}},Or=class extends hA{constructor(A){super(A),Error.captureStackTrace(this,Or),this.name="ClientDestroyedError",this.message=A||"The client is destroyed",this.code="UND_ERR_DESTROYED"}},Lr=class extends hA{constructor(A){super(A),Error.captureStackTrace(this,Lr),this.name="ClientClosedError",this.message=A||"The client is closed",this.code="UND_ERR_CLOSED"}},fr=class extends hA{constructor(A,t){super(A),Error.captureStackTrace(this,fr),this.name="SocketError",this.message=A||"Socket error",this.code="UND_ERR_SOCKET",this.socket=t}},jE=class extends hA{constructor(A){super(A),Error.captureStackTrace(this,jE),this.name="NotSupportedError",this.message=A||"Not supported error",this.code="UND_ERR_NOT_SUPPORTED"}},YI=class extends hA{constructor(A){super(A),Error.captureStackTrace(this,jE),this.name="MissingUpstreamError",this.message=A||"No upstream has been added to the BalancedPool",this.code="UND_ERR_BPL_MISSING_UPSTREAM"}},Dr=class extends Error{constructor(A,t,E){super(A),Error.captureStackTrace(this,Dr),this.name="HTTPParserError",this.code=t?`HPE_${t}`:void 0,this.data=E?E.toString():void 0}},dr=class extends hA{constructor(A){super(A),Error.captureStackTrace(this,dr),this.name="ResponseExceededMaxSizeError",this.message=A||"Response content exceeded max size",this.code="UND_ERR_RES_EXCEEDED_MAX_SIZE"}},_r=class extends hA{constructor(A,t,{headers:E,data:s}){super(A),Error.captureStackTrace(this,_r),this.name="RequestRetryError",this.message=A||"Request retry error",this.code="UND_ERR_REQ_RETRY",this.statusCode=t,this.data=s,this.headers=E}};Fh.exports={HTTPParserError:Dr,UndiciError:hA,HeadersTimeoutError:Tr,HeadersOverflowError:hr,BodyTimeoutError:Br,RequestContentLengthMismatchError:Qr,ConnectTimeoutError:Rr,ResponseStatusCodeError:cr,InvalidArgumentError:gr,InvalidReturnValueError:Sr,RequestAbortedError:lr,ClientDestroyedError:Or,ClientClosedError:Lr,InformationalError:Nr,SocketError:fr,NotSupportedError:jE,ResponseContentLengthMismatchError:ur,BalancedPoolMissingUpstreamError:YI,ResponseExceededMaxSizeError:dr,RequestRetryError:_r}});var V=N((dH,Jh)=>{"use strict";var bh=require("assert"),{kDestroyed:Yh,kBodyUsed:wh}=$(),{IncomingMessage:Sd}=require("http"),$E=require("stream"),ld=require("net"),{InvalidArgumentError:bA}=z(),{Blob:mh}=require("buffer"),Xi=require("util"),{stringify:Nd}=require("querystring"),[HI,Gh]=process.versions.node.split(".").map(e=>Number(e));function Qd(){}function kI(e){return e&&typeof e=="object"&&typeof e.pipe=="function"&&typeof e.on=="function"}function Hh(e){return mh&&e instanceof mh||e&&typeof e=="object"&&(typeof e.stream=="function"||typeof e.arrayBuffer=="function")&&/^(Blob|File)$/.test(e[Symbol.toStringTag])}function ud(e,A){if(e.includes("?")||e.includes("#"))throw new Error('Query params cannot be passed when url already contains "?" or "#".');let t=Nd(A);return t&&(e+="?"+t),e}function kh(e){if(typeof e=="string"){if(e=new URL(e),!/^https?:/.test(e.origin||e.protocol))throw new bA("Invalid URL protocol: the URL must start with `http:` or `https:`.");return e}if(!e||typeof e!="object")throw new bA("Invalid URL: The URL argument must be a non-null object.");if(!/^https?:/.test(e.origin||e.protocol))throw new bA("Invalid URL protocol: the URL must start with `http:` or `https:`.");if(!(e instanceof URL)){if(e.port!=null&&e.port!==""&&!Number.isFinite(parseInt(e.port)))throw new bA("Invalid URL: port must be a valid integer or a string representation of an integer.");if(e.path!=null&&typeof e.path!="string")throw new bA("Invalid URL path: the path must be a string or null/undefined.");if(e.pathname!=null&&typeof e.pathname!="string")throw new bA("Invalid URL pathname: the pathname must be a string or null/undefined.");if(e.hostname!=null&&typeof e.hostname!="string")throw new bA("Invalid URL hostname: the hostname must be a string or null/undefined.");if(e.origin!=null&&typeof e.origin!="string")throw new bA("Invalid URL origin: the origin must be a string or null/undefined.");let A=e.port!=null?e.port:e.protocol==="https:"?443:80,t=e.origin!=null?e.origin:`${e.protocol}//${e.hostname}:${A}`,E=e.path!=null?e.path:`${e.pathname||""}${e.search||""}`;t.endsWith("/")&&(t=t.substring(0,t.length-1)),E&&!E.startsWith("/")&&(E=`/${E}`),e=new URL(t+E)}return e}function Od(e){if(e=kh(e),e.pathname!=="/"||e.search||e.hash)throw new bA("invalid url");return e}function Ld(e){if(e[0]==="["){let t=e.indexOf("]");return bh(t!==-1),e.substring(1,t)}let A=e.indexOf(":");return A===-1?e:e.substring(0,A)}function fd(e){if(!e)return null;bh.strictEqual(typeof e,"string");let A=Ld(e);return ld.isIP(A)?"":A}function Dd(e){return JSON.parse(JSON.stringify(e))}function dd(e){return e!=null&&typeof e[Symbol.asyncIterator]=="function"}function _d(e){return e!=null&&(typeof e[Symbol.iterator]=="function"||typeof e[Symbol.asyncIterator]=="function")}function Ud(e){if(e==null)return 0;if(kI(e)){let A=e._readableState;return A&&A.objectMode===!1&&A.ended===!0&&Number.isFinite(A.length)?A.length:null}else{if(Hh(e))return e.size!=null?e.size:null;if(xh(e))return e.byteLength}return null}function VI(e){return!e||!!(e.destroyed||e[Yh])}function Vh(e){let A=e&&e._readableState;return VI(e)&&A&&!A.endEmitted}function pd(e,A){e==null||!kI(e)||VI(e)||(typeof e.destroy=="function"?(Object.getPrototypeOf(e).constructor===Sd&&(e.socket=null),e.destroy(A)):A&&process.nextTick((t,E)=>{t.emit("error",E)},e,A),e.destroyed!==!0&&(e[Yh]=!0))}var Md=/timeout=(\d+)/;function yd(e){let A=e.toString().match(Md);return A?parseInt(A[1],10)*1e3:null}function Pd(e,A={}){if(!Array.isArray(e))return e;for(let t=0;t<e.length;t+=2){let E=e[t].toString().toLowerCase(),s=A[E];s?(Array.isArray(s)||(s=[s],A[E]=s),s.push(e[t+1].toString("utf8"))):Array.isArray(e[t+1])?A[E]=e[t+1].map(r=>r.toString("utf8")):A[E]=e[t+1].toString("utf8")}return"content-length"in A&&"content-disposition"in A&&(A["content-disposition"]=Buffer.from(A["content-disposition"]).toString("latin1")),A}function Fd(e){let A=[],t=!1,E=-1;for(let s=0;s<e.length;s+=2){let r=e[s+0].toString(),i=e[s+1].toString("utf8");r.length===14&&(r==="content-length"||r.toLowerCase()==="content-length")?(A.push(r,i),t=!0):r.length===19&&(r==="content-disposition"||r.toLowerCase()==="content-disposition")?E=A.push(r,i)-1:A.push(r,i)}return t&&E!==-1&&(A[E]=Buffer.from(A[E]).toString("latin1")),A}function xh(e){return e instanceof Uint8Array||Buffer.isBuffer(e)}function wd(e,A,t){if(!e||typeof e!="object")throw new bA("handler must be an object");if(typeof e.onConnect!="function")throw new bA("invalid onConnect method");if(typeof e.onError!="function")throw new bA("invalid onError method");if(typeof e.onBodySent!="function"&&e.onBodySent!==void 0)throw new bA("invalid onBodySent method");if(t||A==="CONNECT"){if(typeof e.onUpgrade!="function")throw new bA("invalid onUpgrade method")}else{if(typeof e.onHeaders!="function")throw new bA("invalid onHeaders method");if(typeof e.onData!="function")throw new bA("invalid onData method");if(typeof e.onComplete!="function")throw new bA("invalid onComplete method")}}function md(e){return!!(e&&($E.isDisturbed?$E.isDisturbed(e)||e[wh]:e[wh]||e.readableDidRead||e._readableState&&e._readableState.dataEmitted||Vh(e)))}function Gd(e){return!!(e&&($E.isErrored?$E.isErrored(e):/state: 'errored'/.test(Xi.inspect(e))))}function bd(e){return!!(e&&($E.isReadable?$E.isReadable(e):/state: 'readable'/.test(Xi.inspect(e))))}function Yd(e){return{localAddress:e.localAddress,localPort:e.localPort,remoteAddress:e.remoteAddress,remotePort:e.remotePort,remoteFamily:e.remoteFamily,timeout:e.timeout,bytesWritten:e.bytesWritten,bytesRead:e.bytesRead}}async function*Hd(e){for await(let A of e)yield Buffer.isBuffer(A)?A:Buffer.from(A)}var Ur;function kd(e){if(Ur||(Ur=require("stream/web").ReadableStream),Ur.from)return Ur.from(Hd(e));let A;return new Ur({async start(){A=e[Symbol.asyncIterator]()},async pull(t){let{done:E,value:s}=await A.next();if(E)queueMicrotask(()=>{t.close()});else{let r=Buffer.isBuffer(s)?s:Buffer.from(s);t.enqueue(new Uint8Array(r))}return t.desiredSize>0},async cancel(t){await A.return()}},0)}function Vd(e){return e&&typeof e=="object"&&typeof e.append=="function"&&typeof e.delete=="function"&&typeof e.get=="function"&&typeof e.getAll=="function"&&typeof e.has=="function"&&typeof e.set=="function"&&e[Symbol.toStringTag]==="FormData"}function xd(e){if(e){if(typeof e.throwIfAborted=="function")e.throwIfAborted();else if(e.aborted){let A=new Error("The operation was aborted");throw A.name="AbortError",A}}}function Wd(e,A){return"addEventListener"in e?(e.addEventListener("abort",A,{once:!0}),()=>e.removeEventListener("abort",A)):(e.addListener("abort",A),()=>e.removeListener("abort",A))}var Jd=!!String.prototype.toWellFormed;function vd(e){return Jd?`${e}`.toWellFormed():Xi.toUSVString?Xi.toUSVString(e):`${e}`}function Xd(e){if(e==null||e==="")return{start:0,end:null,size:null};let A=e?e.match(/^bytes (\d+)-(\d+)\/(\d+)?$/):null;return A?{start:parseInt(A[1]),end:A[2]?parseInt(A[2]):null,size:A[3]?parseInt(A[3]):null}:null}var Wh=Object.create(null);Wh.enumerable=!0;Jh.exports={kEnumerableProperty:Wh,nop:Qd,isDisturbed:md,isErrored:Gd,isReadable:bd,toUSVString:vd,isReadableAborted:Vh,isBlobLike:Hh,parseOrigin:Od,parseURL:kh,getServerName:fd,isStream:kI,isIterable:_d,isAsyncIterable:dd,isDestroyed:VI,parseRawHeaders:Fd,parseHeaders:Pd,parseKeepAliveTimeout:yd,destroy:pd,bodyLength:Ud,deepClone:Dd,ReadableStreamFrom:kd,isBuffer:xh,validateHandler:wd,getSocketInfo:Yd,isFormDataLike:Vd,buildURL:ud,throwIfAborted:xd,addAbortListener:Wd,parseRangeHeader:Xd,nodeMajor:HI,nodeMinor:Gh,nodeHasAutoSelectFamily:HI>18||HI===18&&Gh>=13,safeHTTPMethods:["GET","HEAD","OPTIONS","TRACE"]}});var qh=N((_H,Xh)=>{"use strict";var xI=Date.now(),Xt,qt=[];function qd(){xI=Date.now();let e=qt.length,A=0;for(;A<e;){let t=qt[A];t.state===0?t.state=xI+t.delay:t.state>0&&xI>=t.state&&(t.state=-1,t.callback(t.opaque)),t.state===-1?(t.state=-2,A!==e-1?qt[A]=qt.pop():qt.pop(),e-=1):A+=1}qt.length>0&&vh()}function vh(){Xt&&Xt.refresh?Xt.refresh():(clearTimeout(Xt),Xt=setTimeout(qd,1e3),Xt.unref&&Xt.unref())}var qi=class{constructor(A,t,E){this.callback=A,this.delay=t,this.opaque=E,this.state=-2,this.refresh()}refresh(){this.state===-2&&(qt.push(this),(!Xt||qt.length===1)&&vh()),this.state=0}clear(){this.state=-1}};Xh.exports={setTimeout(e,A,t){return A<1e3?setTimeout(e,A,t):new qi(e,A,t)},clearTimeout(e){e instanceof qi?e.clear():clearTimeout(e)}}});var WI=N((UH,Kh)=>{"use strict";var Kd=require("node:events").EventEmitter,Zd=require("node:util").inherits;function lE(e){if(typeof e=="string"&&(e=Buffer.from(e)),!Buffer.isBuffer(e))throw new TypeError("The needle has to be a String or a Buffer.");let A=e.length;if(A===0)throw new Error("The needle cannot be an empty String/Buffer.");if(A>256)throw new Error("The needle cannot have a length bigger than 256.");this.maxMatches=1/0,this.matches=0,this._occ=new Array(256).fill(A),this._lookbehind_size=0,this._needle=e,this._bufpos=0,this._lookbehind=Buffer.alloc(A);for(var t=0;t<A-1;++t)this._occ[e[t]]=A-1-t}Zd(lE,Kd);lE.prototype.reset=function(){this._lookbehind_size=0,this.matches=0,this._bufpos=0};lE.prototype.push=function(e,A){Buffer.isBuffer(e)||(e=Buffer.from(e,"binary"));let t=e.length;this._bufpos=A||0;let E;for(;E!==t&&this.matches<this.maxMatches;)E=this._sbmh_feed(e);return E};lE.prototype._sbmh_feed=function(e){let A=e.length,t=this._needle,E=t.length,s=t[E-1],r=-this._lookbehind_size,i;if(r<0){for(;r<0&&r<=A-E;){if(i=this._sbmh_lookup_char(e,r+E-1),i===s&&this._sbmh_memcmp(e,r,E-1))return this._lookbehind_size=0,++this.matches,this.emit("info",!0),this._bufpos=r+E;r+=this._occ[i]}if(r<0)for(;r<0&&!this._sbmh_memcmp(e,r,A-r);)++r;if(r>=0)this.emit("info",!1,this._lookbehind,0,this._lookbehind_size),this._lookbehind_size=0;else{let o=this._lookbehind_size+r;return o>0&&this.emit("info",!1,this._lookbehind,0,o),this._lookbehind.copy(this._lookbehind,0,o,this._lookbehind_size-o),this._lookbehind_size-=o,e.copy(this._lookbehind,this._lookbehind_size),this._lookbehind_size+=A,this._bufpos=A,A}}if(r+=(r>=0)*this._bufpos,e.indexOf(t,r)!==-1)return r=e.indexOf(t,r),++this.matches,r>0?this.emit("info",!0,e,this._bufpos,r):this.emit("info",!0),this._bufpos=r+E;for(r=A-E;r<A&&(e[r]!==t[0]||Buffer.compare(e.subarray(r,r+A-r),t.subarray(0,A-r))!==0);)++r;return r<A&&(e.copy(this._lookbehind,0,r,r+(A-r)),this._lookbehind_size=A-r),r>0&&this.emit("info",!1,e,this._bufpos,r<A?r:A),this._bufpos=A,A};lE.prototype._sbmh_lookup_char=function(e,A){return A<0?this._lookbehind[this._lookbehind_size+A]:e[A]};lE.prototype._sbmh_memcmp=function(e,A,t){for(var E=0;E<t;++E)if(this._sbmh_lookup_char(e,A+E)!==this._needle[E])return!1;return!0};Kh.exports=lE});var jh=N((pH,zh)=>{"use strict";var zd=require("node:util").inherits,Zh=require("node:stream").Readable;function JI(e){Zh.call(this,e)}zd(JI,Zh);JI.prototype._read=function(e){};zh.exports=JI});var Ki=N((MH,$h)=>{"use strict";$h.exports=function(A,t,E){if(!A||A[t]===void 0||A[t]===null)return E;if(typeof A[t]!="number"||isNaN(A[t]))throw new TypeError("Limit "+t+" is not a valid number");return A[t]}});var EB=N((yH,tB)=>{"use strict";var eB=require("node:events").EventEmitter,jd=require("node:util").inherits,AB=Ki(),$d=WI(),A_=Buffer.from(`\r
 \r
 `),e_=/\r\n/g,t_=/^([^:]+):[ \t]?([\x00-\xFF]+)?$/;function As(e){eB.call(this),e=e||{};let A=this;this.nread=0,this.maxed=!1,this.npairs=0,this.maxHeaderPairs=AB(e,"maxHeaderPairs",2e3),this.maxHeaderSize=AB(e,"maxHeaderSize",80*1024),this.buffer="",this.header={},this.finished=!1,this.ss=new $d(A_),this.ss.on("info",function(t,E,s,r){E&&!A.maxed&&(A.nread+r-s>=A.maxHeaderSize?(r=A.maxHeaderSize-A.nread+s,A.nread=A.maxHeaderSize,A.maxed=!0):A.nread+=r-s,A.buffer+=E.toString("binary",s,r)),t&&A._finish()})}jd(As,eB);As.prototype.push=function(e){let A=this.ss.push(e);if(this.finished)return A};As.prototype.reset=function(){this.finished=!1,this.buffer="",this.header={},this.ss.reset()};As.prototype._finish=function(){this.buffer&&this._parseHeader(),this.ss.matches=this.ss.maxMatches;let e=this.header;this.header={},this.buffer="",this.finished=!0,this.nread=this.npairs=0,this.maxed=!1,this.emit("header",e)};As.prototype._parseHeader=function(){if(this.npairs===this.maxHeaderPairs)return;let e=this.buffer.split(e_),A=e.length,t,E;for(var s=0;s<A;++s){if(e[s].length===0)continue;if((e[s][0]==="	"||e[s][0]===" ")&&E){this.header[E][this.header[E].length-1]+=e[s];continue}let r=e[s].indexOf(":");if(r===-1||r===0)return;if(t=t_.exec(e[s]),E=t[1].toLowerCase(),this.header[E]=this.header[E]||[],this.header[E].push(t[2]||""),++this.npairs===this.maxHeaderPairs)break}};tB.exports=As});var XI=N((PH,rB)=>{"use strict";var vI=require("node:stream").Writable,E_=require("node:util").inherits,s_=WI(),sB=jh(),r_=EB(),i_=45,n_=Buffer.from("-"),o_=Buffer.from(`\r
@@ -58,7 +58,7 @@ ${I.toString(16)}\r
 `,"latin1"):t===null&&A.write(`\r
 0\r
 \r
-`,"latin1"),t!==null&&s!==t){if(E[Jr])throw new Mt;process.emitWarning(new Mt)}A[aA].timeout&&A[aA].timeoutType===gs&&A[aA].timeout.refresh&&A[aA].timeout.refresh(),ue(E)}}destroy(A){let{socket:t,client:E}=this;t[yt]=!1,A&&(D(E[IA]<=1,"pipeline should only contain this request"),_.destroy(t,A))}};function Ae(e,A,t){try{A.onError(t),D(A.aborted)}catch(E){e.emit("error",E)}}jc.exports=pC});var Ag=N((Ik,$c)=>{"use strict";var fn=class{constructor(){this.bottom=0,this.top=0,this.list=new Array(2048),this.next=null}isEmpty(){return this.top===this.bottom}isFull(){return(this.top+1&2047)===this.bottom}push(A){this.list[this.top]=A,this.top=this.top+1&2047}shift(){let A=this.list[this.bottom];return A===void 0?null:(this.list[this.bottom]=void 0,this.bottom=this.bottom+1&2047,A)}};$c.exports=class{constructor(){this.head=this.tail=new fn}isEmpty(){return this.head.isEmpty()}push(A){this.head.isFull()&&(this.head=this.head.next=new fn),this.head.push(A)}shift(){let A=this.tail,t=A.shift();return A.isEmpty()&&A.next!==null&&(this.tail=A.next),t}}});var tg=N((Ck,eg)=>{var{kFree:vM,kConnected:XM,kPending:qM,kQueued:KM,kRunning:ZM,kSize:zM}=$(),DE=Symbol("pool"),mC=class{constructor(A){this[DE]=A}get connected(){return this[DE][XM]}get free(){return this[DE][vM]}get pending(){return this[DE][qM]}get queued(){return this[DE][KM]}get running(){return this[DE][ZM]}get size(){return this[DE][zM]}};eg.exports=mC});var VC=N((ak,Rg)=>{"use strict";var jM=br(),$M=Ag(),{kConnected:GC,kSize:Eg,kRunning:sg,kPending:rg,kQueued:qr,kBusy:Ay,kFree:ey,kUrl:ty,kClose:Ey,kDestroy:sy,kDispatch:ry}=$(),iy=tg(),Ie=Symbol("clients"),ee=Symbol("needDrain"),Kr=Symbol("queue"),bC=Symbol("closed resolve"),YC=Symbol("onDrain"),ig=Symbol("onConnect"),ng=Symbol("onDisconnect"),og=Symbol("onConnectionError"),HC=Symbol("get dispatcher"),Cg=Symbol("add client"),ag=Symbol("remove client"),Ig=Symbol("stats"),kC=class extends jM{constructor(){super(),this[Kr]=new $M,this[Ie]=[],this[qr]=0;let A=this;this[YC]=function(E,s){let r=A[Kr],i=!1;for(;!i;){let o=r.shift();if(!o)break;A[qr]--,i=!this.dispatch(o.opts,o.handler)}this[ee]=i,!this[ee]&&A[ee]&&(A[ee]=!1,A.emit("drain",E,[A,...s])),A[bC]&&r.isEmpty()&&Promise.all(A[Ie].map(o=>o.close())).then(A[bC])},this[ig]=(t,E)=>{A.emit("connect",t,[A,...E])},this[ng]=(t,E,s)=>{A.emit("disconnect",t,[A,...E],s)},this[og]=(t,E,s)=>{A.emit("connectionError",t,[A,...E],s)},this[Ig]=new iy(this)}get[Ay](){return this[ee]}get[GC](){return this[Ie].filter(A=>A[GC]).length}get[ey](){return this[Ie].filter(A=>A[GC]&&!A[ee]).length}get[rg](){let A=this[qr];for(let{[rg]:t}of this[Ie])A+=t;return A}get[sg](){let A=0;for(let{[sg]:t}of this[Ie])A+=t;return A}get[Eg](){let A=this[qr];for(let{[Eg]:t}of this[Ie])A+=t;return A}get stats(){return this[Ig]}async[Ey](){return this[Kr].isEmpty()?Promise.all(this[Ie].map(A=>A.close())):new Promise(A=>{this[bC]=A})}async[sy](A){for(;;){let t=this[Kr].shift();if(!t)break;t.handler.onError(A)}return Promise.all(this[Ie].map(t=>t.destroy(A)))}[ry](A,t){let E=this[HC]();return E?E.dispatch(A,t)||(E[ee]=!0,this[ee]=!this[HC]()):(this[ee]=!0,this[Kr].push({opts:A,handler:t}),this[qr]++),!this[ee]}[Cg](A){return A.on("drain",this[YC]).on("connect",this[ig]).on("disconnect",this[ng]).on("connectionError",this[og]),this[Ie].push(A),this[ee]&&process.nextTick(()=>{this[ee]&&this[YC](A[ty],[this,A])}),this}[ag](A){A.close(()=>{let t=this[Ie].indexOf(A);t!==-1&&this[Ie].splice(t,1)}),this[ee]=this[Ie].some(t=>!t[ee]&&t.closed!==!0&&t.destroyed!==!0)}};Rg.exports={PoolBase:kC,kClients:Ie,kNeedDrain:ee,kAddClient:Cg,kRemoveClient:ag,kGetDispatcher:HC}});var Ss=N((Rk,cg)=>{"use strict";var{PoolBase:ny,kClients:Tg,kNeedDrain:oy,kAddClient:Iy,kGetDispatcher:Cy}=VC(),ay=Xr(),{InvalidArgumentError:xC}=z(),WC=V(),{kUrl:hg,kInterceptors:Ry}=$(),Ty=Yr(),JC=Symbol("options"),vC=Symbol("connections"),Bg=Symbol("factory");function hy(e,A){return new ay(e,A)}var XC=class extends ny{constructor(A,{connections:t,factory:E=hy,connect:s,connectTimeout:r,tls:i,maxCachedSessions:o,socketPath:n,autoSelectFamily:I,autoSelectFamilyAttemptTimeout:C,allowH2:a,...R}={}){if(super(),t!=null&&(!Number.isFinite(t)||t<0))throw new xC("invalid connections");if(typeof E!="function")throw new xC("factory must be a function.");if(s!=null&&typeof s!="function"&&typeof s!="object")throw new xC("connect must be a function or an object");typeof s!="function"&&(s=Ty({...i,maxCachedSessions:o,allowH2:a,socketPath:n,timeout:r,...WC.nodeHasAutoSelectFamily&&I?{autoSelectFamily:I,autoSelectFamilyAttemptTimeout:C}:void 0,...s})),this[Ry]=R.interceptors&&R.interceptors.Pool&&Array.isArray(R.interceptors.Pool)?R.interceptors.Pool:[],this[vC]=t||null,this[hg]=WC.parseOrigin(A),this[JC]={...WC.deepClone(R),connect:s,allowH2:a},this[JC].interceptors=R.interceptors?{...R.interceptors}:void 0,this[Bg]=E}[Cy](){let A=this[Tg].find(t=>!t[oy]);return A||((!this[vC]||this[Tg].length<this[vC])&&(A=this[Bg](this[hg],this[JC]),this[Iy](A)),A)}};cg.exports=XC});var ug=N((Tk,Qg)=>{"use strict";var{BalancedPoolMissingUpstreamError:By,InvalidArgumentError:cy}=z(),{PoolBase:gy,kClients:te,kNeedDrain:Zr,kAddClient:Sy,kRemoveClient:ly,kGetDispatcher:Ny}=VC(),Qy=Ss(),{kUrl:qC,kInterceptors:uy}=$(),{parseOrigin:gg}=V(),Sg=Symbol("factory"),Dn=Symbol("options"),lg=Symbol("kGreatestCommonDivisor"),dE=Symbol("kCurrentWeight"),_E=Symbol("kIndex"),Fe=Symbol("kWeight"),dn=Symbol("kMaxWeightPerServer"),_n=Symbol("kErrorPenalty");function Ng(e,A){return A===0?e:Ng(A,e%A)}function Oy(e,A){return new Qy(e,A)}var KC=class extends gy{constructor(A=[],{factory:t=Oy,...E}={}){if(super(),this[Dn]=E,this[_E]=-1,this[dE]=0,this[dn]=this[Dn].maxWeightPerServer||100,this[_n]=this[Dn].errorPenalty||15,Array.isArray(A)||(A=[A]),typeof t!="function")throw new cy("factory must be a function.");this[uy]=E.interceptors&&E.interceptors.BalancedPool&&Array.isArray(E.interceptors.BalancedPool)?E.interceptors.BalancedPool:[],this[Sg]=t;for(let s of A)this.addUpstream(s);this._updateBalancedPoolStats()}addUpstream(A){let t=gg(A).origin;if(this[te].find(s=>s[qC].origin===t&&s.closed!==!0&&s.destroyed!==!0))return this;let E=this[Sg](t,Object.assign({},this[Dn]));this[Sy](E),E.on("connect",()=>{E[Fe]=Math.min(this[dn],E[Fe]+this[_n])}),E.on("connectionError",()=>{E[Fe]=Math.max(1,E[Fe]-this[_n]),this._updateBalancedPoolStats()}),E.on("disconnect",(...s)=>{let r=s[2];r&&r.code==="UND_ERR_SOCKET"&&(E[Fe]=Math.max(1,E[Fe]-this[_n]),this._updateBalancedPoolStats())});for(let s of this[te])s[Fe]=this[dn];return this._updateBalancedPoolStats(),this}_updateBalancedPoolStats(){this[lg]=this[te].map(A=>A[Fe]).reduce(Ng,0)}removeUpstream(A){let t=gg(A).origin,E=this[te].find(s=>s[qC].origin===t&&s.closed!==!0&&s.destroyed!==!0);return E&&this[ly](E),this}get upstreams(){return this[te].filter(A=>A.closed!==!0&&A.destroyed!==!0).map(A=>A[qC].origin)}[Ny](){if(this[te].length===0)throw new By;if(!this[te].find(r=>!r[Zr]&&r.closed!==!0&&r.destroyed!==!0)||this[te].map(r=>r[Zr]).reduce((r,i)=>r&&i,!0))return;let E=0,s=this[te].findIndex(r=>!r[Zr]);for(;E++<this[te].length;){this[_E]=(this[_E]+1)%this[te].length;let r=this[te][this[_E]];if(r[Fe]>this[te][s][Fe]&&!r[Zr]&&(s=this[_E]),this[_E]===0&&(this[dE]=this[dE]-this[lg],this[dE]<=0&&(this[dE]=this[dn])),r[Fe]>=this[dE]&&!r[Zr])return r}return this[dE]=this[te][s][Fe],this[_E]=s,this[te][s]}};Qg.exports=KC});var ZC=N((hk,fg)=>{"use strict";var{kConnected:Og,kSize:Lg}=$(),Un=class{constructor(A){this.value=A}deref(){return this.value[Og]===0&&this.value[Lg]===0?void 0:this.value}},pn=class{constructor(A){this.finalizer=A}register(A,t){A.on&&A.on("disconnect",()=>{A[Og]===0&&A[Lg]===0&&this.finalizer(t)})}};fg.exports=function(){return process.env.NODE_V8_COVERAGE?{WeakRef:Un,FinalizationRegistry:pn}:{WeakRef:global.WeakRef||Un,FinalizationRegistry:global.FinalizationRegistry||pn}}});var zr=N((Bk,Pg)=>{"use strict";var{InvalidArgumentError:Mn}=z(),{kClients:AE,kRunning:Dg,kClose:Ly,kDestroy:fy,kDispatch:Dy,kInterceptors:dy}=$(),_y=br(),Uy=Ss(),py=Xr(),My=V(),yy=Bn(),{WeakRef:Py,FinalizationRegistry:Fy}=ZC()(),dg=Symbol("onConnect"),_g=Symbol("onDisconnect"),Ug=Symbol("onConnectionError"),wy=Symbol("maxRedirections"),pg=Symbol("onDrain"),Mg=Symbol("factory"),yg=Symbol("finalizer"),zC=Symbol("options");function my(e,A){return A&&A.connections===1?new py(e,A):new Uy(e,A)}var jC=class extends _y{constructor({factory:A=my,maxRedirections:t=0,connect:E,...s}={}){if(super(),typeof A!="function")throw new Mn("factory must be a function.");if(E!=null&&typeof E!="function"&&typeof E!="object")throw new Mn("connect must be a function or an object");if(!Number.isInteger(t)||t<0)throw new Mn("maxRedirections must be a positive number");E&&typeof E!="function"&&(E={...E}),this[dy]=s.interceptors&&s.interceptors.Agent&&Array.isArray(s.interceptors.Agent)?s.interceptors.Agent:[yy({maxRedirections:t})],this[zC]={...My.deepClone(s),connect:E},this[zC].interceptors=s.interceptors?{...s.interceptors}:void 0,this[wy]=t,this[Mg]=A,this[AE]=new Map,this[yg]=new Fy(i=>{let o=this[AE].get(i);o!==void 0&&o.deref()===void 0&&this[AE].delete(i)});let r=this;this[pg]=(i,o)=>{r.emit("drain",i,[r,...o])},this[dg]=(i,o)=>{r.emit("connect",i,[r,...o])},this[_g]=(i,o,n)=>{r.emit("disconnect",i,[r,...o],n)},this[Ug]=(i,o,n)=>{r.emit("connectionError",i,[r,...o],n)}}get[Dg](){let A=0;for(let t of this[AE].values()){let E=t.deref();E&&(A+=E[Dg])}return A}[Dy](A,t){let E;if(A.origin&&(typeof A.origin=="string"||A.origin instanceof URL))E=String(A.origin);else throw new Mn("opts.origin must be a non-empty string or URL.");let s=this[AE].get(E),r=s?s.deref():null;return r||(r=this[Mg](A.origin,this[zC]).on("drain",this[pg]).on("connect",this[dg]).on("disconnect",this[_g]).on("connectionError",this[Ug]),this[AE].set(E,new Py(r)),this[yg].register(r,E)),r.dispatch(A,t)}async[Ly](){let A=[];for(let t of this[AE].values()){let E=t.deref();E&&A.push(E.close())}await Promise.all(A)}async[fy](A){let t=[];for(let E of this[AE].values()){let s=E.deref();s&&t.push(s.destroy(A))}await Promise.all(t)}};Pg.exports=jC});var Vg=N((gk,kg)=>{"use strict";var Gg=require("assert"),{Readable:Gy}=require("stream"),{RequestAbortedError:bg,NotSupportedError:by,InvalidArgumentError:Yy}=z(),Fn=V(),{ReadableStreamFrom:Hy,toUSVString:ky}=V(),$C,Oe=Symbol("kConsume"),yn=Symbol("kReading"),eE=Symbol("kBody"),Fg=Symbol("abort"),Yg=Symbol("kContentType"),wg=()=>{};kg.exports=class extends Gy{constructor({resume:A,abort:t,contentType:E="",highWaterMark:s=64*1024}){super({autoDestroy:!0,read:A,highWaterMark:s}),this._readableState.dataEmitted=!1,this[Fg]=t,this[Oe]=null,this[eE]=null,this[Yg]=E,this[yn]=!1}destroy(A){return this.destroyed?this:(!A&&!this._readableState.endEmitted&&(A=new bg),A&&this[Fg](),super.destroy(A))}emit(A,...t){return A==="data"?this._readableState.dataEmitted=!0:A==="error"&&(this._readableState.errorEmitted=!0),super.emit(A,...t)}on(A,...t){return(A==="data"||A==="readable")&&(this[yn]=!0),super.on(A,...t)}addListener(A,...t){return this.on(A,...t)}off(A,...t){let E=super.off(A,...t);return(A==="data"||A==="readable")&&(this[yn]=this.listenerCount("data")>0||this.listenerCount("readable")>0),E}removeListener(A,...t){return this.off(A,...t)}push(A){return this[Oe]&&A!==null&&this.readableLength===0?(Hg(this[Oe],A),this[yn]?super.push(A):!0):super.push(A)}async text(){return Pn(this,"text")}async json(){return Pn(this,"json")}async blob(){return Pn(this,"blob")}async arrayBuffer(){return Pn(this,"arrayBuffer")}async formData(){throw new by}get bodyUsed(){return Fn.isDisturbed(this)}get body(){return this[eE]||(this[eE]=Hy(this),this[Oe]&&(this[eE].getReader(),Gg(this[eE].locked))),this[eE]}dump(A){let t=A&&Number.isFinite(A.limit)?A.limit:262144,E=A&&A.signal;if(E)try{if(typeof E!="object"||!("aborted"in E))throw new Yy("signal must be an AbortSignal");Fn.throwIfAborted(E)}catch(s){return Promise.reject(s)}return this.closed?Promise.resolve(null):new Promise((s,r)=>{let i=E?Fn.addAbortListener(E,()=>{this.destroy()}):wg;this.on("close",function(){i(),E&&E.aborted?r(E.reason||Object.assign(new Error("The operation was aborted"),{name:"AbortError"})):s(null)}).on("error",wg).on("data",function(o){t-=o.length,t<=0&&this.destroy()}).resume()})}};function Vy(e){return e[eE]&&e[eE].locked===!0||e[Oe]}function xy(e){return Fn.isDisturbed(e)||Vy(e)}async function Pn(e,A){if(xy(e))throw new TypeError("unusable");return Gg(!e[Oe]),new Promise((t,E)=>{e[Oe]={type:A,stream:e,resolve:t,reject:E,length:0,body:[]},e.on("error",function(s){Aa(this[Oe],s)}).on("close",function(){this[Oe].body!==null&&Aa(this[Oe],new bg)}),process.nextTick(Wy,e[Oe])})}function Wy(e){if(e.body===null)return;let{_readableState:A}=e.stream;for(let t of A.buffer)Hg(e,t);for(A.endEmitted?mg(this[Oe]):e.stream.on("end",function(){mg(this[Oe])}),e.stream.resume();e.stream.read()!=null;);}function mg(e){let{type:A,body:t,resolve:E,stream:s,length:r}=e;try{if(A==="text")E(ky(Buffer.concat(t)));else if(A==="json")E(JSON.parse(Buffer.concat(t)));else if(A==="arrayBuffer"){let i=new Uint8Array(r),o=0;for(let n of t)i.set(n,o),o+=n.byteLength;E(i.buffer)}else A==="blob"&&($C||($C=require("buffer").Blob),E(new $C(t,{type:s[Yg]})));Aa(e)}catch(i){s.destroy(i)}}function Hg(e,A){e.length+=A.length,e.body.push(A)}function Aa(e,A){e.body!==null&&(A?e.reject(A):e.resolve(),e.type=null,e.stream=null,e.resolve=null,e.reject=null,e.length=0,e.body=null)}});var ea=N((Sk,Wg)=>{var Jy=require("assert"),{ResponseStatusCodeError:wn}=z(),{toUSVString:xg}=V();async function vy({callback:e,body:A,contentType:t,statusCode:E,statusMessage:s,headers:r}){Jy(A);let i=[],o=0;for await(let n of A)if(i.push(n),o+=n.length,o>128*1024){i=null;break}if(E===204||!t||!i){process.nextTick(e,new wn(`Response status code ${E}${s?`: ${s}`:""}`,E,r));return}try{if(t.startsWith("application/json")){let n=JSON.parse(xg(Buffer.concat(i)));process.nextTick(e,new wn(`Response status code ${E}${s?`: ${s}`:""}`,E,r,n));return}if(t.startsWith("text/")){let n=xg(Buffer.concat(i));process.nextTick(e,new wn(`Response status code ${E}${s?`: ${s}`:""}`,E,r,n));return}}catch{}process.nextTick(e,new wn(`Response status code ${E}${s?`: ${s}`:""}`,E,r))}Wg.exports={getResolveErrorBodyCallback:vy}});var Ns=N((lk,vg)=>{var{addAbortListener:Xy}=V(),{RequestAbortedError:qy}=z(),ls=Symbol("kListener"),tE=Symbol("kSignal");function Jg(e){e.abort?e.abort():e.onError(new qy)}function Ky(e,A){if(e[tE]=null,e[ls]=null,!!A){if(A.aborted){Jg(e);return}e[tE]=A,e[ls]=()=>{Jg(e)},Xy(e[tE],e[ls])}}function Zy(e){e[tE]&&("removeEventListener"in e[tE]?e[tE].removeEventListener("abort",e[ls]):e[tE].removeListener("abort",e[ls]),e[tE]=null,e[ls]=null)}vg.exports={addSignal:Ky,removeSignal:Zy}});var Kg=N((Nk,ta)=>{"use strict";var zy=Vg(),{InvalidArgumentError:Qs,RequestAbortedError:jy}=z(),Ct=V(),{getResolveErrorBodyCallback:$y}=ea(),{AsyncResource:AP}=require("async_hooks"),{addSignal:eP,removeSignal:Xg}=Ns(),mn=class extends AP{constructor(A,t){if(!A||typeof A!="object")throw new Qs("invalid opts");let{signal:E,method:s,opaque:r,body:i,onInfo:o,responseHeaders:n,throwOnError:I,highWaterMark:C}=A;try{if(typeof t!="function")throw new Qs("invalid callback");if(C&&(typeof C!="number"||C<0))throw new Qs("invalid highWaterMark");if(E&&typeof E.on!="function"&&typeof E.addEventListener!="function")throw new Qs("signal must be an EventEmitter or EventTarget");if(s==="CONNECT")throw new Qs("invalid method");if(o&&typeof o!="function")throw new Qs("invalid onInfo callback");super("UNDICI_REQUEST")}catch(a){throw Ct.isStream(i)&&Ct.destroy(i.on("error",Ct.nop),a),a}this.responseHeaders=n||null,this.opaque=r||null,this.callback=t,this.res=null,this.abort=null,this.body=i,this.trailers={},this.context=null,this.onInfo=o||null,this.throwOnError=I,this.highWaterMark=C,Ct.isStream(i)&&i.on("error",a=>{this.onError(a)}),eP(this,E)}onConnect(A,t){if(!this.callback)throw new jy;this.abort=A,this.context=t}onHeaders(A,t,E,s){let{callback:r,opaque:i,abort:o,context:n,responseHeaders:I,highWaterMark:C}=this,a=I==="raw"?Ct.parseRawHeaders(t):Ct.parseHeaders(t);if(A<200){this.onInfo&&this.onInfo({statusCode:A,headers:a});return}let T=(I==="raw"?Ct.parseHeaders(t):a)["content-type"],h=new zy({resume:E,abort:o,contentType:T,highWaterMark:C});this.callback=null,this.res=h,r!==null&&(this.throwOnError&&A>=400?this.runInAsyncScope($y,null,{callback:r,body:h,contentType:T,statusCode:A,statusMessage:s,headers:a}):this.runInAsyncScope(r,null,null,{statusCode:A,headers:a,trailers:this.trailers,opaque:i,body:h,context:n}))}onData(A){let{res:t}=this;return t.push(A)}onComplete(A){let{res:t}=this;Xg(this),Ct.parseHeaders(A,this.trailers),t.push(null)}onError(A){let{res:t,callback:E,body:s,opaque:r}=this;Xg(this),E&&(this.callback=null,queueMicrotask(()=>{this.runInAsyncScope(E,null,A,{opaque:r})})),t&&(this.res=null,queueMicrotask(()=>{Ct.destroy(t,A)})),s&&(this.body=null,Ct.destroy(s,A))}};function qg(e,A){if(A===void 0)return new Promise((t,E)=>{qg.call(this,e,(s,r)=>s?E(s):t(r))});try{this.dispatch(e,new mn(e,A))}catch(t){if(typeof A!="function")throw t;let E=e&&e.opaque;queueMicrotask(()=>A(t,{opaque:E}))}}ta.exports=qg;ta.exports.RequestHandler=mn});var $g=N((Qk,jg)=>{"use strict";var{finished:tP,PassThrough:EP}=require("stream"),{InvalidArgumentError:us,InvalidReturnValueError:sP,RequestAbortedError:rP}=z(),Ze=V(),{getResolveErrorBodyCallback:iP}=ea(),{AsyncResource:nP}=require("async_hooks"),{addSignal:oP,removeSignal:Zg}=Ns(),Ea=class extends nP{constructor(A,t,E){if(!A||typeof A!="object")throw new us("invalid opts");let{signal:s,method:r,opaque:i,body:o,onInfo:n,responseHeaders:I,throwOnError:C}=A;try{if(typeof E!="function")throw new us("invalid callback");if(typeof t!="function")throw new us("invalid factory");if(s&&typeof s.on!="function"&&typeof s.addEventListener!="function")throw new us("signal must be an EventEmitter or EventTarget");if(r==="CONNECT")throw new us("invalid method");if(n&&typeof n!="function")throw new us("invalid onInfo callback");super("UNDICI_STREAM")}catch(a){throw Ze.isStream(o)&&Ze.destroy(o.on("error",Ze.nop),a),a}this.responseHeaders=I||null,this.opaque=i||null,this.factory=t,this.callback=E,this.res=null,this.abort=null,this.context=null,this.trailers=null,this.body=o,this.onInfo=n||null,this.throwOnError=C||!1,Ze.isStream(o)&&o.on("error",a=>{this.onError(a)}),oP(this,s)}onConnect(A,t){if(!this.callback)throw new rP;this.abort=A,this.context=t}onHeaders(A,t,E,s){let{factory:r,opaque:i,context:o,callback:n,responseHeaders:I}=this,C=I==="raw"?Ze.parseRawHeaders(t):Ze.parseHeaders(t);if(A<200){this.onInfo&&this.onInfo({statusCode:A,headers:C});return}this.factory=null;let a;if(this.throwOnError&&A>=400){let h=(I==="raw"?Ze.parseHeaders(t):C)["content-type"];a=new EP,this.callback=null,this.runInAsyncScope(iP,null,{callback:n,body:a,contentType:h,statusCode:A,statusMessage:s,headers:C})}else{if(r===null)return;if(a=this.runInAsyncScope(r,null,{statusCode:A,headers:C,opaque:i,context:o}),!a||typeof a.write!="function"||typeof a.end!="function"||typeof a.on!="function")throw new sP("expected Writable");tP(a,{readable:!1},T=>{let{callback:h,res:B,opaque:c,trailers:g,abort:l}=this;this.res=null,(T||!B.readable)&&Ze.destroy(B,T),this.callback=null,this.runInAsyncScope(h,null,T||null,{opaque:c,trailers:g}),T&&l()})}return a.on("drain",E),this.res=a,(a.writableNeedDrain!==void 0?a.writableNeedDrain:a._writableState&&a._writableState.needDrain)!==!0}onData(A){let{res:t}=this;return t?t.write(A):!0}onComplete(A){let{res:t}=this;Zg(this),t&&(this.trailers=Ze.parseHeaders(A),t.end())}onError(A){let{res:t,callback:E,opaque:s,body:r}=this;Zg(this),this.factory=null,t?(this.res=null,Ze.destroy(t,A)):E&&(this.callback=null,queueMicrotask(()=>{this.runInAsyncScope(E,null,A,{opaque:s})})),r&&(this.body=null,Ze.destroy(r,A))}};function zg(e,A,t){if(t===void 0)return new Promise((E,s)=>{zg.call(this,e,A,(r,i)=>r?s(r):E(i))});try{this.dispatch(e,new Ea(e,A,t))}catch(E){if(typeof t!="function")throw E;let s=e&&e.opaque;queueMicrotask(()=>t(E,{opaque:s}))}}jg.exports=zg});var tS=N((uk,eS)=>{"use strict";var{Readable:AS,Duplex:IP,PassThrough:CP}=require("stream"),{InvalidArgumentError:jr,InvalidReturnValueError:aP,RequestAbortedError:Gn}=z(),we=V(),{AsyncResource:RP}=require("async_hooks"),{addSignal:TP,removeSignal:hP}=Ns(),BP=require("assert"),Os=Symbol("resume"),sa=class extends AS{constructor(){super({autoDestroy:!0}),this[Os]=null}_read(){let{[Os]:A}=this;A&&(this[Os]=null,A())}_destroy(A,t){this._read(),t(A)}},ra=class extends AS{constructor(A){super({autoDestroy:!0}),this[Os]=A}_read(){this[Os]()}_destroy(A,t){!A&&!this._readableState.endEmitted&&(A=new Gn),t(A)}},ia=class extends RP{constructor(A,t){if(!A||typeof A!="object")throw new jr("invalid opts");if(typeof t!="function")throw new jr("invalid handler");let{signal:E,method:s,opaque:r,onInfo:i,responseHeaders:o}=A;if(E&&typeof E.on!="function"&&typeof E.addEventListener!="function")throw new jr("signal must be an EventEmitter or EventTarget");if(s==="CONNECT")throw new jr("invalid method");if(i&&typeof i!="function")throw new jr("invalid onInfo callback");super("UNDICI_PIPELINE"),this.opaque=r||null,this.responseHeaders=o||null,this.handler=t,this.abort=null,this.context=null,this.onInfo=i||null,this.req=new sa().on("error",we.nop),this.ret=new IP({readableObjectMode:A.objectMode,autoDestroy:!0,read:()=>{let{body:n}=this;n&&n.resume&&n.resume()},write:(n,I,C)=>{let{req:a}=this;a.push(n,I)||a._readableState.destroyed?C():a[Os]=C},destroy:(n,I)=>{let{body:C,req:a,res:R,ret:T,abort:h}=this;!n&&!T._readableState.endEmitted&&(n=new Gn),h&&n&&h(),we.destroy(C,n),we.destroy(a,n),we.destroy(R,n),hP(this),I(n)}}).on("prefinish",()=>{let{req:n}=this;n.push(null)}),this.res=null,TP(this,E)}onConnect(A,t){let{ret:E,res:s}=this;if(BP(!s,"pipeline cannot be retried"),E.destroyed)throw new Gn;this.abort=A,this.context=t}onHeaders(A,t,E){let{opaque:s,handler:r,context:i}=this;if(A<200){if(this.onInfo){let n=this.responseHeaders==="raw"?we.parseRawHeaders(t):we.parseHeaders(t);this.onInfo({statusCode:A,headers:n})}return}this.res=new ra(E);let o;try{this.handler=null;let n=this.responseHeaders==="raw"?we.parseRawHeaders(t):we.parseHeaders(t);o=this.runInAsyncScope(r,null,{statusCode:A,headers:n,opaque:s,body:this.res,context:i})}catch(n){throw this.res.on("error",we.nop),n}if(!o||typeof o.on!="function")throw new aP("expected Readable");o.on("data",n=>{let{ret:I,body:C}=this;!I.push(n)&&C.pause&&C.pause()}).on("error",n=>{let{ret:I}=this;we.destroy(I,n)}).on("end",()=>{let{ret:n}=this;n.push(null)}).on("close",()=>{let{ret:n}=this;n._readableState.ended||we.destroy(n,new Gn)}),this.body=o}onData(A){let{res:t}=this;return t.push(A)}onComplete(A){let{res:t}=this;t.push(null)}onError(A){let{ret:t}=this;this.handler=null,we.destroy(t,A)}};function cP(e,A){try{let t=new ia(e,A);return this.dispatch({...e,body:t.req},t),t.ret}catch(t){return new CP().destroy(t)}}eS.exports=cP});var nS=N((Ok,iS)=>{"use strict";var{InvalidArgumentError:na,RequestAbortedError:gP,SocketError:SP}=z(),{AsyncResource:lP}=require("async_hooks"),ES=V(),{addSignal:NP,removeSignal:sS}=Ns(),QP=require("assert"),oa=class extends lP{constructor(A,t){if(!A||typeof A!="object")throw new na("invalid opts");if(typeof t!="function")throw new na("invalid callback");let{signal:E,opaque:s,responseHeaders:r}=A;if(E&&typeof E.on!="function"&&typeof E.addEventListener!="function")throw new na("signal must be an EventEmitter or EventTarget");super("UNDICI_UPGRADE"),this.responseHeaders=r||null,this.opaque=s||null,this.callback=t,this.abort=null,this.context=null,NP(this,E)}onConnect(A,t){if(!this.callback)throw new gP;this.abort=A,this.context=null}onHeaders(){throw new SP("bad upgrade",null)}onUpgrade(A,t,E){let{callback:s,opaque:r,context:i}=this;QP.strictEqual(A,101),sS(this),this.callback=null;let o=this.responseHeaders==="raw"?ES.parseRawHeaders(t):ES.parseHeaders(t);this.runInAsyncScope(s,null,null,{headers:o,socket:E,opaque:r,context:i})}onError(A){let{callback:t,opaque:E}=this;sS(this),t&&(this.callback=null,queueMicrotask(()=>{this.runInAsyncScope(t,null,A,{opaque:E})}))}};function rS(e,A){if(A===void 0)return new Promise((t,E)=>{rS.call(this,e,(s,r)=>s?E(s):t(r))});try{let t=new oa(e,A);this.dispatch({...e,method:e.method||"GET",upgrade:e.protocol||"Websocket"},t)}catch(t){if(typeof A!="function")throw t;let E=e&&e.opaque;queueMicrotask(()=>A(t,{opaque:E}))}}iS.exports=rS});var RS=N((Lk,aS)=>{"use strict";var{AsyncResource:uP}=require("async_hooks"),{InvalidArgumentError:Ia,RequestAbortedError:OP,SocketError:LP}=z(),oS=V(),{addSignal:fP,removeSignal:IS}=Ns(),Ca=class extends uP{constructor(A,t){if(!A||typeof A!="object")throw new Ia("invalid opts");if(typeof t!="function")throw new Ia("invalid callback");let{signal:E,opaque:s,responseHeaders:r}=A;if(E&&typeof E.on!="function"&&typeof E.addEventListener!="function")throw new Ia("signal must be an EventEmitter or EventTarget");super("UNDICI_CONNECT"),this.opaque=s||null,this.responseHeaders=r||null,this.callback=t,this.abort=null,fP(this,E)}onConnect(A,t){if(!this.callback)throw new OP;this.abort=A,this.context=t}onHeaders(){throw new LP("bad connect",null)}onUpgrade(A,t,E){let{callback:s,opaque:r,context:i}=this;IS(this),this.callback=null;let o=t;o!=null&&(o=this.responseHeaders==="raw"?oS.parseRawHeaders(t):oS.parseHeaders(t)),this.runInAsyncScope(s,null,null,{statusCode:A,headers:o,socket:E,opaque:r,context:i})}onError(A){let{callback:t,opaque:E}=this;IS(this),t&&(this.callback=null,queueMicrotask(()=>{this.runInAsyncScope(t,null,A,{opaque:E})}))}};function CS(e,A){if(A===void 0)return new Promise((t,E)=>{CS.call(this,e,(s,r)=>s?E(s):t(r))});try{let t=new Ca(e,A);this.dispatch({...e,method:"CONNECT"},t)}catch(t){if(typeof A!="function")throw t;let E=e&&e.opaque;queueMicrotask(()=>A(t,{opaque:E}))}}aS.exports=CS});var TS=N((fk,Ls)=>{"use strict";Ls.exports.request=Kg();Ls.exports.stream=$g();Ls.exports.pipeline=tS();Ls.exports.upgrade=nS();Ls.exports.connect=RS()});var aa=N((Dk,hS)=>{"use strict";var{UndiciError:DP}=z(),$r=class extends DP{constructor(A){super(A),Error.captureStackTrace(this,$r),this.name="MockNotMatchedError",this.message=A||"The request does not match any registered mock dispatches",this.code="UND_MOCK_ERR_MOCK_NOT_MATCHED"}};hS.exports={MockNotMatchedError:$r}});var fs=N((dk,BS)=>{"use strict";BS.exports={kAgent:Symbol("agent"),kOptions:Symbol("options"),kFactory:Symbol("factory"),kDispatches:Symbol("dispatches"),kDispatchKey:Symbol("dispatch key"),kDefaultHeaders:Symbol("default headers"),kDefaultTrailers:Symbol("default trailers"),kContentLength:Symbol("content length"),kMockAgent:Symbol("mock agent"),kMockAgentSet:Symbol("mock agent set"),kMockAgentGet:Symbol("mock agent get"),kMockDispatch:Symbol("mock dispatch"),kClose:Symbol("close"),kOriginalClose:Symbol("original agent close"),kOrigin:Symbol("origin"),kIsMockActive:Symbol("is mock active"),kNetConnect:Symbol("net connect"),kGetNetConnect:Symbol("get net connect"),kConnected:Symbol("connected")}});var Ai=N((_k,dS)=>{"use strict";var{MockNotMatchedError:UE}=aa(),{kDispatches:bn,kMockAgent:dP,kOriginalDispatch:_P,kOrigin:UP,kGetNetConnect:pP}=fs(),{buildURL:MP,nop:yP}=V(),{STATUS_CODES:PP}=require("http"),{types:{isPromise:FP}}=require("util");function Pt(e,A){return typeof e=="string"?e===A:e instanceof RegExp?e.test(A):typeof e=="function"?e(A)===!0:!1}function gS(e){return Object.fromEntries(Object.entries(e).map(([A,t])=>[A.toLocaleLowerCase(),t]))}function SS(e,A){if(Array.isArray(e)){for(let t=0;t<e.length;t+=2)if(e[t].toLocaleLowerCase()===A.toLocaleLowerCase())return e[t+1];return}else return typeof e.get=="function"?e.get(A):gS(e)[A.toLocaleLowerCase()]}function lS(e){let A=e.slice(),t=[];for(let E=0;E<A.length;E+=2)t.push([A[E],A[E+1]]);return Object.fromEntries(t)}function NS(e,A){if(typeof e.headers=="function")return Array.isArray(A)&&(A=lS(A)),e.headers(A?gS(A):{});if(typeof e.headers>"u")return!0;if(typeof A!="object"||typeof e.headers!="object")return!1;for(let[t,E]of Object.entries(e.headers)){let s=SS(A,t);if(!Pt(E,s))return!1}return!0}function cS(e){if(typeof e!="string")return e;let A=e.split("?");if(A.length!==2)return e;let t=new URLSearchParams(A.pop());return t.sort(),[...A,t.toString()].join("?")}function wP(e,{path:A,method:t,body:E,headers:s}){let r=Pt(e.path,A),i=Pt(e.method,t),o=typeof e.body<"u"?Pt(e.body,E):!0,n=NS(e,s);return r&&i&&o&&n}function QS(e){return Buffer.isBuffer(e)?e:typeof e=="object"?JSON.stringify(e):e.toString()}function uS(e,A){let t=A.query?MP(A.path,A.query):A.path,E=typeof t=="string"?cS(t):t,s=e.filter(({consumed:r})=>!r).filter(({path:r})=>Pt(cS(r),E));if(s.length===0)throw new UE(`Mock dispatch not matched for path '${E}'`);if(s=s.filter(({method:r})=>Pt(r,A.method)),s.length===0)throw new UE(`Mock dispatch not matched for method '${A.method}'`);if(s=s.filter(({body:r})=>typeof r<"u"?Pt(r,A.body):!0),s.length===0)throw new UE(`Mock dispatch not matched for body '${A.body}'`);if(s=s.filter(r=>NS(r,A.headers)),s.length===0)throw new UE(`Mock dispatch not matched for headers '${typeof A.headers=="object"?JSON.stringify(A.headers):A.headers}'`);return s[0]}function mP(e,A,t){let E={timesInvoked:0,times:1,persist:!1,consumed:!1},s=typeof t=="function"?{callback:t}:{...t},r={...E,...A,pending:!0,data:{error:null,...s}};return e.push(r),r}function Ra(e,A){let t=e.findIndex(E=>E.consumed?wP(E,A):!1);t!==-1&&e.splice(t,1)}function OS(e){let{path:A,method:t,body:E,headers:s,query:r}=e;return{path:A,method:t,body:E,headers:s,query:r}}function Ta(e){return Object.entries(e).reduce((A,[t,E])=>[...A,Buffer.from(`${t}`),Array.isArray(E)?E.map(s=>Buffer.from(`${s}`)):Buffer.from(`${E}`)],[])}function LS(e){return PP[e]||"unknown"}async function GP(e){let A=[];for await(let t of e)A.push(t);return Buffer.concat(A).toString("utf8")}function fS(e,A){let t=OS(e),E=uS(this[bn],t);E.timesInvoked++,E.data.callback&&(E.data={...E.data,...E.data.callback(e)});let{data:{statusCode:s,data:r,headers:i,trailers:o,error:n},delay:I,persist:C}=E,{timesInvoked:a,times:R}=E;if(E.consumed=!C&&a>=R,E.pending=a<R,n!==null)return Ra(this[bn],t),A.onError(n),!0;typeof I=="number"&&I>0?setTimeout(()=>{T(this[bn])},I):T(this[bn]);function T(B,c=r){let g=Array.isArray(e.headers)?lS(e.headers):e.headers,l=typeof c=="function"?c({...e,headers:g}):c;if(FP(l)){l.then(m=>T(B,m));return}let Q=QS(l),L=Ta(i),w=Ta(o);A.abort=yP,A.onHeaders(s,L,h,LS(s)),A.onData(Buffer.from(Q)),A.onComplete(w),Ra(B,t)}function h(){}return!0}function bP(){let e=this[dP],A=this[UP],t=this[_P];return function(s,r){if(e.isMockActive)try{fS.call(this,s,r)}catch(i){if(i instanceof UE){let o=e[pP]();if(o===!1)throw new UE(`${i.message}: subsequent request to origin ${A} was not allowed (net.connect disabled)`);if(DS(o,A))t.call(this,s,r);else throw new UE(`${i.message}: subsequent request to origin ${A} was not allowed (net.connect is not enabled for this origin)`)}else throw i}else t.call(this,s,r)}}function DS(e,A){let t=new URL(A);return e===!0?!0:!!(Array.isArray(e)&&e.some(E=>Pt(E,t.host)))}function YP(e){if(e){let{agent:A,...t}=e;return t}}dS.exports={getResponseData:QS,getMockDispatch:uS,addMockDispatch:mP,deleteMockDispatch:Ra,buildKey:OS,generateKeyValues:Ta,matchValue:Pt,getResponse:GP,getStatusText:LS,mockDispatch:fS,buildMockDispatch:bP,checkNetConnect:DS,buildMockOptions:YP,getHeaderByName:SS}});var Na=N((Uk,la)=>{"use strict";var{getResponseData:HP,buildKey:kP,addMockDispatch:ha}=Ai(),{kDispatches:Yn,kDispatchKey:Hn,kDefaultHeaders:Ba,kDefaultTrailers:ca,kContentLength:ga,kMockDispatch:kn}=fs(),{InvalidArgumentError:ze}=z(),{buildURL:VP}=V(),Ds=class{constructor(A){this[kn]=A}delay(A){if(typeof A!="number"||!Number.isInteger(A)||A<=0)throw new ze("waitInMs must be a valid integer > 0");return this[kn].delay=A,this}persist(){return this[kn].persist=!0,this}times(A){if(typeof A!="number"||!Number.isInteger(A)||A<=0)throw new ze("repeatTimes must be a valid integer > 0");return this[kn].times=A,this}},Sa=class{constructor(A,t){if(typeof A!="object")throw new ze("opts must be an object");if(typeof A.path>"u")throw new ze("opts.path must be defined");if(typeof A.method>"u"&&(A.method="GET"),typeof A.path=="string")if(A.query)A.path=VP(A.path,A.query);else{let E=new URL(A.path,"data://");A.path=E.pathname+E.search}typeof A.method=="string"&&(A.method=A.method.toUpperCase()),this[Hn]=kP(A),this[Yn]=t,this[Ba]={},this[ca]={},this[ga]=!1}createMockScopeDispatchData(A,t,E={}){let s=HP(t),r=this[ga]?{"content-length":s.length}:{},i={...this[Ba],...r,...E.headers},o={...this[ca],...E.trailers};return{statusCode:A,data:t,headers:i,trailers:o}}validateReplyParameters(A,t,E){if(typeof A>"u")throw new ze("statusCode must be defined");if(typeof t>"u")throw new ze("data must be defined");if(typeof E!="object")throw new ze("responseOptions must be an object")}reply(A){if(typeof A=="function"){let o=I=>{let C=A(I);if(typeof C!="object")throw new ze("reply options callback must return an object");let{statusCode:a,data:R="",responseOptions:T={}}=C;return this.validateReplyParameters(a,R,T),{...this.createMockScopeDispatchData(a,R,T)}},n=ha(this[Yn],this[Hn],o);return new Ds(n)}let[t,E="",s={}]=[...arguments];this.validateReplyParameters(t,E,s);let r=this.createMockScopeDispatchData(t,E,s),i=ha(this[Yn],this[Hn],r);return new Ds(i)}replyWithError(A){if(typeof A>"u")throw new ze("error must be defined");let t=ha(this[Yn],this[Hn],{error:A});return new Ds(t)}defaultReplyHeaders(A){if(typeof A>"u")throw new ze("headers must be defined");return this[Ba]=A,this}defaultReplyTrailers(A){if(typeof A>"u")throw new ze("trailers must be defined");return this[ca]=A,this}replyContentLength(){return this[ga]=!0,this}};la.exports.MockInterceptor=Sa;la.exports.MockScope=Ds});var Oa=N((pk,FS)=>{"use strict";var{promisify:xP}=require("util"),WP=Xr(),{buildMockDispatch:JP}=Ai(),{kDispatches:_S,kMockAgent:US,kClose:pS,kOriginalClose:MS,kOrigin:yS,kOriginalDispatch:vP,kConnected:Qa}=fs(),{MockInterceptor:XP}=Na(),PS=$(),{InvalidArgumentError:qP}=z(),ua=class extends WP{constructor(A,t){if(super(A,t),!t||!t.agent||typeof t.agent.dispatch!="function")throw new qP("Argument opts.agent must implement Agent");this[US]=t.agent,this[yS]=A,this[_S]=[],this[Qa]=1,this[vP]=this.dispatch,this[MS]=this.close.bind(this),this.dispatch=JP.call(this),this.close=this[pS]}get[PS.kConnected](){return this[Qa]}intercept(A){return new XP(A,this[_S])}async[pS](){await xP(this[MS])(),this[Qa]=0,this[US][PS.kClients].delete(this[yS])}};FS.exports=ua});var Da=N((Mk,kS)=>{"use strict";var{promisify:KP}=require("util"),ZP=Ss(),{buildMockDispatch:zP}=Ai(),{kDispatches:wS,kMockAgent:mS,kClose:GS,kOriginalClose:bS,kOrigin:YS,kOriginalDispatch:jP,kConnected:La}=fs(),{MockInterceptor:$P}=Na(),HS=$(),{InvalidArgumentError:AF}=z(),fa=class extends ZP{constructor(A,t){if(super(A,t),!t||!t.agent||typeof t.agent.dispatch!="function")throw new AF("Argument opts.agent must implement Agent");this[mS]=t.agent,this[YS]=A,this[wS]=[],this[La]=1,this[jP]=this.dispatch,this[bS]=this.close.bind(this),this.dispatch=zP.call(this),this.close=this[GS]}get[HS.kConnected](){return this[La]}intercept(A){return new $P(A,this[wS])}async[GS](){await KP(this[bS])(),this[La]=0,this[mS][HS.kClients].delete(this[YS])}};kS.exports=fa});var xS=N((Pk,VS)=>{"use strict";var eF={pronoun:"it",is:"is",was:"was",this:"this"},tF={pronoun:"they",is:"are",was:"were",this:"these"};VS.exports=class{constructor(A,t){this.singular=A,this.plural=t}pluralize(A){let t=A===1,E=t?eF:tF,s=t?this.singular:this.plural;return{...E,count:A,noun:s}}}});var JS=N((wk,WS)=>{"use strict";var{Transform:EF}=require("stream"),{Console:sF}=require("console");WS.exports=class{constructor({disableColors:A}={}){this.transform=new EF({transform(t,E,s){s(null,t)}}),this.logger=new sF({stdout:this.transform,inspectOptions:{colors:!A&&!process.env.CI}})}format(A){let t=A.map(({method:E,path:s,data:{statusCode:r},persist:i,times:o,timesInvoked:n,origin:I})=>({Method:E,Origin:I,Path:s,"Status code":r,Persistent:i?"\u2705":"\u274C",Invocations:n,Remaining:i?1/0:o-n}));return this.logger.table(t),this.transform.read().toString()}}});var KS=N((mk,qS)=>{"use strict";var{kClients:pE}=$(),rF=zr(),{kAgent:da,kMockAgentSet:Vn,kMockAgentGet:vS,kDispatches:_a,kIsMockActive:xn,kNetConnect:ME,kGetNetConnect:iF,kOptions:Wn,kFactory:Jn}=fs(),nF=Oa(),oF=Da(),{matchValue:IF,buildMockOptions:CF}=Ai(),{InvalidArgumentError:XS,UndiciError:aF}=z(),RF=an(),TF=xS(),hF=JS(),Ua=class{constructor(A){this.value=A}deref(){return this.value}},pa=class extends RF{constructor(A){if(super(A),this[ME]=!0,this[xn]=!0,A&&A.agent&&typeof A.agent.dispatch!="function")throw new XS("Argument opts.agent must implement Agent");let t=A&&A.agent?A.agent:new rF(A);this[da]=t,this[pE]=t[pE],this[Wn]=CF(A)}get(A){let t=this[vS](A);return t||(t=this[Jn](A),this[Vn](A,t)),t}dispatch(A,t){return this.get(A.origin),this[da].dispatch(A,t)}async close(){await this[da].close(),this[pE].clear()}deactivate(){this[xn]=!1}activate(){this[xn]=!0}enableNetConnect(A){if(typeof A=="string"||typeof A=="function"||A instanceof RegExp)Array.isArray(this[ME])?this[ME].push(A):this[ME]=[A];else if(typeof A>"u")this[ME]=!0;else throw new XS("Unsupported matcher. Must be one of String|Function|RegExp.")}disableNetConnect(){this[ME]=!1}get isMockActive(){return this[xn]}[Vn](A,t){this[pE].set(A,new Ua(t))}[Jn](A){let t=Object.assign({agent:this},this[Wn]);return this[Wn]&&this[Wn].connections===1?new nF(A,t):new oF(A,t)}[vS](A){let t=this[pE].get(A);if(t)return t.deref();if(typeof A!="string"){let E=this[Jn]("http://localhost:9999");return this[Vn](A,E),E}for(let[E,s]of Array.from(this[pE])){let r=s.deref();if(r&&typeof E!="string"&&IF(E,A)){let i=this[Jn](A);return this[Vn](A,i),i[_a]=r[_a],i}}}[iF](){return this[ME]}pendingInterceptors(){let A=this[pE];return Array.from(A.entries()).flatMap(([t,E])=>E.deref()[_a].map(s=>({...s,origin:t}))).filter(({pending:t})=>t)}assertNoPendingInterceptors({pendingInterceptorsFormatter:A=new hF}={}){let t=this.pendingInterceptors();if(t.length===0)return;let E=new TF("interceptor","interceptors").pluralize(t.length);throw new aF(`
+`,"latin1"),t!==null&&s!==t){if(E[Jr])throw new Mt;process.emitWarning(new Mt)}A[aA].timeout&&A[aA].timeoutType===gs&&A[aA].timeout.refresh&&A[aA].timeout.refresh(),ue(E)}}destroy(A){let{socket:t,client:E}=this;t[yt]=!1,A&&(D(E[IA]<=1,"pipeline should only contain this request"),_.destroy(t,A))}};function Ae(e,A,t){try{A.onError(t),D(A.aborted)}catch(E){e.emit("error",E)}}jc.exports=pC});var Ag=N((Ik,$c)=>{"use strict";var fn=class{constructor(){this.bottom=0,this.top=0,this.list=new Array(2048),this.next=null}isEmpty(){return this.top===this.bottom}isFull(){return(this.top+1&2047)===this.bottom}push(A){this.list[this.top]=A,this.top=this.top+1&2047}shift(){let A=this.list[this.bottom];return A===void 0?null:(this.list[this.bottom]=void 0,this.bottom=this.bottom+1&2047,A)}};$c.exports=class{constructor(){this.head=this.tail=new fn}isEmpty(){return this.head.isEmpty()}push(A){this.head.isFull()&&(this.head=this.head.next=new fn),this.head.push(A)}shift(){let A=this.tail,t=A.shift();return A.isEmpty()&&A.next!==null&&(this.tail=A.next),t}}});var tg=N((Ck,eg)=>{var{kFree:vM,kConnected:XM,kPending:qM,kQueued:KM,kRunning:ZM,kSize:zM}=$(),DE=Symbol("pool"),mC=class{constructor(A){this[DE]=A}get connected(){return this[DE][XM]}get free(){return this[DE][vM]}get pending(){return this[DE][qM]}get queued(){return this[DE][KM]}get running(){return this[DE][ZM]}get size(){return this[DE][zM]}};eg.exports=mC});var VC=N((ak,Rg)=>{"use strict";var jM=br(),$M=Ag(),{kConnected:GC,kSize:Eg,kRunning:sg,kPending:rg,kQueued:qr,kBusy:Ay,kFree:ey,kUrl:ty,kClose:Ey,kDestroy:sy,kDispatch:ry}=$(),iy=tg(),Ie=Symbol("clients"),ee=Symbol("needDrain"),Kr=Symbol("queue"),bC=Symbol("closed resolve"),YC=Symbol("onDrain"),ig=Symbol("onConnect"),ng=Symbol("onDisconnect"),og=Symbol("onConnectionError"),HC=Symbol("get dispatcher"),Cg=Symbol("add client"),ag=Symbol("remove client"),Ig=Symbol("stats"),kC=class extends jM{constructor(){super(),this[Kr]=new $M,this[Ie]=[],this[qr]=0;let A=this;this[YC]=function(E,s){let r=A[Kr],i=!1;for(;!i;){let o=r.shift();if(!o)break;A[qr]--,i=!this.dispatch(o.opts,o.handler)}this[ee]=i,!this[ee]&&A[ee]&&(A[ee]=!1,A.emit("drain",E,[A,...s])),A[bC]&&r.isEmpty()&&Promise.all(A[Ie].map(o=>o.close())).then(A[bC])},this[ig]=(t,E)=>{A.emit("connect",t,[A,...E])},this[ng]=(t,E,s)=>{A.emit("disconnect",t,[A,...E],s)},this[og]=(t,E,s)=>{A.emit("connectionError",t,[A,...E],s)},this[Ig]=new iy(this)}get[Ay](){return this[ee]}get[GC](){return this[Ie].filter(A=>A[GC]).length}get[ey](){return this[Ie].filter(A=>A[GC]&&!A[ee]).length}get[rg](){let A=this[qr];for(let{[rg]:t}of this[Ie])A+=t;return A}get[sg](){let A=0;for(let{[sg]:t}of this[Ie])A+=t;return A}get[Eg](){let A=this[qr];for(let{[Eg]:t}of this[Ie])A+=t;return A}get stats(){return this[Ig]}async[Ey](){return this[Kr].isEmpty()?Promise.all(this[Ie].map(A=>A.close())):new Promise(A=>{this[bC]=A})}async[sy](A){for(;;){let t=this[Kr].shift();if(!t)break;t.handler.onError(A)}return Promise.all(this[Ie].map(t=>t.destroy(A)))}[ry](A,t){let E=this[HC]();return E?E.dispatch(A,t)||(E[ee]=!0,this[ee]=!this[HC]()):(this[ee]=!0,this[Kr].push({opts:A,handler:t}),this[qr]++),!this[ee]}[Cg](A){return A.on("drain",this[YC]).on("connect",this[ig]).on("disconnect",this[ng]).on("connectionError",this[og]),this[Ie].push(A),this[ee]&&process.nextTick(()=>{this[ee]&&this[YC](A[ty],[this,A])}),this}[ag](A){A.close(()=>{let t=this[Ie].indexOf(A);t!==-1&&this[Ie].splice(t,1)}),this[ee]=this[Ie].some(t=>!t[ee]&&t.closed!==!0&&t.destroyed!==!0)}};Rg.exports={PoolBase:kC,kClients:Ie,kNeedDrain:ee,kAddClient:Cg,kRemoveClient:ag,kGetDispatcher:HC}});var Ss=N((Rk,cg)=>{"use strict";var{PoolBase:ny,kClients:Tg,kNeedDrain:oy,kAddClient:Iy,kGetDispatcher:Cy}=VC(),ay=Xr(),{InvalidArgumentError:xC}=z(),WC=V(),{kUrl:hg,kInterceptors:Ry}=$(),Ty=Yr(),JC=Symbol("options"),vC=Symbol("connections"),Bg=Symbol("factory");function hy(e,A){return new ay(e,A)}var XC=class extends ny{constructor(A,{connections:t,factory:E=hy,connect:s,connectTimeout:r,tls:i,maxCachedSessions:o,socketPath:n,autoSelectFamily:I,autoSelectFamilyAttemptTimeout:C,allowH2:a,...R}={}){if(super(),t!=null&&(!Number.isFinite(t)||t<0))throw new xC("invalid connections");if(typeof E!="function")throw new xC("factory must be a function.");if(s!=null&&typeof s!="function"&&typeof s!="object")throw new xC("connect must be a function or an object");typeof s!="function"&&(s=Ty({...i,maxCachedSessions:o,allowH2:a,socketPath:n,timeout:r,...WC.nodeHasAutoSelectFamily&&I?{autoSelectFamily:I,autoSelectFamilyAttemptTimeout:C}:void 0,...s})),this[Ry]=R.interceptors&&R.interceptors.Pool&&Array.isArray(R.interceptors.Pool)?R.interceptors.Pool:[],this[vC]=t||null,this[hg]=WC.parseOrigin(A),this[JC]={...WC.deepClone(R),connect:s,allowH2:a},this[JC].interceptors=R.interceptors?{...R.interceptors}:void 0,this[Bg]=E}[Cy](){let A=this[Tg].find(t=>!t[oy]);return A||((!this[vC]||this[Tg].length<this[vC])&&(A=this[Bg](this[hg],this[JC]),this[Iy](A)),A)}};cg.exports=XC});var ug=N((Tk,Qg)=>{"use strict";var{BalancedPoolMissingUpstreamError:By,InvalidArgumentError:cy}=z(),{PoolBase:gy,kClients:te,kNeedDrain:Zr,kAddClient:Sy,kRemoveClient:ly,kGetDispatcher:Ny}=VC(),Qy=Ss(),{kUrl:qC,kInterceptors:uy}=$(),{parseOrigin:gg}=V(),Sg=Symbol("factory"),Dn=Symbol("options"),lg=Symbol("kGreatestCommonDivisor"),dE=Symbol("kCurrentWeight"),_E=Symbol("kIndex"),Fe=Symbol("kWeight"),dn=Symbol("kMaxWeightPerServer"),_n=Symbol("kErrorPenalty");function Ng(e,A){return A===0?e:Ng(A,e%A)}function Oy(e,A){return new Qy(e,A)}var KC=class extends gy{constructor(A=[],{factory:t=Oy,...E}={}){if(super(),this[Dn]=E,this[_E]=-1,this[dE]=0,this[dn]=this[Dn].maxWeightPerServer||100,this[_n]=this[Dn].errorPenalty||15,Array.isArray(A)||(A=[A]),typeof t!="function")throw new cy("factory must be a function.");this[uy]=E.interceptors&&E.interceptors.BalancedPool&&Array.isArray(E.interceptors.BalancedPool)?E.interceptors.BalancedPool:[],this[Sg]=t;for(let s of A)this.addUpstream(s);this._updateBalancedPoolStats()}addUpstream(A){let t=gg(A).origin;if(this[te].find(s=>s[qC].origin===t&&s.closed!==!0&&s.destroyed!==!0))return this;let E=this[Sg](t,Object.assign({},this[Dn]));this[Sy](E),E.on("connect",()=>{E[Fe]=Math.min(this[dn],E[Fe]+this[_n])}),E.on("connectionError",()=>{E[Fe]=Math.max(1,E[Fe]-this[_n]),this._updateBalancedPoolStats()}),E.on("disconnect",(...s)=>{let r=s[2];r&&r.code==="UND_ERR_SOCKET"&&(E[Fe]=Math.max(1,E[Fe]-this[_n]),this._updateBalancedPoolStats())});for(let s of this[te])s[Fe]=this[dn];return this._updateBalancedPoolStats(),this}_updateBalancedPoolStats(){this[lg]=this[te].map(A=>A[Fe]).reduce(Ng,0)}removeUpstream(A){let t=gg(A).origin,E=this[te].find(s=>s[qC].origin===t&&s.closed!==!0&&s.destroyed!==!0);return E&&this[ly](E),this}get upstreams(){return this[te].filter(A=>A.closed!==!0&&A.destroyed!==!0).map(A=>A[qC].origin)}[Ny](){if(this[te].length===0)throw new By;if(!this[te].find(r=>!r[Zr]&&r.closed!==!0&&r.destroyed!==!0)||this[te].map(r=>r[Zr]).reduce((r,i)=>r&&i,!0))return;let E=0,s=this[te].findIndex(r=>!r[Zr]);for(;E++<this[te].length;){this[_E]=(this[_E]+1)%this[te].length;let r=this[te][this[_E]];if(r[Fe]>this[te][s][Fe]&&!r[Zr]&&(s=this[_E]),this[_E]===0&&(this[dE]=this[dE]-this[lg],this[dE]<=0&&(this[dE]=this[dn])),r[Fe]>=this[dE]&&!r[Zr])return r}return this[dE]=this[te][s][Fe],this[_E]=s,this[te][s]}};Qg.exports=KC});var ZC=N((hk,fg)=>{"use strict";var{kConnected:Og,kSize:Lg}=$(),Un=class{constructor(A){this.value=A}deref(){return this.value[Og]===0&&this.value[Lg]===0?void 0:this.value}},pn=class{constructor(A){this.finalizer=A}register(A,t){A.on&&A.on("disconnect",()=>{A[Og]===0&&A[Lg]===0&&this.finalizer(t)})}};fg.exports=function(){return process.env.NODE_V8_COVERAGE?{WeakRef:Un,FinalizationRegistry:pn}:{WeakRef:global.WeakRef||Un,FinalizationRegistry:global.FinalizationRegistry||pn}}});var zr=N((Bk,Pg)=>{"use strict";var{InvalidArgumentError:Mn}=z(),{kClients:AE,kRunning:Dg,kClose:Ly,kDestroy:fy,kDispatch:Dy,kInterceptors:dy}=$(),_y=br(),Uy=Ss(),py=Xr(),My=V(),yy=Bn(),{WeakRef:Py,FinalizationRegistry:Fy}=ZC()(),dg=Symbol("onConnect"),_g=Symbol("onDisconnect"),Ug=Symbol("onConnectionError"),wy=Symbol("maxRedirections"),pg=Symbol("onDrain"),Mg=Symbol("factory"),yg=Symbol("finalizer"),zC=Symbol("options");function my(e,A){return A&&A.connections===1?new py(e,A):new Uy(e,A)}var jC=class extends _y{constructor({factory:A=my,maxRedirections:t=0,connect:E,...s}={}){if(super(),typeof A!="function")throw new Mn("factory must be a function.");if(E!=null&&typeof E!="function"&&typeof E!="object")throw new Mn("connect must be a function or an object");if(!Number.isInteger(t)||t<0)throw new Mn("maxRedirections must be a positive number");E&&typeof E!="function"&&(E={...E}),this[dy]=s.interceptors&&s.interceptors.Agent&&Array.isArray(s.interceptors.Agent)?s.interceptors.Agent:[yy({maxRedirections:t})],this[zC]={...My.deepClone(s),connect:E},this[zC].interceptors=s.interceptors?{...s.interceptors}:void 0,this[wy]=t,this[Mg]=A,this[AE]=new Map,this[yg]=new Fy(i=>{let o=this[AE].get(i);o!==void 0&&o.deref()===void 0&&this[AE].delete(i)});let r=this;this[pg]=(i,o)=>{r.emit("drain",i,[r,...o])},this[dg]=(i,o)=>{r.emit("connect",i,[r,...o])},this[_g]=(i,o,n)=>{r.emit("disconnect",i,[r,...o],n)},this[Ug]=(i,o,n)=>{r.emit("connectionError",i,[r,...o],n)}}get[Dg](){let A=0;for(let t of this[AE].values()){let E=t.deref();E&&(A+=E[Dg])}return A}[Dy](A,t){let E;if(A.origin&&(typeof A.origin=="string"||A.origin instanceof URL))E=String(A.origin);else throw new Mn("opts.origin must be a non-empty string or URL.");let s=this[AE].get(E),r=s?s.deref():null;return r||(r=this[Mg](A.origin,this[zC]).on("drain",this[pg]).on("connect",this[dg]).on("disconnect",this[_g]).on("connectionError",this[Ug]),this[AE].set(E,new Py(r)),this[yg].register(r,E)),r.dispatch(A,t)}async[Ly](){let A=[];for(let t of this[AE].values()){let E=t.deref();E&&A.push(E.close())}await Promise.all(A)}async[fy](A){let t=[];for(let E of this[AE].values()){let s=E.deref();s&&t.push(s.destroy(A))}await Promise.all(t)}};Pg.exports=jC});var Vg=N((gk,kg)=>{"use strict";var Gg=require("assert"),{Readable:Gy}=require("stream"),{RequestAbortedError:bg,NotSupportedError:by,InvalidArgumentError:Yy}=z(),Fn=V(),{ReadableStreamFrom:Hy,toUSVString:ky}=V(),$C,Oe=Symbol("kConsume"),yn=Symbol("kReading"),eE=Symbol("kBody"),Fg=Symbol("abort"),Yg=Symbol("kContentType"),wg=()=>{};kg.exports=class extends Gy{constructor({resume:A,abort:t,contentType:E="",highWaterMark:s=64*1024}){super({autoDestroy:!0,read:A,highWaterMark:s}),this._readableState.dataEmitted=!1,this[Fg]=t,this[Oe]=null,this[eE]=null,this[Yg]=E,this[yn]=!1}destroy(A){return this.destroyed?this:(!A&&!this._readableState.endEmitted&&(A=new bg),A&&this[Fg](),super.destroy(A))}emit(A,...t){return A==="data"?this._readableState.dataEmitted=!0:A==="error"&&(this._readableState.errorEmitted=!0),super.emit(A,...t)}on(A,...t){return(A==="data"||A==="readable")&&(this[yn]=!0),super.on(A,...t)}addListener(A,...t){return this.on(A,...t)}off(A,...t){let E=super.off(A,...t);return(A==="data"||A==="readable")&&(this[yn]=this.listenerCount("data")>0||this.listenerCount("readable")>0),E}removeListener(A,...t){return this.off(A,...t)}push(A){return this[Oe]&&A!==null&&this.readableLength===0?(Hg(this[Oe],A),this[yn]?super.push(A):!0):super.push(A)}async text(){return Pn(this,"text")}async json(){return Pn(this,"json")}async blob(){return Pn(this,"blob")}async arrayBuffer(){return Pn(this,"arrayBuffer")}async formData(){throw new by}get bodyUsed(){return Fn.isDisturbed(this)}get body(){return this[eE]||(this[eE]=Hy(this),this[Oe]&&(this[eE].getReader(),Gg(this[eE].locked))),this[eE]}dump(A){let t=A&&Number.isFinite(A.limit)?A.limit:262144,E=A&&A.signal;if(E)try{if(typeof E!="object"||!("aborted"in E))throw new Yy("signal must be an AbortSignal");Fn.throwIfAborted(E)}catch(s){return Promise.reject(s)}return this.closed?Promise.resolve(null):new Promise((s,r)=>{let i=E?Fn.addAbortListener(E,()=>{this.destroy()}):wg;this.on("close",function(){i(),E&&E.aborted?r(E.reason||Object.assign(new Error("The operation was aborted"),{name:"AbortError"})):s(null)}).on("error",wg).on("data",function(o){t-=o.length,t<=0&&this.destroy()}).resume()})}};function Vy(e){return e[eE]&&e[eE].locked===!0||e[Oe]}function xy(e){return Fn.isDisturbed(e)||Vy(e)}async function Pn(e,A){if(xy(e))throw new TypeError("unusable");return Gg(!e[Oe]),new Promise((t,E)=>{e[Oe]={type:A,stream:e,resolve:t,reject:E,length:0,body:[]},e.on("error",function(s){Aa(this[Oe],s)}).on("close",function(){this[Oe].body!==null&&Aa(this[Oe],new bg)}),process.nextTick(Wy,e[Oe])})}function Wy(e){if(e.body===null)return;let{_readableState:A}=e.stream;for(let t of A.buffer)Hg(e,t);for(A.endEmitted?mg(this[Oe]):e.stream.on("end",function(){mg(this[Oe])}),e.stream.resume();e.stream.read()!=null;);}function mg(e){let{type:A,body:t,resolve:E,stream:s,length:r}=e;try{if(A==="text")E(ky(Buffer.concat(t)));else if(A==="json")E(JSON.parse(Buffer.concat(t)));else if(A==="arrayBuffer"){let i=new Uint8Array(r),o=0;for(let n of t)i.set(n,o),o+=n.byteLength;E(i.buffer)}else A==="blob"&&($C||($C=require("buffer").Blob),E(new $C(t,{type:s[Yg]})));Aa(e)}catch(i){s.destroy(i)}}function Hg(e,A){e.length+=A.length,e.body.push(A)}function Aa(e,A){e.body!==null&&(A?e.reject(A):e.resolve(),e.type=null,e.stream=null,e.resolve=null,e.reject=null,e.length=0,e.body=null)}});var ea=N((Sk,Wg)=>{var Jy=require("assert"),{ResponseStatusCodeError:wn}=z(),{toUSVString:xg}=V();async function vy({callback:e,body:A,contentType:t,statusCode:E,statusMessage:s,headers:r}){Jy(A);let i=[],o=0;for await(let n of A)if(i.push(n),o+=n.length,o>128*1024){i=null;break}if(E===204||!t||!i){process.nextTick(e,new wn(`Response status code ${E}${s?`: ${s}`:""}`,E,r));return}try{if(t.startsWith("application/json")){let n=JSON.parse(xg(Buffer.concat(i)));process.nextTick(e,new wn(`Response status code ${E}${s?`: ${s}`:""}`,E,r,n));return}if(t.startsWith("text/")){let n=xg(Buffer.concat(i));process.nextTick(e,new wn(`Response status code ${E}${s?`: ${s}`:""}`,E,r,n));return}}catch{}process.nextTick(e,new wn(`Response status code ${E}${s?`: ${s}`:""}`,E,r))}Wg.exports={getResolveErrorBodyCallback:vy}});var Ns=N((lk,vg)=>{var{addAbortListener:Xy}=V(),{RequestAbortedError:qy}=z(),ls=Symbol("kListener"),tE=Symbol("kSignal");function Jg(e){e.abort?e.abort():e.onError(new qy)}function Ky(e,A){if(e[tE]=null,e[ls]=null,!!A){if(A.aborted){Jg(e);return}e[tE]=A,e[ls]=()=>{Jg(e)},Xy(e[tE],e[ls])}}function Zy(e){e[tE]&&("removeEventListener"in e[tE]?e[tE].removeEventListener("abort",e[ls]):e[tE].removeListener("abort",e[ls]),e[tE]=null,e[ls]=null)}vg.exports={addSignal:Ky,removeSignal:Zy}});var Kg=N((Nk,ta)=>{"use strict";var zy=Vg(),{InvalidArgumentError:Qs,RequestAbortedError:jy}=z(),Ct=V(),{getResolveErrorBodyCallback:$y}=ea(),{AsyncResource:AP}=require("async_hooks"),{addSignal:eP,removeSignal:Xg}=Ns(),mn=class extends AP{constructor(A,t){if(!A||typeof A!="object")throw new Qs("invalid opts");let{signal:E,method:s,opaque:r,body:i,onInfo:o,responseHeaders:n,throwOnError:I,highWaterMark:C}=A;try{if(typeof t!="function")throw new Qs("invalid callback");if(C&&(typeof C!="number"||C<0))throw new Qs("invalid highWaterMark");if(E&&typeof E.on!="function"&&typeof E.addEventListener!="function")throw new Qs("signal must be an EventEmitter or EventTarget");if(s==="CONNECT")throw new Qs("invalid method");if(o&&typeof o!="function")throw new Qs("invalid onInfo callback");super("UNDICI_REQUEST")}catch(a){throw Ct.isStream(i)&&Ct.destroy(i.on("error",Ct.nop),a),a}this.responseHeaders=n||null,this.opaque=r||null,this.callback=t,this.res=null,this.abort=null,this.body=i,this.trailers={},this.context=null,this.onInfo=o||null,this.throwOnError=I,this.highWaterMark=C,Ct.isStream(i)&&i.on("error",a=>{this.onError(a)}),eP(this,E)}onConnect(A,t){if(!this.callback)throw new jy;this.abort=A,this.context=t}onHeaders(A,t,E,s){let{callback:r,opaque:i,abort:o,context:n,responseHeaders:I,highWaterMark:C}=this,a=I==="raw"?Ct.parseRawHeaders(t):Ct.parseHeaders(t);if(A<200){this.onInfo&&this.onInfo({statusCode:A,headers:a});return}let T=(I==="raw"?Ct.parseHeaders(t):a)["content-type"],h=new zy({resume:E,abort:o,contentType:T,highWaterMark:C});this.callback=null,this.res=h,r!==null&&(this.throwOnError&&A>=400?this.runInAsyncScope($y,null,{callback:r,body:h,contentType:T,statusCode:A,statusMessage:s,headers:a}):this.runInAsyncScope(r,null,null,{statusCode:A,headers:a,trailers:this.trailers,opaque:i,body:h,context:n}))}onData(A){let{res:t}=this;return t.push(A)}onComplete(A){let{res:t}=this;Xg(this),Ct.parseHeaders(A,this.trailers),t.push(null)}onError(A){let{res:t,callback:E,body:s,opaque:r}=this;Xg(this),E&&(this.callback=null,queueMicrotask(()=>{this.runInAsyncScope(E,null,A,{opaque:r})})),t&&(this.res=null,queueMicrotask(()=>{Ct.destroy(t,A)})),s&&(this.body=null,Ct.destroy(s,A))}};function qg(e,A){if(A===void 0)return new Promise((t,E)=>{qg.call(this,e,(s,r)=>s?E(s):t(r))});try{this.dispatch(e,new mn(e,A))}catch(t){if(typeof A!="function")throw t;let E=e&&e.opaque;queueMicrotask(()=>A(t,{opaque:E}))}}ta.exports=qg;ta.exports.RequestHandler=mn});var $g=N((Qk,jg)=>{"use strict";var{finished:tP,PassThrough:EP}=require("stream"),{InvalidArgumentError:us,InvalidReturnValueError:sP,RequestAbortedError:rP}=z(),Ze=V(),{getResolveErrorBodyCallback:iP}=ea(),{AsyncResource:nP}=require("async_hooks"),{addSignal:oP,removeSignal:Zg}=Ns(),Ea=class extends nP{constructor(A,t,E){if(!A||typeof A!="object")throw new us("invalid opts");let{signal:s,method:r,opaque:i,body:o,onInfo:n,responseHeaders:I,throwOnError:C}=A;try{if(typeof E!="function")throw new us("invalid callback");if(typeof t!="function")throw new us("invalid factory");if(s&&typeof s.on!="function"&&typeof s.addEventListener!="function")throw new us("signal must be an EventEmitter or EventTarget");if(r==="CONNECT")throw new us("invalid method");if(n&&typeof n!="function")throw new us("invalid onInfo callback");super("UNDICI_STREAM")}catch(a){throw Ze.isStream(o)&&Ze.destroy(o.on("error",Ze.nop),a),a}this.responseHeaders=I||null,this.opaque=i||null,this.factory=t,this.callback=E,this.res=null,this.abort=null,this.context=null,this.trailers=null,this.body=o,this.onInfo=n||null,this.throwOnError=C||!1,Ze.isStream(o)&&o.on("error",a=>{this.onError(a)}),oP(this,s)}onConnect(A,t){if(!this.callback)throw new rP;this.abort=A,this.context=t}onHeaders(A,t,E,s){let{factory:r,opaque:i,context:o,callback:n,responseHeaders:I}=this,C=I==="raw"?Ze.parseRawHeaders(t):Ze.parseHeaders(t);if(A<200){this.onInfo&&this.onInfo({statusCode:A,headers:C});return}this.factory=null;let a;if(this.throwOnError&&A>=400){let h=(I==="raw"?Ze.parseHeaders(t):C)["content-type"];a=new EP,this.callback=null,this.runInAsyncScope(iP,null,{callback:n,body:a,contentType:h,statusCode:A,statusMessage:s,headers:C})}else{if(r===null)return;if(a=this.runInAsyncScope(r,null,{statusCode:A,headers:C,opaque:i,context:o}),!a||typeof a.write!="function"||typeof a.end!="function"||typeof a.on!="function")throw new sP("expected Writable");tP(a,{readable:!1},T=>{let{callback:h,res:B,opaque:c,trailers:g,abort:l}=this;this.res=null,(T||!B.readable)&&Ze.destroy(B,T),this.callback=null,this.runInAsyncScope(h,null,T||null,{opaque:c,trailers:g}),T&&l()})}return a.on("drain",E),this.res=a,(a.writableNeedDrain!==void 0?a.writableNeedDrain:a._writableState&&a._writableState.needDrain)!==!0}onData(A){let{res:t}=this;return t?t.write(A):!0}onComplete(A){let{res:t}=this;Zg(this),t&&(this.trailers=Ze.parseHeaders(A),t.end())}onError(A){let{res:t,callback:E,opaque:s,body:r}=this;Zg(this),this.factory=null,t?(this.res=null,Ze.destroy(t,A)):E&&(this.callback=null,queueMicrotask(()=>{this.runInAsyncScope(E,null,A,{opaque:s})})),r&&(this.body=null,Ze.destroy(r,A))}};function zg(e,A,t){if(t===void 0)return new Promise((E,s)=>{zg.call(this,e,A,(r,i)=>r?s(r):E(i))});try{this.dispatch(e,new Ea(e,A,t))}catch(E){if(typeof t!="function")throw E;let s=e&&e.opaque;queueMicrotask(()=>t(E,{opaque:s}))}}jg.exports=zg});var tS=N((uk,eS)=>{"use strict";var{Readable:AS,Duplex:IP,PassThrough:CP}=require("stream"),{InvalidArgumentError:jr,InvalidReturnValueError:aP,RequestAbortedError:Gn}=z(),we=V(),{AsyncResource:RP}=require("async_hooks"),{addSignal:TP,removeSignal:hP}=Ns(),BP=require("assert"),Os=Symbol("resume"),sa=class extends AS{constructor(){super({autoDestroy:!0}),this[Os]=null}_read(){let{[Os]:A}=this;A&&(this[Os]=null,A())}_destroy(A,t){this._read(),t(A)}},ra=class extends AS{constructor(A){super({autoDestroy:!0}),this[Os]=A}_read(){this[Os]()}_destroy(A,t){!A&&!this._readableState.endEmitted&&(A=new Gn),t(A)}},ia=class extends RP{constructor(A,t){if(!A||typeof A!="object")throw new jr("invalid opts");if(typeof t!="function")throw new jr("invalid handler");let{signal:E,method:s,opaque:r,onInfo:i,responseHeaders:o}=A;if(E&&typeof E.on!="function"&&typeof E.addEventListener!="function")throw new jr("signal must be an EventEmitter or EventTarget");if(s==="CONNECT")throw new jr("invalid method");if(i&&typeof i!="function")throw new jr("invalid onInfo callback");super("UNDICI_PIPELINE"),this.opaque=r||null,this.responseHeaders=o||null,this.handler=t,this.abort=null,this.context=null,this.onInfo=i||null,this.req=new sa().on("error",we.nop),this.ret=new IP({readableObjectMode:A.objectMode,autoDestroy:!0,read:()=>{let{body:n}=this;n&&n.resume&&n.resume()},write:(n,I,C)=>{let{req:a}=this;a.push(n,I)||a._readableState.destroyed?C():a[Os]=C},destroy:(n,I)=>{let{body:C,req:a,res:R,ret:T,abort:h}=this;!n&&!T._readableState.endEmitted&&(n=new Gn),h&&n&&h(),we.destroy(C,n),we.destroy(a,n),we.destroy(R,n),hP(this),I(n)}}).on("prefinish",()=>{let{req:n}=this;n.push(null)}),this.res=null,TP(this,E)}onConnect(A,t){let{ret:E,res:s}=this;if(BP(!s,"pipeline cannot be retried"),E.destroyed)throw new Gn;this.abort=A,this.context=t}onHeaders(A,t,E){let{opaque:s,handler:r,context:i}=this;if(A<200){if(this.onInfo){let n=this.responseHeaders==="raw"?we.parseRawHeaders(t):we.parseHeaders(t);this.onInfo({statusCode:A,headers:n})}return}this.res=new ra(E);let o;try{this.handler=null;let n=this.responseHeaders==="raw"?we.parseRawHeaders(t):we.parseHeaders(t);o=this.runInAsyncScope(r,null,{statusCode:A,headers:n,opaque:s,body:this.res,context:i})}catch(n){throw this.res.on("error",we.nop),n}if(!o||typeof o.on!="function")throw new aP("expected Readable");o.on("data",n=>{let{ret:I,body:C}=this;!I.push(n)&&C.pause&&C.pause()}).on("error",n=>{let{ret:I}=this;we.destroy(I,n)}).on("end",()=>{let{ret:n}=this;n.push(null)}).on("close",()=>{let{ret:n}=this;n._readableState.ended||we.destroy(n,new Gn)}),this.body=o}onData(A){let{res:t}=this;return t.push(A)}onComplete(A){let{res:t}=this;t.push(null)}onError(A){let{ret:t}=this;this.handler=null,we.destroy(t,A)}};function cP(e,A){try{let t=new ia(e,A);return this.dispatch({...e,body:t.req},t),t.ret}catch(t){return new CP().destroy(t)}}eS.exports=cP});var nS=N((Ok,iS)=>{"use strict";var{InvalidArgumentError:na,RequestAbortedError:gP,SocketError:SP}=z(),{AsyncResource:lP}=require("async_hooks"),ES=V(),{addSignal:NP,removeSignal:sS}=Ns(),QP=require("assert"),oa=class extends lP{constructor(A,t){if(!A||typeof A!="object")throw new na("invalid opts");if(typeof t!="function")throw new na("invalid callback");let{signal:E,opaque:s,responseHeaders:r}=A;if(E&&typeof E.on!="function"&&typeof E.addEventListener!="function")throw new na("signal must be an EventEmitter or EventTarget");super("UNDICI_UPGRADE"),this.responseHeaders=r||null,this.opaque=s||null,this.callback=t,this.abort=null,this.context=null,NP(this,E)}onConnect(A,t){if(!this.callback)throw new gP;this.abort=A,this.context=null}onHeaders(){throw new SP("bad upgrade",null)}onUpgrade(A,t,E){let{callback:s,opaque:r,context:i}=this;QP.strictEqual(A,101),sS(this),this.callback=null;let o=this.responseHeaders==="raw"?ES.parseRawHeaders(t):ES.parseHeaders(t);this.runInAsyncScope(s,null,null,{headers:o,socket:E,opaque:r,context:i})}onError(A){let{callback:t,opaque:E}=this;sS(this),t&&(this.callback=null,queueMicrotask(()=>{this.runInAsyncScope(t,null,A,{opaque:E})}))}};function rS(e,A){if(A===void 0)return new Promise((t,E)=>{rS.call(this,e,(s,r)=>s?E(s):t(r))});try{let t=new oa(e,A);this.dispatch({...e,method:e.method||"GET",upgrade:e.protocol||"Websocket"},t)}catch(t){if(typeof A!="function")throw t;let E=e&&e.opaque;queueMicrotask(()=>A(t,{opaque:E}))}}iS.exports=rS});var RS=N((Lk,aS)=>{"use strict";var{AsyncResource:uP}=require("async_hooks"),{InvalidArgumentError:Ia,RequestAbortedError:OP,SocketError:LP}=z(),oS=V(),{addSignal:fP,removeSignal:IS}=Ns(),Ca=class extends uP{constructor(A,t){if(!A||typeof A!="object")throw new Ia("invalid opts");if(typeof t!="function")throw new Ia("invalid callback");let{signal:E,opaque:s,responseHeaders:r}=A;if(E&&typeof E.on!="function"&&typeof E.addEventListener!="function")throw new Ia("signal must be an EventEmitter or EventTarget");super("UNDICI_CONNECT"),this.opaque=s||null,this.responseHeaders=r||null,this.callback=t,this.abort=null,fP(this,E)}onConnect(A,t){if(!this.callback)throw new OP;this.abort=A,this.context=t}onHeaders(){throw new LP("bad connect",null)}onUpgrade(A,t,E){let{callback:s,opaque:r,context:i}=this;IS(this),this.callback=null;let o=t;o!=null&&(o=this.responseHeaders==="raw"?oS.parseRawHeaders(t):oS.parseHeaders(t)),this.runInAsyncScope(s,null,null,{statusCode:A,headers:o,socket:E,opaque:r,context:i})}onError(A){let{callback:t,opaque:E}=this;IS(this),t&&(this.callback=null,queueMicrotask(()=>{this.runInAsyncScope(t,null,A,{opaque:E})}))}};function CS(e,A){if(A===void 0)return new Promise((t,E)=>{CS.call(this,e,(s,r)=>s?E(s):t(r))});try{let t=new Ca(e,A);this.dispatch({...e,method:"CONNECT"},t)}catch(t){if(typeof A!="function")throw t;let E=e&&e.opaque;queueMicrotask(()=>A(t,{opaque:E}))}}aS.exports=CS});var TS=N((fk,Ls)=>{"use strict";Ls.exports.request=Kg();Ls.exports.stream=$g();Ls.exports.pipeline=tS();Ls.exports.upgrade=nS();Ls.exports.connect=RS()});var aa=N((Dk,hS)=>{"use strict";var{UndiciError:DP}=z(),$r=class extends DP{constructor(A){super(A),Error.captureStackTrace(this,$r),this.name="MockNotMatchedError",this.message=A||"The request does not match any registered mock dispatches",this.code="UND_MOCK_ERR_MOCK_NOT_MATCHED"}};hS.exports={MockNotMatchedError:$r}});var fs=N((dk,BS)=>{"use strict";BS.exports={kAgent:Symbol("agent"),kOptions:Symbol("options"),kFactory:Symbol("factory"),kDispatches:Symbol("dispatches"),kDispatchKey:Symbol("dispatch key"),kDefaultHeaders:Symbol("default headers"),kDefaultTrailers:Symbol("default trailers"),kContentLength:Symbol("content length"),kMockAgent:Symbol("mock agent"),kMockAgentSet:Symbol("mock agent set"),kMockAgentGet:Symbol("mock agent get"),kMockDispatch:Symbol("mock dispatch"),kClose:Symbol("close"),kOriginalClose:Symbol("original agent close"),kOrigin:Symbol("origin"),kIsMockActive:Symbol("is mock active"),kNetConnect:Symbol("net connect"),kGetNetConnect:Symbol("get net connect"),kConnected:Symbol("connected")}});var Ai=N((_k,dS)=>{"use strict";var{MockNotMatchedError:UE}=aa(),{kDispatches:bn,kMockAgent:dP,kOriginalDispatch:_P,kOrigin:UP,kGetNetConnect:pP}=fs(),{buildURL:MP,nop:yP}=V(),{STATUS_CODES:PP}=require("http"),{types:{isPromise:FP}}=require("util");function Pt(e,A){return typeof e=="string"?e===A:e instanceof RegExp?e.test(A):typeof e=="function"?e(A)===!0:!1}function gS(e){return Object.fromEntries(Object.entries(e).map(([A,t])=>[A.toLocaleLowerCase(),t]))}function SS(e,A){if(Array.isArray(e)){for(let t=0;t<e.length;t+=2)if(e[t].toLocaleLowerCase()===A.toLocaleLowerCase())return e[t+1];}else return typeof e.get=="function"?e.get(A):gS(e)[A.toLocaleLowerCase()]}function lS(e){let A=e.slice(),t=[];for(let E=0;E<A.length;E+=2)t.push([A[E],A[E+1]]);return Object.fromEntries(t)}function NS(e,A){if(typeof e.headers=="function")return Array.isArray(A)&&(A=lS(A)),e.headers(A?gS(A):{});if(typeof e.headers>"u")return!0;if(typeof A!="object"||typeof e.headers!="object")return!1;for(let[t,E]of Object.entries(e.headers)){let s=SS(A,t);if(!Pt(E,s))return!1}return!0}function cS(e){if(typeof e!="string")return e;let A=e.split("?");if(A.length!==2)return e;let t=new URLSearchParams(A.pop());return t.sort(),[...A,t.toString()].join("?")}function wP(e,{path:A,method:t,body:E,headers:s}){let r=Pt(e.path,A),i=Pt(e.method,t),o=typeof e.body<"u"?Pt(e.body,E):!0,n=NS(e,s);return r&&i&&o&&n}function QS(e){return Buffer.isBuffer(e)?e:typeof e=="object"?JSON.stringify(e):e.toString()}function uS(e,A){let t=A.query?MP(A.path,A.query):A.path,E=typeof t=="string"?cS(t):t,s=e.filter(({consumed:r})=>!r).filter(({path:r})=>Pt(cS(r),E));if(s.length===0)throw new UE(`Mock dispatch not matched for path '${E}'`);if(s=s.filter(({method:r})=>Pt(r,A.method)),s.length===0)throw new UE(`Mock dispatch not matched for method '${A.method}'`);if(s=s.filter(({body:r})=>typeof r<"u"?Pt(r,A.body):!0),s.length===0)throw new UE(`Mock dispatch not matched for body '${A.body}'`);if(s=s.filter(r=>NS(r,A.headers)),s.length===0)throw new UE(`Mock dispatch not matched for headers '${typeof A.headers=="object"?JSON.stringify(A.headers):A.headers}'`);return s[0]}function mP(e,A,t){let E={timesInvoked:0,times:1,persist:!1,consumed:!1},s=typeof t=="function"?{callback:t}:{...t},r={...E,...A,pending:!0,data:{error:null,...s}};return e.push(r),r}function Ra(e,A){let t=e.findIndex(E=>E.consumed?wP(E,A):!1);t!==-1&&e.splice(t,1)}function OS(e){let{path:A,method:t,body:E,headers:s,query:r}=e;return{path:A,method:t,body:E,headers:s,query:r}}function Ta(e){return Object.entries(e).reduce((A,[t,E])=>[...A,Buffer.from(`${t}`),Array.isArray(E)?E.map(s=>Buffer.from(`${s}`)):Buffer.from(`${E}`)],[])}function LS(e){return PP[e]||"unknown"}async function GP(e){let A=[];for await(let t of e)A.push(t);return Buffer.concat(A).toString("utf8")}function fS(e,A){let t=OS(e),E=uS(this[bn],t);E.timesInvoked++,E.data.callback&&(E.data={...E.data,...E.data.callback(e)});let{data:{statusCode:s,data:r,headers:i,trailers:o,error:n},delay:I,persist:C}=E,{timesInvoked:a,times:R}=E;if(E.consumed=!C&&a>=R,E.pending=a<R,n!==null)return Ra(this[bn],t),A.onError(n),!0;typeof I=="number"&&I>0?setTimeout(()=>{T(this[bn])},I):T(this[bn]);function T(B,c=r){let g=Array.isArray(e.headers)?lS(e.headers):e.headers,l=typeof c=="function"?c({...e,headers:g}):c;if(FP(l)){l.then(m=>T(B,m));return}let Q=QS(l),L=Ta(i),w=Ta(o);A.abort=yP,A.onHeaders(s,L,h,LS(s)),A.onData(Buffer.from(Q)),A.onComplete(w),Ra(B,t)}function h(){}return!0}function bP(){let e=this[dP],A=this[UP],t=this[_P];return function(s,r){if(e.isMockActive)try{fS.call(this,s,r)}catch(i){if(i instanceof UE){let o=e[pP]();if(o===!1)throw new UE(`${i.message}: subsequent request to origin ${A} was not allowed (net.connect disabled)`);if(DS(o,A))t.call(this,s,r);else throw new UE(`${i.message}: subsequent request to origin ${A} was not allowed (net.connect is not enabled for this origin)`)}else throw i}else t.call(this,s,r)}}function DS(e,A){let t=new URL(A);return e===!0?!0:!!(Array.isArray(e)&&e.some(E=>Pt(E,t.host)))}function YP(e){if(e){let{agent:A,...t}=e;return t}}dS.exports={getResponseData:QS,getMockDispatch:uS,addMockDispatch:mP,deleteMockDispatch:Ra,buildKey:OS,generateKeyValues:Ta,matchValue:Pt,getResponse:GP,getStatusText:LS,mockDispatch:fS,buildMockDispatch:bP,checkNetConnect:DS,buildMockOptions:YP,getHeaderByName:SS}});var Na=N((Uk,la)=>{"use strict";var{getResponseData:HP,buildKey:kP,addMockDispatch:ha}=Ai(),{kDispatches:Yn,kDispatchKey:Hn,kDefaultHeaders:Ba,kDefaultTrailers:ca,kContentLength:ga,kMockDispatch:kn}=fs(),{InvalidArgumentError:ze}=z(),{buildURL:VP}=V(),Ds=class{constructor(A){this[kn]=A}delay(A){if(typeof A!="number"||!Number.isInteger(A)||A<=0)throw new ze("waitInMs must be a valid integer > 0");return this[kn].delay=A,this}persist(){return this[kn].persist=!0,this}times(A){if(typeof A!="number"||!Number.isInteger(A)||A<=0)throw new ze("repeatTimes must be a valid integer > 0");return this[kn].times=A,this}},Sa=class{constructor(A,t){if(typeof A!="object")throw new ze("opts must be an object");if(typeof A.path>"u")throw new ze("opts.path must be defined");if(typeof A.method>"u"&&(A.method="GET"),typeof A.path=="string")if(A.query)A.path=VP(A.path,A.query);else{let E=new URL(A.path,"data://");A.path=E.pathname+E.search}typeof A.method=="string"&&(A.method=A.method.toUpperCase()),this[Hn]=kP(A),this[Yn]=t,this[Ba]={},this[ca]={},this[ga]=!1}createMockScopeDispatchData(A,t,E={}){let s=HP(t),r=this[ga]?{"content-length":s.length}:{},i={...this[Ba],...r,...E.headers},o={...this[ca],...E.trailers};return{statusCode:A,data:t,headers:i,trailers:o}}validateReplyParameters(A,t,E){if(typeof A>"u")throw new ze("statusCode must be defined");if(typeof t>"u")throw new ze("data must be defined");if(typeof E!="object")throw new ze("responseOptions must be an object")}reply(A){if(typeof A=="function"){let o=I=>{let C=A(I);if(typeof C!="object")throw new ze("reply options callback must return an object");let{statusCode:a,data:R="",responseOptions:T={}}=C;return this.validateReplyParameters(a,R,T),{...this.createMockScopeDispatchData(a,R,T)}},n=ha(this[Yn],this[Hn],o);return new Ds(n)}let[t,E="",s={}]=[...arguments];this.validateReplyParameters(t,E,s);let r=this.createMockScopeDispatchData(t,E,s),i=ha(this[Yn],this[Hn],r);return new Ds(i)}replyWithError(A){if(typeof A>"u")throw new ze("error must be defined");let t=ha(this[Yn],this[Hn],{error:A});return new Ds(t)}defaultReplyHeaders(A){if(typeof A>"u")throw new ze("headers must be defined");return this[Ba]=A,this}defaultReplyTrailers(A){if(typeof A>"u")throw new ze("trailers must be defined");return this[ca]=A,this}replyContentLength(){return this[ga]=!0,this}};la.exports.MockInterceptor=Sa;la.exports.MockScope=Ds});var Oa=N((pk,FS)=>{"use strict";var{promisify:xP}=require("util"),WP=Xr(),{buildMockDispatch:JP}=Ai(),{kDispatches:_S,kMockAgent:US,kClose:pS,kOriginalClose:MS,kOrigin:yS,kOriginalDispatch:vP,kConnected:Qa}=fs(),{MockInterceptor:XP}=Na(),PS=$(),{InvalidArgumentError:qP}=z(),ua=class extends WP{constructor(A,t){if(super(A,t),!t||!t.agent||typeof t.agent.dispatch!="function")throw new qP("Argument opts.agent must implement Agent");this[US]=t.agent,this[yS]=A,this[_S]=[],this[Qa]=1,this[vP]=this.dispatch,this[MS]=this.close.bind(this),this.dispatch=JP.call(this),this.close=this[pS]}get[PS.kConnected](){return this[Qa]}intercept(A){return new XP(A,this[_S])}async[pS](){await xP(this[MS])(),this[Qa]=0,this[US][PS.kClients].delete(this[yS])}};FS.exports=ua});var Da=N((Mk,kS)=>{"use strict";var{promisify:KP}=require("util"),ZP=Ss(),{buildMockDispatch:zP}=Ai(),{kDispatches:wS,kMockAgent:mS,kClose:GS,kOriginalClose:bS,kOrigin:YS,kOriginalDispatch:jP,kConnected:La}=fs(),{MockInterceptor:$P}=Na(),HS=$(),{InvalidArgumentError:AF}=z(),fa=class extends ZP{constructor(A,t){if(super(A,t),!t||!t.agent||typeof t.agent.dispatch!="function")throw new AF("Argument opts.agent must implement Agent");this[mS]=t.agent,this[YS]=A,this[wS]=[],this[La]=1,this[jP]=this.dispatch,this[bS]=this.close.bind(this),this.dispatch=zP.call(this),this.close=this[GS]}get[HS.kConnected](){return this[La]}intercept(A){return new $P(A,this[wS])}async[GS](){await KP(this[bS])(),this[La]=0,this[mS][HS.kClients].delete(this[YS])}};kS.exports=fa});var xS=N((Pk,VS)=>{"use strict";var eF={pronoun:"it",is:"is",was:"was",this:"this"},tF={pronoun:"they",is:"are",was:"were",this:"these"};VS.exports=class{constructor(A,t){this.singular=A,this.plural=t}pluralize(A){let t=A===1,E=t?eF:tF,s=t?this.singular:this.plural;return{...E,count:A,noun:s}}}});var JS=N((wk,WS)=>{"use strict";var{Transform:EF}=require("stream"),{Console:sF}=require("console");WS.exports=class{constructor({disableColors:A}={}){this.transform=new EF({transform(t,E,s){s(null,t)}}),this.logger=new sF({stdout:this.transform,inspectOptions:{colors:!A&&!process.env.CI}})}format(A){let t=A.map(({method:E,path:s,data:{statusCode:r},persist:i,times:o,timesInvoked:n,origin:I})=>({Method:E,Origin:I,Path:s,"Status code":r,Persistent:i?"\u2705":"\u274C",Invocations:n,Remaining:i?1/0:o-n}));return this.logger.table(t),this.transform.read().toString()}}});var KS=N((mk,qS)=>{"use strict";var{kClients:pE}=$(),rF=zr(),{kAgent:da,kMockAgentSet:Vn,kMockAgentGet:vS,kDispatches:_a,kIsMockActive:xn,kNetConnect:ME,kGetNetConnect:iF,kOptions:Wn,kFactory:Jn}=fs(),nF=Oa(),oF=Da(),{matchValue:IF,buildMockOptions:CF}=Ai(),{InvalidArgumentError:XS,UndiciError:aF}=z(),RF=an(),TF=xS(),hF=JS(),Ua=class{constructor(A){this.value=A}deref(){return this.value}},pa=class extends RF{constructor(A){if(super(A),this[ME]=!0,this[xn]=!0,A&&A.agent&&typeof A.agent.dispatch!="function")throw new XS("Argument opts.agent must implement Agent");let t=A&&A.agent?A.agent:new rF(A);this[da]=t,this[pE]=t[pE],this[Wn]=CF(A)}get(A){let t=this[vS](A);return t||(t=this[Jn](A),this[Vn](A,t)),t}dispatch(A,t){return this.get(A.origin),this[da].dispatch(A,t)}async close(){await this[da].close(),this[pE].clear()}deactivate(){this[xn]=!1}activate(){this[xn]=!0}enableNetConnect(A){if(typeof A=="string"||typeof A=="function"||A instanceof RegExp)Array.isArray(this[ME])?this[ME].push(A):this[ME]=[A];else if(typeof A>"u")this[ME]=!0;else throw new XS("Unsupported matcher. Must be one of String|Function|RegExp.")}disableNetConnect(){this[ME]=!1}get isMockActive(){return this[xn]}[Vn](A,t){this[pE].set(A,new Ua(t))}[Jn](A){let t=Object.assign({agent:this},this[Wn]);return this[Wn]&&this[Wn].connections===1?new nF(A,t):new oF(A,t)}[vS](A){let t=this[pE].get(A);if(t)return t.deref();if(typeof A!="string"){let E=this[Jn]("http://localhost:9999");return this[Vn](A,E),E}for(let[E,s]of Array.from(this[pE])){let r=s.deref();if(r&&typeof E!="string"&&IF(E,A)){let i=this[Jn](A);return this[Vn](A,i),i[_a]=r[_a],i}}}[iF](){return this[ME]}pendingInterceptors(){let A=this[pE];return Array.from(A.entries()).flatMap(([t,E])=>E.deref()[_a].map(s=>({...s,origin:t}))).filter(({pending:t})=>t)}assertNoPendingInterceptors({pendingInterceptorsFormatter:A=new hF}={}){let t=this.pendingInterceptors();if(t.length===0)return;let E=new TF("interceptor","interceptors").pluralize(t.length);throw new aF(`
 ${E.count} ${E.noun} ${E.is} pending:
 
 ${A.format(t)}
@@ -74,10 +74,2674 @@ Support boolean input list: \`true | True | TRUE | false | False | FALSE\``)}d.g
 ${this.dialectInfo()}`)}dialectInfo(){return this.dialectName==="sql"?`This likely happens because you're using the default "sql" dialect.
 If possible, please select a more specific dialect (like sqlite, postgresql, etc).`:`SQL dialect used: "${this.dialectName}".`}getWhitespace(){gT.lastIndex=this.index;let e=gT.exec(this.input);if(e)return this.index+=e[0].length,e[0]}getNextToken(){for(let e of this.rules){let A=this.match(e);if(A)return A}}match(e){e.regex.lastIndex=this.index;let A=e.regex.exec(this.input);if(A){let t=A[0],E={type:e.type,raw:t,text:e.text?e.text(t):t,start:this.index};return e.key&&(E.key=e.key(t)),this.index+=t.length,E}}},uT=/\/\*/uy,tD=/([^/*]|\*[^/]|\/[^*])+/uy,ED=/\*\//uy,sD=class{constructor(){this.lastIndex=0}exec(e){let A="",t,E=0;if(t=this.matchSection(uT,e))A+=t,E++;else return null;for(;E>0;)if(t=this.matchSection(uT,e))A+=t,E++;else if(t=this.matchSection(ED,e))A+=t,E--;else if(t=this.matchSection(tD,e))A+=t;else return null;return[A]}matchSection(e,A){e.lastIndex=this.lastIndex;let t=e.exec(A);return t&&(this.lastIndex+=t[0].length),t?t[0]:null}},rD=class{constructor(e,A){this.cfg=e,this.dialectName=A,this.rulesBeforeParams=this.buildRulesBeforeParams(e),this.rulesAfterParams=this.buildRulesAfterParams(e)}tokenize(e,A){let t=[...this.rulesBeforeParams,...this.buildParamRules(this.cfg,A),...this.rulesAfterParams],E=new eD(t,this.dialectName).tokenize(e);return this.cfg.postProcess?this.cfg.postProcess(E):E}buildRulesBeforeParams(e){var A,t;return this.validRules([{type:"BLOCK_COMMENT",regex:/(\/\* *sql-formatter-disable *\*\/[\s\S]*?(?:\/\* *sql-formatter-enable *\*\/|$))/uy},{type:"BLOCK_COMMENT",regex:e.nestedBlockComments?new sD:/(\/\*[^]*?\*\/)/uy},{type:"LINE_COMMENT",regex:Zf((A=e.lineCommentTypes)!=null?A:["--"])},{type:"QUOTED_IDENTIFIER",regex:QT(e.identTypes)},{type:"NUMBER",regex:/(?:0x[0-9a-fA-F]+|0b[01]+|(?:-\s*)?[0-9]+(?:\.[0-9]*)?(?:[eE][-+]?[0-9]+(?:\.[0-9]+)?)?)(?![\w\p{Alphabetic}])/uy},{type:"RESERVED_PHRASE",regex:xt((t=e.reservedPhrases)!=null?t:[],e.identChars),text:dA},{type:"CASE",regex:/CASE\b/iuy,text:dA},{type:"END",regex:/END\b/iuy,text:dA},{type:"BETWEEN",regex:/BETWEEN\b/iuy,text:dA},{type:"LIMIT",regex:e.reservedClauses.includes("LIMIT")?/LIMIT\b/iuy:void 0,text:dA},{type:"RESERVED_CLAUSE",regex:xt(e.reservedClauses,e.identChars),text:dA},{type:"RESERVED_SELECT",regex:xt(e.reservedSelect,e.identChars),text:dA},{type:"RESERVED_SET_OPERATION",regex:xt(e.reservedSetOperations,e.identChars),text:dA},{type:"WHEN",regex:/WHEN\b/iuy,text:dA},{type:"ELSE",regex:/ELSE\b/iuy,text:dA},{type:"THEN",regex:/THEN\b/iuy,text:dA},{type:"RESERVED_JOIN",regex:xt(e.reservedJoins,e.identChars),text:dA},{type:"AND",regex:/AND\b/iuy,text:dA},{type:"OR",regex:/OR\b/iuy,text:dA},{type:"XOR",regex:e.supportsXor?/XOR\b/iuy:void 0,text:dA},{type:"RESERVED_FUNCTION_NAME",regex:xt(e.reservedFunctionNames,e.identChars),text:dA},{type:"RESERVED_DATA_TYPE",regex:xt(e.reservedDataTypes,e.identChars),text:dA},{type:"RESERVED_KEYWORD",regex:xt(e.reservedKeywords,e.identChars),text:dA}])}buildRulesAfterParams(e){var A,t;return this.validRules([{type:"VARIABLE",regex:e.variableTypes?$f(e.variableTypes):void 0},{type:"STRING",regex:QT(e.stringTypes)},{type:"IDENTIFIER",regex:AD(e.identChars)},{type:"DELIMITER",regex:/[;]/uy},{type:"COMMA",regex:/[,]/y},{type:"OPEN_PAREN",regex:ST("open",e.extraParens)},{type:"CLOSE_PAREN",regex:ST("close",e.extraParens)},{type:"OPERATOR",regex:lT(["+","-","/",">","<","=","<>","<=",">=","!=",...(A=e.operators)!=null?A:[]])},{type:"ASTERISK",regex:/[*]/uy},{type:"PROPERTY_ACCESS_OPERATOR",regex:lT([".",...(t=e.propertyAccessOperators)!=null?t:[]])}])}buildParamRules(e,A){var t,E,s,r,i;let o={named:A?.named||((t=e.paramTypes)==null?void 0:t.named)||[],quoted:A?.quoted||((E=e.paramTypes)==null?void 0:E.quoted)||[],numbered:A?.numbered||((s=e.paramTypes)==null?void 0:s.numbered)||[],positional:typeof A?.positional=="boolean"?A.positional:(r=e.paramTypes)==null?void 0:r.positional,custom:A?.custom||((i=e.paramTypes)==null?void 0:i.custom)||[]};return this.validRules([{type:"NAMED_PARAMETER",regex:QI(o.named,GT(e.paramChars||e.identChars)),key:n=>n.slice(1)},{type:"QUOTED_PARAMETER",regex:QI(o.quoted,mT(e.identTypes)),key:n=>(({tokenKey:I,quoteChar:C})=>I.replace(new RegExp(ve("\\"+C),"gu"),C))({tokenKey:n.slice(2,-1),quoteChar:n.slice(-1)})},{type:"NUMBERED_PARAMETER",regex:QI(o.numbered,"[0-9]+"),key:n=>n.slice(1)},{type:"POSITIONAL_PARAMETER",regex:o.positional?/[?]/y:void 0},...o.custom.map(n=>{var I;return{type:"CUSTOM_PARAMETER",regex:SE(n.regex),key:(I=n.key)!=null?I:C=>C}})])}validRules(e){return e.filter(A=>!!A.regex)}},dA=e=>Hi(e.toUpperCase()),OT=new Map,iD=e=>{let A=OT.get(e);return A||(A=nD(e),OT.set(e,A)),A},nD=e=>({tokenizer:new rD(e.tokenizerOptions,e.name),formatOptions:oD(e.formatOptions)}),oD=e=>{var A;return{alwaysDenseOperators:e.alwaysDenseOperators||[],onelineClauses:Object.fromEntries(e.onelineClauses.map(t=>[t,!0])),tabularOnelineClauses:Object.fromEntries(((A=e.tabularOnelineClauses)!=null?A:e.onelineClauses).map(t=>[t,!0]))}};function ID(e){return e.indentStyle==="tabularLeft"||e.indentStyle==="tabularRight"?" ".repeat(10):e.useTabs?"	":" ".repeat(e.tabWidth)}function XE(e){return e.indentStyle==="tabularLeft"||e.indentStyle==="tabularRight"}var CD=class{constructor(e){this.params=e,this.index=0}get({key:e,text:A}){return this.params?e?this.params[e]:this.params[this.index++]:A}getPositionalParameterIndex(){return this.index}setPositionalParameterIndex(e){this.index=e}};function aD(e){return e.map(RD).map(TD).map(hD).map(BD).map(cD)}var RD=(e,A,t)=>{if(PT(e.type)){let E=gD(t,A);if(E&&E.type==="PROPERTY_ACCESS_OPERATOR")return zA(mA({},e),{type:"IDENTIFIER",text:e.raw})}return e},TD=(e,A,t)=>{if(e.type==="RESERVED_FUNCTION_NAME"){let E=or(t,A);if(!E||!HT(E))return zA(mA({},e),{type:"RESERVED_KEYWORD"})}return e},hD=(e,A,t)=>{if(e.type==="RESERVED_DATA_TYPE"){let E=or(t,A);if(E&&HT(E))return zA(mA({},e),{type:"RESERVED_PARAMETERIZED_DATA_TYPE"})}return e},BD=(e,A,t)=>{if(e.type==="IDENTIFIER"){let E=or(t,A);if(E&&kT(E))return zA(mA({},e),{type:"ARRAY_IDENTIFIER"})}return e},cD=(e,A,t)=>{if(e.type==="RESERVED_DATA_TYPE"){let E=or(t,A);if(E&&kT(E))return zA(mA({},e),{type:"ARRAY_KEYWORD"})}return e},gD=(e,A)=>or(e,A,-1),or=(e,A,t=1)=>{let E=1;for(;e[A+E*t]&&SD(e[A+E*t]);)E++;return e[A+E*t]},HT=e=>e.type==="OPEN_PAREN"&&e.text==="(",kT=e=>e.type==="OPEN_PAREN"&&e.text==="[",SD=e=>e.type==="BLOCK_COMMENT"||e.type==="LINE_COMMENT",VT=class{constructor(e){this.tokenize=e,this.index=0,this.tokens=[],this.input=""}reset(e,A){this.input=e,this.index=0,this.tokens=this.tokenize(e)}next(){return this.tokens[this.index++]}save(){}formatError(e){let{line:A,col:t}=bT(this.input,e.start);return`Parse error at token: ${e.text} at line ${A} column ${t}`}has(e){return e in MT}};function uI(e){return e[0]}var y=new VT(e=>[]),cE=([[e]])=>e,_A=e=>({type:"keyword",tokenType:e.type,text:e.text,raw:e.raw}),LT=e=>({type:"data_type",text:e.text,raw:e.raw}),UA=(e,{leading:A,trailing:t})=>(A?.length&&(e=zA(mA({},e),{leadingComments:A})),t?.length&&(e=zA(mA({},e),{trailingComments:t})),e),lD=(e,{leading:A,trailing:t})=>{if(A?.length){let[E,...s]=e;e=[UA(E,{leading:A}),...s]}if(t?.length){let E=e.slice(0,-1),s=e[e.length-1];e=[...E,UA(s,{trailing:t})]}return e},ND={Lexer:y,ParserRules:[{name:"main$ebnf$1",symbols:[]},{name:"main$ebnf$1",symbols:["main$ebnf$1","statement"],postprocess:e=>e[0].concat([e[1]])},{name:"main",symbols:["main$ebnf$1"],postprocess:([e])=>{let A=e[e.length-1];return A&&!A.hasSemicolon?A.children.length>0?e:e.slice(0,-1):e}},{name:"statement$subexpression$1",symbols:[y.has("DELIMITER")?{type:"DELIMITER"}:DELIMITER]},{name:"statement$subexpression$1",symbols:[y.has("EOF")?{type:"EOF"}:EOF]},{name:"statement",symbols:["expressions_or_clauses","statement$subexpression$1"],postprocess:([e,[A]])=>({type:"statement",children:e,hasSemicolon:A.type==="DELIMITER"})},{name:"expressions_or_clauses$ebnf$1",symbols:[]},{name:"expressions_or_clauses$ebnf$1",symbols:["expressions_or_clauses$ebnf$1","free_form_sql"],postprocess:e=>e[0].concat([e[1]])},{name:"expressions_or_clauses$ebnf$2",symbols:[]},{name:"expressions_or_clauses$ebnf$2",symbols:["expressions_or_clauses$ebnf$2","clause"],postprocess:e=>e[0].concat([e[1]])},{name:"expressions_or_clauses",symbols:["expressions_or_clauses$ebnf$1","expressions_or_clauses$ebnf$2"],postprocess:([e,A])=>[...e,...A]},{name:"clause$subexpression$1",symbols:["limit_clause"]},{name:"clause$subexpression$1",symbols:["select_clause"]},{name:"clause$subexpression$1",symbols:["other_clause"]},{name:"clause$subexpression$1",symbols:["set_operation"]},{name:"clause",symbols:["clause$subexpression$1"],postprocess:cE},{name:"limit_clause$ebnf$1$subexpression$1$ebnf$1",symbols:["free_form_sql"]},{name:"limit_clause$ebnf$1$subexpression$1$ebnf$1",symbols:["limit_clause$ebnf$1$subexpression$1$ebnf$1","free_form_sql"],postprocess:e=>e[0].concat([e[1]])},{name:"limit_clause$ebnf$1$subexpression$1",symbols:[y.has("COMMA")?{type:"COMMA"}:COMMA,"limit_clause$ebnf$1$subexpression$1$ebnf$1"]},{name:"limit_clause$ebnf$1",symbols:["limit_clause$ebnf$1$subexpression$1"],postprocess:uI},{name:"limit_clause$ebnf$1",symbols:[],postprocess:()=>null},{name:"limit_clause",symbols:[y.has("LIMIT")?{type:"LIMIT"}:LIMIT,"_","expression_chain_","limit_clause$ebnf$1"],postprocess:([e,A,t,E])=>{if(E){let[s,r]=E;return{type:"limit_clause",limitKw:UA(_A(e),{trailing:A}),offset:t,count:r}}else return{type:"limit_clause",limitKw:UA(_A(e),{trailing:A}),count:t}}},{name:"select_clause$subexpression$1$ebnf$1",symbols:[]},{name:"select_clause$subexpression$1$ebnf$1",symbols:["select_clause$subexpression$1$ebnf$1","free_form_sql"],postprocess:e=>e[0].concat([e[1]])},{name:"select_clause$subexpression$1",symbols:["all_columns_asterisk","select_clause$subexpression$1$ebnf$1"]},{name:"select_clause$subexpression$1$ebnf$2",symbols:[]},{name:"select_clause$subexpression$1$ebnf$2",symbols:["select_clause$subexpression$1$ebnf$2","free_form_sql"],postprocess:e=>e[0].concat([e[1]])},{name:"select_clause$subexpression$1",symbols:["asteriskless_free_form_sql","select_clause$subexpression$1$ebnf$2"]},{name:"select_clause",symbols:[y.has("RESERVED_SELECT")?{type:"RESERVED_SELECT"}:RESERVED_SELECT,"select_clause$subexpression$1"],postprocess:([e,[A,t]])=>({type:"clause",nameKw:_A(e),children:[A,...t]})},{name:"select_clause",symbols:[y.has("RESERVED_SELECT")?{type:"RESERVED_SELECT"}:RESERVED_SELECT],postprocess:([e])=>({type:"clause",nameKw:_A(e),children:[]})},{name:"all_columns_asterisk",symbols:[y.has("ASTERISK")?{type:"ASTERISK"}:ASTERISK],postprocess:()=>({type:"all_columns_asterisk"})},{name:"other_clause$ebnf$1",symbols:[]},{name:"other_clause$ebnf$1",symbols:["other_clause$ebnf$1","free_form_sql"],postprocess:e=>e[0].concat([e[1]])},{name:"other_clause",symbols:[y.has("RESERVED_CLAUSE")?{type:"RESERVED_CLAUSE"}:RESERVED_CLAUSE,"other_clause$ebnf$1"],postprocess:([e,A])=>({type:"clause",nameKw:_A(e),children:A})},{name:"set_operation$ebnf$1",symbols:[]},{name:"set_operation$ebnf$1",symbols:["set_operation$ebnf$1","free_form_sql"],postprocess:e=>e[0].concat([e[1]])},{name:"set_operation",symbols:[y.has("RESERVED_SET_OPERATION")?{type:"RESERVED_SET_OPERATION"}:RESERVED_SET_OPERATION,"set_operation$ebnf$1"],postprocess:([e,A])=>({type:"set_operation",nameKw:_A(e),children:A})},{name:"expression_chain_$ebnf$1",symbols:["expression_with_comments_"]},{name:"expression_chain_$ebnf$1",symbols:["expression_chain_$ebnf$1","expression_with_comments_"],postprocess:e=>e[0].concat([e[1]])},{name:"expression_chain_",symbols:["expression_chain_$ebnf$1"],postprocess:uI},{name:"expression_chain$ebnf$1",symbols:[]},{name:"expression_chain$ebnf$1",symbols:["expression_chain$ebnf$1","_expression_with_comments"],postprocess:e=>e[0].concat([e[1]])},{name:"expression_chain",symbols:["expression","expression_chain$ebnf$1"],postprocess:([e,A])=>[e,...A]},{name:"andless_expression_chain$ebnf$1",symbols:[]},{name:"andless_expression_chain$ebnf$1",symbols:["andless_expression_chain$ebnf$1","_andless_expression_with_comments"],postprocess:e=>e[0].concat([e[1]])},{name:"andless_expression_chain",symbols:["andless_expression","andless_expression_chain$ebnf$1"],postprocess:([e,A])=>[e,...A]},{name:"expression_with_comments_",symbols:["expression","_"],postprocess:([e,A])=>UA(e,{trailing:A})},{name:"_expression_with_comments",symbols:["_","expression"],postprocess:([e,A])=>UA(A,{leading:e})},{name:"_andless_expression_with_comments",symbols:["_","andless_expression"],postprocess:([e,A])=>UA(A,{leading:e})},{name:"free_form_sql$subexpression$1",symbols:["asteriskless_free_form_sql"]},{name:"free_form_sql$subexpression$1",symbols:["asterisk"]},{name:"free_form_sql",symbols:["free_form_sql$subexpression$1"],postprocess:cE},{name:"asteriskless_free_form_sql$subexpression$1",symbols:["asteriskless_andless_expression"]},{name:"asteriskless_free_form_sql$subexpression$1",symbols:["logic_operator"]},{name:"asteriskless_free_form_sql$subexpression$1",symbols:["comma"]},{name:"asteriskless_free_form_sql$subexpression$1",symbols:["comment"]},{name:"asteriskless_free_form_sql$subexpression$1",symbols:["other_keyword"]},{name:"asteriskless_free_form_sql",symbols:["asteriskless_free_form_sql$subexpression$1"],postprocess:cE},{name:"expression$subexpression$1",symbols:["andless_expression"]},{name:"expression$subexpression$1",symbols:["logic_operator"]},{name:"expression",symbols:["expression$subexpression$1"],postprocess:cE},{name:"andless_expression$subexpression$1",symbols:["asteriskless_andless_expression"]},{name:"andless_expression$subexpression$1",symbols:["asterisk"]},{name:"andless_expression",symbols:["andless_expression$subexpression$1"],postprocess:cE},{name:"asteriskless_andless_expression$subexpression$1",symbols:["atomic_expression"]},{name:"asteriskless_andless_expression$subexpression$1",symbols:["between_predicate"]},{name:"asteriskless_andless_expression$subexpression$1",symbols:["case_expression"]},{name:"asteriskless_andless_expression",symbols:["asteriskless_andless_expression$subexpression$1"],postprocess:cE},{name:"atomic_expression$subexpression$1",symbols:["array_subscript"]},{name:"atomic_expression$subexpression$1",symbols:["function_call"]},{name:"atomic_expression$subexpression$1",symbols:["property_access"]},{name:"atomic_expression$subexpression$1",symbols:["parenthesis"]},{name:"atomic_expression$subexpression$1",symbols:["curly_braces"]},{name:"atomic_expression$subexpression$1",symbols:["square_brackets"]},{name:"atomic_expression$subexpression$1",symbols:["operator"]},{name:"atomic_expression$subexpression$1",symbols:["identifier"]},{name:"atomic_expression$subexpression$1",symbols:["parameter"]},{name:"atomic_expression$subexpression$1",symbols:["literal"]},{name:"atomic_expression$subexpression$1",symbols:["data_type"]},{name:"atomic_expression$subexpression$1",symbols:["keyword"]},{name:"atomic_expression",symbols:["atomic_expression$subexpression$1"],postprocess:cE},{name:"array_subscript",symbols:[y.has("ARRAY_IDENTIFIER")?{type:"ARRAY_IDENTIFIER"}:ARRAY_IDENTIFIER,"_","square_brackets"],postprocess:([e,A,t])=>({type:"array_subscript",array:UA({type:"identifier",quoted:!1,text:e.text},{trailing:A}),parenthesis:t})},{name:"array_subscript",symbols:[y.has("ARRAY_KEYWORD")?{type:"ARRAY_KEYWORD"}:ARRAY_KEYWORD,"_","square_brackets"],postprocess:([e,A,t])=>({type:"array_subscript",array:UA(_A(e),{trailing:A}),parenthesis:t})},{name:"function_call",symbols:[y.has("RESERVED_FUNCTION_NAME")?{type:"RESERVED_FUNCTION_NAME"}:RESERVED_FUNCTION_NAME,"_","parenthesis"],postprocess:([e,A,t])=>({type:"function_call",nameKw:UA(_A(e),{trailing:A}),parenthesis:t})},{name:"parenthesis",symbols:[{literal:"("},"expressions_or_clauses",{literal:")"}],postprocess:([e,A,t])=>({type:"parenthesis",children:A,openParen:"(",closeParen:")"})},{name:"curly_braces$ebnf$1",symbols:[]},{name:"curly_braces$ebnf$1",symbols:["curly_braces$ebnf$1","free_form_sql"],postprocess:e=>e[0].concat([e[1]])},{name:"curly_braces",symbols:[{literal:"{"},"curly_braces$ebnf$1",{literal:"}"}],postprocess:([e,A,t])=>({type:"parenthesis",children:A,openParen:"{",closeParen:"}"})},{name:"square_brackets$ebnf$1",symbols:[]},{name:"square_brackets$ebnf$1",symbols:["square_brackets$ebnf$1","free_form_sql"],postprocess:e=>e[0].concat([e[1]])},{name:"square_brackets",symbols:[{literal:"["},"square_brackets$ebnf$1",{literal:"]"}],postprocess:([e,A,t])=>({type:"parenthesis",children:A,openParen:"[",closeParen:"]"})},{name:"property_access$subexpression$1",symbols:["identifier"]},{name:"property_access$subexpression$1",symbols:["array_subscript"]},{name:"property_access$subexpression$1",symbols:["all_columns_asterisk"]},{name:"property_access$subexpression$1",symbols:["parameter"]},{name:"property_access",symbols:["atomic_expression","_",y.has("PROPERTY_ACCESS_OPERATOR")?{type:"PROPERTY_ACCESS_OPERATOR"}:PROPERTY_ACCESS_OPERATOR,"_","property_access$subexpression$1"],postprocess:([e,A,t,E,[s]])=>({type:"property_access",object:UA(e,{trailing:A}),operator:t.text,property:UA(s,{leading:E})})},{name:"between_predicate",symbols:[y.has("BETWEEN")?{type:"BETWEEN"}:BETWEEN,"_","andless_expression_chain","_",y.has("AND")?{type:"AND"}:AND,"_","andless_expression"],postprocess:([e,A,t,E,s,r,i])=>({type:"between_predicate",betweenKw:_A(e),expr1:lD(t,{leading:A,trailing:E}),andKw:_A(s),expr2:[UA(i,{leading:r})]})},{name:"case_expression$ebnf$1",symbols:["expression_chain_"],postprocess:uI},{name:"case_expression$ebnf$1",symbols:[],postprocess:()=>null},{name:"case_expression$ebnf$2",symbols:[]},{name:"case_expression$ebnf$2",symbols:["case_expression$ebnf$2","case_clause"],postprocess:e=>e[0].concat([e[1]])},{name:"case_expression",symbols:[y.has("CASE")?{type:"CASE"}:CASE,"_","case_expression$ebnf$1","case_expression$ebnf$2",y.has("END")?{type:"END"}:END],postprocess:([e,A,t,E,s])=>({type:"case_expression",caseKw:UA(_A(e),{trailing:A}),endKw:_A(s),expr:t||[],clauses:E})},{name:"case_clause",symbols:[y.has("WHEN")?{type:"WHEN"}:WHEN,"_","expression_chain_",y.has("THEN")?{type:"THEN"}:THEN,"_","expression_chain_"],postprocess:([e,A,t,E,s,r])=>({type:"case_when",whenKw:UA(_A(e),{trailing:A}),thenKw:UA(_A(E),{trailing:s}),condition:t,result:r})},{name:"case_clause",symbols:[y.has("ELSE")?{type:"ELSE"}:ELSE,"_","expression_chain_"],postprocess:([e,A,t])=>({type:"case_else",elseKw:UA(_A(e),{trailing:A}),result:t})},{name:"comma$subexpression$1",symbols:[y.has("COMMA")?{type:"COMMA"}:COMMA]},{name:"comma",symbols:["comma$subexpression$1"],postprocess:([[e]])=>({type:"comma"})},{name:"asterisk$subexpression$1",symbols:[y.has("ASTERISK")?{type:"ASTERISK"}:ASTERISK]},{name:"asterisk",symbols:["asterisk$subexpression$1"],postprocess:([[e]])=>({type:"operator",text:e.text})},{name:"operator$subexpression$1",symbols:[y.has("OPERATOR")?{type:"OPERATOR"}:OPERATOR]},{name:"operator",symbols:["operator$subexpression$1"],postprocess:([[e]])=>({type:"operator",text:e.text})},{name:"identifier$subexpression$1",symbols:[y.has("IDENTIFIER")?{type:"IDENTIFIER"}:IDENTIFIER]},{name:"identifier$subexpression$1",symbols:[y.has("QUOTED_IDENTIFIER")?{type:"QUOTED_IDENTIFIER"}:QUOTED_IDENTIFIER]},{name:"identifier$subexpression$1",symbols:[y.has("VARIABLE")?{type:"VARIABLE"}:VARIABLE]},{name:"identifier",symbols:["identifier$subexpression$1"],postprocess:([[e]])=>({type:"identifier",quoted:e.type!=="IDENTIFIER",text:e.text})},{name:"parameter$subexpression$1",symbols:[y.has("NAMED_PARAMETER")?{type:"NAMED_PARAMETER"}:NAMED_PARAMETER]},{name:"parameter$subexpression$1",symbols:[y.has("QUOTED_PARAMETER")?{type:"QUOTED_PARAMETER"}:QUOTED_PARAMETER]},{name:"parameter$subexpression$1",symbols:[y.has("NUMBERED_PARAMETER")?{type:"NUMBERED_PARAMETER"}:NUMBERED_PARAMETER]},{name:"parameter$subexpression$1",symbols:[y.has("POSITIONAL_PARAMETER")?{type:"POSITIONAL_PARAMETER"}:POSITIONAL_PARAMETER]},{name:"parameter$subexpression$1",symbols:[y.has("CUSTOM_PARAMETER")?{type:"CUSTOM_PARAMETER"}:CUSTOM_PARAMETER]},{name:"parameter",symbols:["parameter$subexpression$1"],postprocess:([[e]])=>({type:"parameter",key:e.key,text:e.text})},{name:"literal$subexpression$1",symbols:[y.has("NUMBER")?{type:"NUMBER"}:NUMBER]},{name:"literal$subexpression$1",symbols:[y.has("STRING")?{type:"STRING"}:STRING]},{name:"literal",symbols:["literal$subexpression$1"],postprocess:([[e]])=>({type:"literal",text:e.text})},{name:"keyword$subexpression$1",symbols:[y.has("RESERVED_KEYWORD")?{type:"RESERVED_KEYWORD"}:RESERVED_KEYWORD]},{name:"keyword$subexpression$1",symbols:[y.has("RESERVED_PHRASE")?{type:"RESERVED_PHRASE"}:RESERVED_PHRASE]},{name:"keyword$subexpression$1",symbols:[y.has("RESERVED_JOIN")?{type:"RESERVED_JOIN"}:RESERVED_JOIN]},{name:"keyword",symbols:["keyword$subexpression$1"],postprocess:([[e]])=>_A(e)},{name:"data_type$subexpression$1",symbols:[y.has("RESERVED_DATA_TYPE")?{type:"RESERVED_DATA_TYPE"}:RESERVED_DATA_TYPE]},{name:"data_type",symbols:["data_type$subexpression$1"],postprocess:([[e]])=>LT(e)},{name:"data_type",symbols:[y.has("RESERVED_PARAMETERIZED_DATA_TYPE")?{type:"RESERVED_PARAMETERIZED_DATA_TYPE"}:RESERVED_PARAMETERIZED_DATA_TYPE,"_","parenthesis"],postprocess:([e,A,t])=>({type:"parameterized_data_type",dataType:UA(LT(e),{trailing:A}),parenthesis:t})},{name:"logic_operator$subexpression$1",symbols:[y.has("AND")?{type:"AND"}:AND]},{name:"logic_operator$subexpression$1",symbols:[y.has("OR")?{type:"OR"}:OR]},{name:"logic_operator$subexpression$1",symbols:[y.has("XOR")?{type:"XOR"}:XOR]},{name:"logic_operator",symbols:["logic_operator$subexpression$1"],postprocess:([[e]])=>_A(e)},{name:"other_keyword$subexpression$1",symbols:[y.has("WHEN")?{type:"WHEN"}:WHEN]},{name:"other_keyword$subexpression$1",symbols:[y.has("THEN")?{type:"THEN"}:THEN]},{name:"other_keyword$subexpression$1",symbols:[y.has("ELSE")?{type:"ELSE"}:ELSE]},{name:"other_keyword$subexpression$1",symbols:[y.has("END")?{type:"END"}:END]},{name:"other_keyword",symbols:["other_keyword$subexpression$1"],postprocess:([[e]])=>_A(e)},{name:"_$ebnf$1",symbols:[]},{name:"_$ebnf$1",symbols:["_$ebnf$1","comment"],postprocess:e=>e[0].concat([e[1]])},{name:"_",symbols:["_$ebnf$1"],postprocess:([e])=>e},{name:"comment",symbols:[y.has("LINE_COMMENT")?{type:"LINE_COMMENT"}:LINE_COMMENT],postprocess:([e])=>({type:"line_comment",text:e.text,precedingWhitespace:e.precedingWhitespace})},{name:"comment",symbols:[y.has("BLOCK_COMMENT")?{type:"BLOCK_COMMENT"}:BLOCK_COMMENT],postprocess:([e])=>({type:"block_comment",text:e.text,precedingWhitespace:e.precedingWhitespace})},{name:"comment",symbols:[y.has("DISABLE_COMMENT")?{type:"DISABLE_COMMENT"}:DISABLE_COMMENT],postprocess:([e])=>({type:"disable_comment",text:e.text,precedingWhitespace:e.precedingWhitespace})}],ParserStart:"main"},QD=ND,{Parser:uD,Grammar:OD}=YT.default;function LD(e){let A={},t=new VT(s=>[...aD(e.tokenize(s,A)),yT(s.length)]),E=new uD(OD.fromCompiled(QD),{lexer:t});return{parse:(s,r)=>{A=r;let{results:i}=E.feed(s);if(i.length===1)return i[0];throw i.length===0?new Error("Parse error: Invalid SQL"):new Error(`Parse error: Ambiguous grammar
 ${JSON.stringify(i,void 0,2)}`)}}}var xT=class{constructor(e){this.indentation=e,this.items=[]}add(...e){for(let A of e)switch(A){case 0:this.items.push(0);break;case 1:this.trimHorizontalWhitespace();break;case 2:this.trimWhitespace();break;case 3:this.trimHorizontalWhitespace(),this.addNewline(3);break;case 4:this.trimHorizontalWhitespace(),this.addNewline(4);break;case 5:this.addIndentation();break;case 6:this.items.push(6);break;default:this.items.push(A)}}trimHorizontalWhitespace(){for(;fD(nr(this.items));)this.items.pop()}trimWhitespace(){for(;DD(nr(this.items));)this.items.pop()}addNewline(e){if(this.items.length>0)switch(nr(this.items)){case 3:this.items.pop(),this.items.push(e);break;case 4:break;default:this.items.push(e);break}}addIndentation(){for(let e=0;e<this.indentation.getLevel();e++)this.items.push(6)}toString(){return this.items.map(e=>this.itemToString(e)).join("")}getLayoutItems(){return this.items}itemToString(e){switch(e){case 0:return" ";case 3:case 4:return`
-`;case 6:return this.indentation.getSingleIndent();default:return e}}},fD=e=>e===0||e===6,DD=e=>e===0||e===6||e===3;function fT(e,A){if(A==="standard")return e;let t=[];return e.length>=10&&e.includes(" ")&&([e,...t]=e.split(" ")),A==="tabularLeft"?e=e.padEnd(9," "):e=e.padStart(9," "),e+["",...t].join(" ")}function DT(e){return qu(e)||e==="RESERVED_CLAUSE"||e==="RESERVED_SELECT"||e==="RESERVED_SET_OPERATION"||e==="RESERVED_JOIN"||e==="LIMIT"}var OI="top-level",dD="block-level",WT=class{constructor(e){this.indent=e,this.indentTypes=[]}getSingleIndent(){return this.indent}getLevel(){return this.indentTypes.length}increaseTopLevel(){this.indentTypes.push(OI)}increaseBlockLevel(){this.indentTypes.push(dD)}decreaseTopLevel(){this.indentTypes.length>0&&nr(this.indentTypes)===OI&&this.indentTypes.pop()}decreaseBlockLevel(){for(;this.indentTypes.length>0&&this.indentTypes.pop()===OI;);}},_D=class extends xT{constructor(e){super(new WT("")),this.expressionWidth=e,this.length=0,this.trailingSpace=!1}add(...e){if(e.forEach(A=>this.addToLength(A)),this.length>this.expressionWidth)throw new LI;super.add(...e)}addToLength(e){if(typeof e=="string")this.length+=e.length,this.trailingSpace=!1;else{if(e===4||e===3)throw new LI;e===5||e===6||e===0?this.trailingSpace||(this.length++,this.trailingSpace=!0):(e===2||e===1)&&this.trailingSpace&&(this.trailingSpace=!1,this.length--)}}},LI=class extends Error{},UD=class fI{constructor({cfg:A,dialectCfg:t,params:E,layout:s,inline:r=!1}){this.inline=!1,this.nodes=[],this.index=-1,this.cfg=A,this.dialectCfg=t,this.inline=r,this.params=E,this.layout=s}format(A){for(this.nodes=A,this.index=0;this.index<this.nodes.length;this.index++)this.formatNode(this.nodes[this.index]);return this.layout}formatNode(A){this.formatComments(A.leadingComments),this.formatNodeWithoutComments(A),this.formatComments(A.trailingComments)}formatNodeWithoutComments(A){switch(A.type){case"function_call":return this.formatFunctionCall(A);case"parameterized_data_type":return this.formatParameterizedDataType(A);case"array_subscript":return this.formatArraySubscript(A);case"property_access":return this.formatPropertyAccess(A);case"parenthesis":return this.formatParenthesis(A);case"between_predicate":return this.formatBetweenPredicate(A);case"case_expression":return this.formatCaseExpression(A);case"case_when":return this.formatCaseWhen(A);case"case_else":return this.formatCaseElse(A);case"clause":return this.formatClause(A);case"set_operation":return this.formatSetOperation(A);case"limit_clause":return this.formatLimitClause(A);case"all_columns_asterisk":return this.formatAllColumnsAsterisk(A);case"literal":return this.formatLiteral(A);case"identifier":return this.formatIdentifier(A);case"parameter":return this.formatParameter(A);case"operator":return this.formatOperator(A);case"comma":return this.formatComma(A);case"line_comment":return this.formatLineComment(A);case"block_comment":return this.formatBlockComment(A);case"disable_comment":return this.formatBlockComment(A);case"data_type":return this.formatDataType(A);case"keyword":return this.formatKeywordNode(A)}}formatFunctionCall(A){this.withComments(A.nameKw,()=>{this.layout.add(this.showFunctionKw(A.nameKw))}),this.formatNode(A.parenthesis)}formatParameterizedDataType(A){this.withComments(A.dataType,()=>{this.layout.add(this.showDataType(A.dataType))}),this.formatNode(A.parenthesis)}formatArraySubscript(A){let t;switch(A.array.type){case"data_type":t=this.showDataType(A.array);break;case"keyword":t=this.showKw(A.array);break;default:t=this.showIdentifier(A.array);break}this.withComments(A.array,()=>{this.layout.add(t)}),this.formatNode(A.parenthesis)}formatPropertyAccess(A){this.formatNode(A.object),this.layout.add(1,A.operator),this.formatNode(A.property)}formatParenthesis(A){let t=this.formatInlineExpression(A.children);t?(this.layout.add(A.openParen),this.layout.add(...t.getLayoutItems()),this.layout.add(1,A.closeParen,0)):(this.layout.add(A.openParen,3),XE(this.cfg)?(this.layout.add(5),this.layout=this.formatSubExpression(A.children)):(this.layout.indentation.increaseBlockLevel(),this.layout.add(5),this.layout=this.formatSubExpression(A.children),this.layout.indentation.decreaseBlockLevel()),this.layout.add(3,5,A.closeParen,0))}formatBetweenPredicate(A){this.layout.add(this.showKw(A.betweenKw),0),this.layout=this.formatSubExpression(A.expr1),this.layout.add(1,0,this.showNonTabularKw(A.andKw),0),this.layout=this.formatSubExpression(A.expr2),this.layout.add(0)}formatCaseExpression(A){this.formatNode(A.caseKw),this.layout.indentation.increaseBlockLevel(),this.layout=this.formatSubExpression(A.expr),this.layout=this.formatSubExpression(A.clauses),this.layout.indentation.decreaseBlockLevel(),this.layout.add(3,5),this.formatNode(A.endKw)}formatCaseWhen(A){this.layout.add(3,5),this.formatNode(A.whenKw),this.layout=this.formatSubExpression(A.condition),this.formatNode(A.thenKw),this.layout=this.formatSubExpression(A.result)}formatCaseElse(A){this.layout.add(3,5),this.formatNode(A.elseKw),this.layout=this.formatSubExpression(A.result)}formatClause(A){this.isOnelineClause(A)?this.formatClauseInOnelineStyle(A):XE(this.cfg)?this.formatClauseInTabularStyle(A):this.formatClauseInIndentedStyle(A)}isOnelineClause(A){return XE(this.cfg)?this.dialectCfg.tabularOnelineClauses[A.nameKw.text]:this.dialectCfg.onelineClauses[A.nameKw.text]}formatClauseInIndentedStyle(A){this.layout.add(3,5,this.showKw(A.nameKw),3),this.layout.indentation.increaseTopLevel(),this.layout.add(5),this.layout=this.formatSubExpression(A.children),this.layout.indentation.decreaseTopLevel()}formatClauseInOnelineStyle(A){this.layout.add(3,5,this.showKw(A.nameKw),0),this.layout=this.formatSubExpression(A.children)}formatClauseInTabularStyle(A){this.layout.add(3,5,this.showKw(A.nameKw),0),this.layout.indentation.increaseTopLevel(),this.layout=this.formatSubExpression(A.children),this.layout.indentation.decreaseTopLevel()}formatSetOperation(A){this.layout.add(3,5,this.showKw(A.nameKw),3),this.layout.add(5),this.layout=this.formatSubExpression(A.children)}formatLimitClause(A){this.withComments(A.limitKw,()=>{this.layout.add(3,5,this.showKw(A.limitKw))}),this.layout.indentation.increaseTopLevel(),XE(this.cfg)?this.layout.add(0):this.layout.add(3,5),A.offset?(this.layout=this.formatSubExpression(A.offset),this.layout.add(1,",",0),this.layout=this.formatSubExpression(A.count)):this.layout=this.formatSubExpression(A.count),this.layout.indentation.decreaseTopLevel()}formatAllColumnsAsterisk(A){this.layout.add("*",0)}formatLiteral(A){this.layout.add(A.text,0)}formatIdentifier(A){this.layout.add(this.showIdentifier(A),0)}formatParameter(A){this.layout.add(this.params.get(A),0)}formatOperator({text:A}){this.cfg.denseOperators||this.dialectCfg.alwaysDenseOperators.includes(A)?this.layout.add(1,A):A===":"?this.layout.add(1,A,0):this.layout.add(A,0)}formatComma(A){this.inline?this.layout.add(1,",",0):this.layout.add(1,",",3,5)}withComments(A,t){this.formatComments(A.leadingComments),t(),this.formatComments(A.trailingComments)}formatComments(A){A&&A.forEach(t=>{t.type==="line_comment"?this.formatLineComment(t):this.formatBlockComment(t)})}formatLineComment(A){NI(A.precedingWhitespace||"")?this.layout.add(3,5,A.text,4,5):this.layout.getLayoutItems().length>0?this.layout.add(2,0,A.text,4,5):this.layout.add(A.text,4,5)}formatBlockComment(A){A.type==="block_comment"&&this.isMultilineBlockComment(A)?(this.splitBlockComment(A.text).forEach(t=>{this.layout.add(3,5,t)}),this.layout.add(3,5)):this.layout.add(A.text,0)}isMultilineBlockComment(A){return NI(A.text)||NI(A.precedingWhitespace||"")}isDocComment(A){let t=A.split(/\n/);return/^\/\*\*?$/.test(t[0])&&t.slice(1,t.length-1).every(E=>/^\s*\*/.test(E))&&/^\s*\*\/$/.test(nr(t))}splitBlockComment(A){return this.isDocComment(A)?A.split(/\n/).map(t=>/^\s*\*/.test(t)?" "+t.replace(/^\s*/,""):t):A.split(/\n/).map(t=>t.replace(/^\s*/,""))}formatSubExpression(A){return new fI({cfg:this.cfg,dialectCfg:this.dialectCfg,params:this.params,layout:this.layout,inline:this.inline}).format(A)}formatInlineExpression(A){let t=this.params.getPositionalParameterIndex();try{return new fI({cfg:this.cfg,dialectCfg:this.dialectCfg,params:this.params,layout:new _D(this.cfg.expressionWidth),inline:!0}).format(A)}catch(E){if(E instanceof LI){this.params.setPositionalParameterIndex(t);return}else throw E}}formatKeywordNode(A){switch(A.tokenType){case"RESERVED_JOIN":return this.formatJoin(A);case"AND":case"OR":case"XOR":return this.formatLogicalOperator(A);default:return this.formatKeyword(A)}}formatJoin(A){XE(this.cfg)?(this.layout.indentation.decreaseTopLevel(),this.layout.add(3,5,this.showKw(A),0),this.layout.indentation.increaseTopLevel()):this.layout.add(3,5,this.showKw(A),0)}formatKeyword(A){this.layout.add(this.showKw(A),0)}formatLogicalOperator(A){this.cfg.logicalOperatorNewline==="before"?XE(this.cfg)?(this.layout.indentation.decreaseTopLevel(),this.layout.add(3,5,this.showKw(A),0),this.layout.indentation.increaseTopLevel()):this.layout.add(3,5,this.showKw(A),0):this.layout.add(this.showKw(A),3,5)}formatDataType(A){this.layout.add(this.showDataType(A),0)}showKw(A){return DT(A.tokenType)?fT(this.showNonTabularKw(A),this.cfg.indentStyle):this.showNonTabularKw(A)}showNonTabularKw(A){switch(this.cfg.keywordCase){case"preserve":return Hi(A.raw);case"upper":return A.text;case"lower":return A.text.toLowerCase()}}showFunctionKw(A){return DT(A.tokenType)?fT(this.showNonTabularFunctionKw(A),this.cfg.indentStyle):this.showNonTabularFunctionKw(A)}showNonTabularFunctionKw(A){switch(this.cfg.functionCase){case"preserve":return Hi(A.raw);case"upper":return A.text;case"lower":return A.text.toLowerCase()}}showIdentifier(A){if(A.quoted)return A.text;switch(this.cfg.identifierCase){case"preserve":return A.text;case"upper":return A.text.toUpperCase();case"lower":return A.text.toLowerCase()}}showDataType(A){switch(this.cfg.dataTypeCase){case"preserve":return Hi(A.raw);case"upper":return A.text;case"lower":return A.text.toLowerCase()}}},pD=class{constructor(e,A){this.dialect=e,this.cfg=A,this.params=new CD(this.cfg.params)}format(e){let A=this.parse(e);return this.formatAst(A).trimEnd()}parse(e){return LD(this.dialect.tokenizer).parse(e,this.cfg.paramTypes||{})}formatAst(e){return e.map(A=>this.formatStatement(A)).join(`
-`.repeat(this.cfg.linesBetweenQueries+1))}formatStatement(e){let A=new UD({cfg:this.cfg,dialectCfg:this.dialect.formatOptions,params:this.params,layout:new xT(new WT(ID(this.cfg)))}).format(e.children);return e.hasSemicolon&&(this.cfg.newlineBeforeSemicolon?A.add(3,";"):A.add(2,";")),A.toString()}},DI=class extends Error{};function MD(e){let A=["multilineLists","newlineBeforeOpenParen","newlineBeforeCloseParen","aliasAs","commaPosition","tabulateAlias"];for(let t of A)if(t in e)throw new DI(`${t} config is no more supported.`);if(e.expressionWidth<=0)throw new DI(`expressionWidth config must be positive number. Received ${e.expressionWidth} instead.`);return e.params&&!yD(e.params)&&console.warn('WARNING: All "params" option values should be strings.'),e}function yD(e){return(e instanceof Array?e:Object.values(e)).every(t=>typeof t=="string")}var JT={bigquery:"bigquery",db2:"db2",db2i:"db2i",hive:"hive",mariadb:"mariadb",mysql:"mysql",n1ql:"n1ql",plsql:"plsql",postgresql:"postgresql",redshift:"redshift",spark:"spark",sqlite:"sqlite",sql:"sql",trino:"trino",transactsql:"transactsql",tsql:"transactsql",singlestoredb:"singlestoredb",snowflake:"snowflake"},PD=Object.keys(JT),FD={tabWidth:2,useTabs:!1,keywordCase:"preserve",identifierCase:"preserve",dataTypeCase:"preserve",functionCase:"preserve",indentStyle:"standard",logicalOperatorNewline:"before",expressionWidth:50,linesBetweenQueries:1,denseOperators:!1,newlineBeforeSemicolon:!1},vT=(e,A={})=>{if(typeof A.language=="string"&&!PD.includes(A.language))throw new DI(`Unsupported SQL dialect: ${A.language}`);let t=JT[A.language||"sql"];return wD(e,zA(mA({},A),{dialect:pT[t]}))},wD=(e,A)=>{var t=A,{dialect:E}=t,s=bu(t,["dialect"]);if(typeof e!="string")throw new Error("Invalid query argument. Expected string, instead got "+typeof e);let r=MD(mA(mA({},FD),s));return new pD(iD(E),r).format(e)};var du=ut(NR()),AI=ut(require("fs"));var qQ=ut(bQ(),1);var li=e=>{if(typeof e!="string")throw new TypeError("invalid pattern");if(e.length>65536)throw new TypeError("pattern is too long")};var ab={"[:alnum:]":["\\p{L}\\p{Nl}\\p{Nd}",!0],"[:alpha:]":["\\p{L}\\p{Nl}",!0],"[:ascii:]":["\\x00-\\x7f",!1],"[:blank:]":["\\p{Zs}\\t",!0],"[:cntrl:]":["\\p{Cc}",!0],"[:digit:]":["\\p{Nd}",!0],"[:graph:]":["\\p{Z}\\p{C}",!0,!0],"[:lower:]":["\\p{Ll}",!0],"[:print:]":["\\p{C}",!0],"[:punct:]":["\\p{P}",!0],"[:space:]":["\\p{Z}\\t\\r\\n\\v\\f",!0],"[:upper:]":["\\p{Lu}",!0],"[:word:]":["\\p{L}\\p{Nl}\\p{Nd}\\p{Pc}",!0],"[:xdigit:]":["A-Fa-f0-9",!1]},Ni=e=>e.replace(/[[\]\\-]/g,"\\$&"),Rb=e=>e.replace(/[-[\]{}()*+?.,\\^$|#\s]/g,"\\$&"),YQ=e=>e.join(""),HQ=(e,A)=>{let t=A;if(e.charAt(t)!=="[")throw new Error("not in a brace expression");let E=[],s=[],r=t+1,i=!1,o=!1,n=!1,I=!1,C=t,a="";A:for(;r<e.length;){let B=e.charAt(r);if((B==="!"||B==="^")&&r===t+1){I=!0,r++;continue}if(B==="]"&&i&&!n){C=r+1;break}if(i=!0,B==="\\"&&!n){n=!0,r++;continue}if(B==="["&&!n){for(let[c,[g,l,Q]]of Object.entries(ab))if(e.startsWith(c,r)){if(a)return["$.",!1,e.length-t,!0];r+=c.length,Q?s.push(g):E.push(g),o=o||l;continue A}}if(n=!1,a){B>a?E.push(Ni(a)+"-"+Ni(B)):B===a&&E.push(Ni(B)),a="",r++;continue}if(e.startsWith("-]",r+1)){E.push(Ni(B+"-")),r+=2;continue}if(e.startsWith("-",r+1)){a=B,r+=2;continue}E.push(Ni(B)),r++}if(C<r)return["",!1,0,!1];if(!E.length&&!s.length)return["$.",!1,e.length-t,!0];if(s.length===0&&E.length===1&&/^\\?.$/.test(E[0])&&!I){let B=E[0].length===2?E[0].slice(-1):E[0];return[Rb(B),!1,C-t,!1]}let R="["+(I?"^":"")+YQ(E)+"]",T="["+(I?"":"^")+YQ(s)+"]";return[E.length&&s.length?"("+R+"|"+T+")":E.length?R:T,o,C-t,!0]};var je=(e,{windowsPathsNoEscape:A=!1}={})=>A?e.replace(/\[([^\/\\])\]/g,"$1"):e.replace(/((?!\\).|^)\[([^\/\\])\]/g,"$1$2").replace(/\\([^\/])/g,"$1");var Tb=new Set(["!","?","+","*","@"]),kQ=e=>Tb.has(e),hb="(?!(?:^|/)\\.\\.?(?:$|/))",yo="(?!\\.)",Bb=new Set(["[","."]),cb=new Set(["..","."]),gb=new Set("().*{}+?[]^$\\!"),Sb=e=>e.replace(/[-[\]{}()*+?.,\\^$|#\s]/g,"\\$&"),MR="[^/]",VQ=MR+"*?",xQ=MR+"+?",OA,yA,Gt,nA,QA,oE,HE,IE,bt,kE,Qi,Fo,WQ,Js,Po,ui,pR,wo,JQ,ce=class{constructor(A,t,E={}){DA(this,Fo);DA(this,ui);KR(this,"type");DA(this,OA,void 0);DA(this,yA,void 0);DA(this,Gt,!1);DA(this,nA,[]);DA(this,QA,void 0);DA(this,oE,void 0);DA(this,HE,void 0);DA(this,IE,!1);DA(this,bt,void 0);DA(this,kE,void 0);DA(this,Qi,!1);this.type=A,A&&rA(this,yA,!0),rA(this,QA,t),rA(this,OA,O(this,QA)?O(O(this,QA),OA):this),rA(this,bt,O(this,OA)===this?E:O(O(this,OA),bt)),rA(this,HE,O(this,OA)===this?[]:O(O(this,OA),HE)),A==="!"&&!O(O(this,OA),IE)&&O(this,HE).push(this),rA(this,oE,O(this,QA)?O(O(this,QA),nA).length:0)}get hasMagic(){if(O(this,yA)!==void 0)return O(this,yA);for(let A of O(this,nA))if(typeof A!="string"&&(A.type||A.hasMagic))return rA(this,yA,!0);return O(this,yA)}toString(){return O(this,kE)!==void 0?O(this,kE):this.type?rA(this,kE,this.type+"("+O(this,nA).map(A=>String(A)).join("|")+")"):rA(this,kE,O(this,nA).map(A=>String(A)).join(""))}push(...A){for(let t of A)if(t!==""){if(typeof t!="string"&&!(t instanceof ce&&O(t,QA)===this))throw new Error("invalid part: "+t);O(this,nA).push(t)}}toJSON(){let A=this.type===null?O(this,nA).slice().map(t=>typeof t=="string"?t:t.toJSON()):[this.type,...O(this,nA).map(t=>t.toJSON())];return this.isStart()&&!this.type&&A.unshift([]),this.isEnd()&&(this===O(this,OA)||O(O(this,OA),IE)&&O(this,QA)?.type==="!")&&A.push({}),A}isStart(){if(O(this,OA)===this)return!0;if(!O(this,QA)?.isStart())return!1;if(O(this,oE)===0)return!0;let A=O(this,QA);for(let t=0;t<O(this,oE);t++){let E=O(A,nA)[t];if(!(E instanceof ce&&E.type==="!"))return!1}return!0}isEnd(){if(O(this,OA)===this||O(this,QA)?.type==="!")return!0;if(!O(this,QA)?.isEnd())return!1;if(!this.type)return O(this,QA)?.isEnd();let A=O(this,QA)?O(O(this,QA),nA).length:0;return O(this,oE)===A-1}copyIn(A){typeof A=="string"?this.push(A):this.push(A.clone(this))}clone(A){let t=new ce(this.type,A);for(let E of O(this,nA))t.copyIn(E);return t}static fromGlob(A,t={}){var s;let E=new ce(null,void 0,t);return Vt(s=ce,Js,Po).call(s,A,E,0,t),E}toMMPattern(){if(this!==O(this,OA))return O(this,OA).toMMPattern();let A=this.toString(),[t,E,s,r]=this.toRegExpSource();if(!(s||O(this,yA)||O(this,bt).nocase&&!O(this,bt).nocaseMagicOnly&&A.toUpperCase()!==A.toLowerCase()))return E;let o=(O(this,bt).nocase?"i":"")+(r?"u":"");return Object.assign(new RegExp(`^${t}$`,o),{_src:t,_glob:A})}toRegExpSource(A){let t=A??!!O(this,bt).dot;if(O(this,OA)===this&&Vt(this,Fo,WQ).call(this),!this.type){let n=this.isStart()&&this.isEnd(),I=O(this,nA).map(T=>{var l;let[h,B,c,g]=typeof T=="string"?Vt(l=ce,wo,JQ).call(l,T,O(this,yA),n):T.toRegExpSource(A);return rA(this,yA,O(this,yA)||c),rA(this,Gt,O(this,Gt)||g),h}).join(""),C="";if(this.isStart()&&typeof O(this,nA)[0]=="string"&&!(O(this,nA).length===1&&cb.has(O(this,nA)[0]))){let h=Bb,B=t&&h.has(I.charAt(0))||I.startsWith("\\.")&&h.has(I.charAt(2))||I.startsWith("\\.\\.")&&h.has(I.charAt(4)),c=!t&&!A&&h.has(I.charAt(0));C=B?hb:c?yo:""}let a="";return this.isEnd()&&O(O(this,OA),IE)&&O(this,QA)?.type==="!"&&(a="(?:$|\\/)"),[C+I+a,je(I),rA(this,yA,!!O(this,yA)),O(this,Gt)]}let E=this.type==="*"||this.type==="+",s=this.type==="!"?"(?:(?!(?:":"(?:",r=Vt(this,ui,pR).call(this,t);if(this.isStart()&&this.isEnd()&&!r&&this.type!=="!"){let n=this.toString();return rA(this,nA,[n]),this.type=null,rA(this,yA,void 0),[n,je(this.toString()),!1,!1]}let i=!E||A||t||!yo?"":Vt(this,ui,pR).call(this,!0);i===r&&(i=""),i&&(r=`(?:${r})(?:${i})*?`);let o="";if(this.type==="!"&&O(this,Qi))o=(this.isStart()&&!t?yo:"")+xQ;else{let n=this.type==="!"?"))"+(this.isStart()&&!t&&!A?yo:"")+VQ+")":this.type==="@"?")":this.type==="?"?")?":this.type==="+"&&i?")":this.type==="*"&&i?")?":`)${this.type}`;o=s+r+n}return[o,je(r),rA(this,yA,!!O(this,yA)),O(this,Gt)]}},CE=ce;OA=new WeakMap,yA=new WeakMap,Gt=new WeakMap,nA=new WeakMap,QA=new WeakMap,oE=new WeakMap,HE=new WeakMap,IE=new WeakMap,bt=new WeakMap,kE=new WeakMap,Qi=new WeakMap,Fo=new WeakSet,WQ=function(){if(this!==O(this,OA))throw new Error("should only call on root");if(O(this,IE))return this;this.toString(),rA(this,IE,!0);let A;for(;A=O(this,HE).pop();){if(A.type!=="!")continue;let t=A,E=O(t,QA);for(;E;){for(let s=O(t,oE)+1;!E.type&&s<O(E,nA).length;s++)for(let r of O(A,nA)){if(typeof r=="string")throw new Error("string part in extglob AST??");r.copyIn(O(E,nA)[s])}t=E,E=O(t,QA)}}return this},Js=new WeakSet,Po=function(A,t,E,s){var T,h;let r=!1,i=!1,o=-1,n=!1;if(t.type===null){let B=E,c="";for(;B<A.length;){let g=A.charAt(B++);if(r||g==="\\"){r=!r,c+=g;continue}if(i){B===o+1?(g==="^"||g==="!")&&(n=!0):g==="]"&&!(B===o+2&&n)&&(i=!1),c+=g;continue}else if(g==="["){i=!0,o=B,n=!1,c+=g;continue}if(!s.noext&&kQ(g)&&A.charAt(B)==="("){t.push(c),c="";let l=new ce(g,t);B=Vt(T=ce,Js,Po).call(T,A,l,B,s),t.push(l);continue}c+=g}return t.push(c),B}let I=E+1,C=new ce(null,t),a=[],R="";for(;I<A.length;){let B=A.charAt(I++);if(r||B==="\\"){r=!r,R+=B;continue}if(i){I===o+1?(B==="^"||B==="!")&&(n=!0):B==="]"&&!(I===o+2&&n)&&(i=!1),R+=B;continue}else if(B==="["){i=!0,o=I,n=!1,R+=B;continue}if(kQ(B)&&A.charAt(I)==="("){C.push(R),R="";let c=new ce(B,C);C.push(c),I=Vt(h=ce,Js,Po).call(h,A,c,I,s);continue}if(B==="|"){C.push(R),R="",a.push(C),C=new ce(null,t);continue}if(B===")")return R===""&&O(t,nA).length===0&&rA(t,Qi,!0),C.push(R),R="",t.push(...a,C),I;R+=B}return t.type=null,rA(t,yA,void 0),rA(t,nA,[A.substring(E-1)]),I},ui=new WeakSet,pR=function(A){return O(this,nA).map(t=>{if(typeof t=="string")throw new Error("string type in extglob ast??");let[E,s,r,i]=t.toRegExpSource(A);return rA(this,Gt,O(this,Gt)||i),E}).filter(t=>!(this.isStart()&&this.isEnd())||!!t).join("|")},wo=new WeakSet,JQ=function(A,t,E=!1){let s=!1,r="",i=!1;for(let o=0;o<A.length;o++){let n=A.charAt(o);if(s){s=!1,r+=(gb.has(n)?"\\":"")+n;continue}if(n==="\\"){o===A.length-1?r+="\\\\":s=!0;continue}if(n==="["){let[I,C,a,R]=HQ(A,o);if(a){r+=I,i=i||C,o+=a-1,t=t||R;continue}}if(n==="*"){E&&A==="*"?r+=xQ:r+=VQ,t=!0;continue}if(n==="?"){r+=MR,t=!0;continue}r+=Sb(n)}return[r,je(A),!!t,i]},DA(CE,Js),DA(CE,wo);var vs=(e,{windowsPathsNoEscape:A=!1}={})=>A?e.replace(/[?*()[\]]/g,"[$&]"):e.replace(/[?*()[\]\\]/g,"\\$&");var re=(e,A,t={})=>(li(A),!t.nocomment&&A.charAt(0)==="#"?!1:new _e(A,t).match(e)),lb=/^\*+([^+@!?\*\[\(]*)$/,Nb=e=>A=>!A.startsWith(".")&&A.endsWith(e),Qb=e=>A=>A.endsWith(e),ub=e=>(e=e.toLowerCase(),A=>!A.startsWith(".")&&A.toLowerCase().endsWith(e)),Ob=e=>(e=e.toLowerCase(),A=>A.toLowerCase().endsWith(e)),Lb=/^\*+\.\*+$/,fb=e=>!e.startsWith(".")&&e.includes("."),Db=e=>e!=="."&&e!==".."&&e.includes("."),db=/^\.\*+$/,_b=e=>e!=="."&&e!==".."&&e.startsWith("."),Ub=/^\*+$/,pb=e=>e.length!==0&&!e.startsWith("."),Mb=e=>e.length!==0&&e!=="."&&e!=="..",yb=/^\?+([^+@!?\*\[\(]*)?$/,Pb=([e,A=""])=>{let t=KQ([e]);return A?(A=A.toLowerCase(),E=>t(E)&&E.toLowerCase().endsWith(A)):t},Fb=([e,A=""])=>{let t=ZQ([e]);return A?(A=A.toLowerCase(),E=>t(E)&&E.toLowerCase().endsWith(A)):t},wb=([e,A=""])=>{let t=ZQ([e]);return A?E=>t(E)&&E.endsWith(A):t},mb=([e,A=""])=>{let t=KQ([e]);return A?E=>t(E)&&E.endsWith(A):t},KQ=([e])=>{let A=e.length;return t=>t.length===A&&!t.startsWith(".")},ZQ=([e])=>{let A=e.length;return t=>t.length===A&&t!=="."&&t!==".."},zQ=typeof process=="object"&&process?typeof process.env=="object"&&process.env&&process.env.__MINIMATCH_TESTING_PLATFORM__||process.platform:"posix",vQ={win32:{sep:"\\"},posix:{sep:"/"}},Gb=zQ==="win32"?vQ.win32.sep:vQ.posix.sep;re.sep=Gb;var xA=Symbol("globstar **");re.GLOBSTAR=xA;var bb="[^/]",Yb=bb+"*?",Hb="(?:(?!(?:\\/|^)(?:\\.{1,2})($|\\/)).)*?",kb="(?:(?!(?:\\/|^)\\.).)*?",Vb=(e,A={})=>t=>re(t,e,A);re.filter=Vb;var xe=(e,A={})=>Object.assign({},e,A),xb=e=>{if(!e||typeof e!="object"||!Object.keys(e).length)return re;let A=re;return Object.assign((E,s,r={})=>A(E,s,xe(e,r)),{Minimatch:class extends A.Minimatch{constructor(s,r={}){super(s,xe(e,r))}static defaults(s){return A.defaults(xe(e,s)).Minimatch}},AST:class extends A.AST{constructor(s,r,i={}){super(s,r,xe(e,i))}static fromGlob(s,r={}){return A.AST.fromGlob(s,xe(e,r))}},unescape:(E,s={})=>A.unescape(E,xe(e,s)),escape:(E,s={})=>A.escape(E,xe(e,s)),filter:(E,s={})=>A.filter(E,xe(e,s)),defaults:E=>A.defaults(xe(e,E)),makeRe:(E,s={})=>A.makeRe(E,xe(e,s)),braceExpand:(E,s={})=>A.braceExpand(E,xe(e,s)),match:(E,s,r={})=>A.match(E,s,xe(e,r)),sep:A.sep,GLOBSTAR:xA})};re.defaults=xb;var jQ=(e,A={})=>(li(e),A.nobrace||!/\{(?:(?!\{).)*\}/.test(e)?[e]:(0,qQ.default)(e));re.braceExpand=jQ;var Wb=(e,A={})=>new _e(e,A).makeRe();re.makeRe=Wb;var Jb=(e,A,t={})=>{let E=new _e(A,t);return e=e.filter(s=>E.match(s)),E.options.nonull&&!e.length&&e.push(A),e};re.match=Jb;var XQ=/[?*]|[+@!]\(.*?\)|\[|\]/,vb=e=>e.replace(/[-[\]{}()*+?.,\\^$|#\s]/g,"\\$&"),_e=class{options;set;pattern;windowsPathsNoEscape;nonegate;negate;comment;empty;preserveMultipleSlashes;partial;globSet;globParts;nocase;isWindows;platform;windowsNoMagicRoot;regexp;constructor(A,t={}){li(A),t=t||{},this.options=t,this.pattern=A,this.platform=t.platform||zQ,this.isWindows=this.platform==="win32",this.windowsPathsNoEscape=!!t.windowsPathsNoEscape||t.allowWindowsEscape===!1,this.windowsPathsNoEscape&&(this.pattern=this.pattern.replace(/\\/g,"/")),this.preserveMultipleSlashes=!!t.preserveMultipleSlashes,this.regexp=null,this.negate=!1,this.nonegate=!!t.nonegate,this.comment=!1,this.empty=!1,this.partial=!!t.partial,this.nocase=!!this.options.nocase,this.windowsNoMagicRoot=t.windowsNoMagicRoot!==void 0?t.windowsNoMagicRoot:!!(this.isWindows&&this.nocase),this.globSet=[],this.globParts=[],this.set=[],this.make()}hasMagic(){if(this.options.magicalBraces&&this.set.length>1)return!0;for(let A of this.set)for(let t of A)if(typeof t!="string")return!0;return!1}debug(...A){}make(){let A=this.pattern,t=this.options;if(!t.nocomment&&A.charAt(0)==="#"){this.comment=!0;return}if(!A){this.empty=!0;return}this.parseNegate(),this.globSet=[...new Set(this.braceExpand())],t.debug&&(this.debug=(...r)=>console.error(...r)),this.debug(this.pattern,this.globSet);let E=this.globSet.map(r=>this.slashSplit(r));this.globParts=this.preprocess(E),this.debug(this.pattern,this.globParts);let s=this.globParts.map((r,i,o)=>{if(this.isWindows&&this.windowsNoMagicRoot){let n=r[0]===""&&r[1]===""&&(r[2]==="?"||!XQ.test(r[2]))&&!XQ.test(r[3]),I=/^[a-z]:/i.test(r[0]);if(n)return[...r.slice(0,4),...r.slice(4).map(C=>this.parse(C))];if(I)return[r[0],...r.slice(1).map(C=>this.parse(C))]}return r.map(n=>this.parse(n))});if(this.debug(this.pattern,s),this.set=s.filter(r=>r.indexOf(!1)===-1),this.isWindows)for(let r=0;r<this.set.length;r++){let i=this.set[r];i[0]===""&&i[1]===""&&this.globParts[r][2]==="?"&&typeof i[3]=="string"&&/^[a-z]:$/i.test(i[3])&&(i[2]="?")}this.debug(this.pattern,this.set)}preprocess(A){if(this.options.noglobstar)for(let E=0;E<A.length;E++)for(let s=0;s<A[E].length;s++)A[E][s]==="**"&&(A[E][s]="*");let{optimizationLevel:t=1}=this.options;return t>=2?(A=this.firstPhasePreProcess(A),A=this.secondPhasePreProcess(A)):t>=1?A=this.levelOneOptimize(A):A=this.adjascentGlobstarOptimize(A),A}adjascentGlobstarOptimize(A){return A.map(t=>{let E=-1;for(;(E=t.indexOf("**",E+1))!==-1;){let s=E;for(;t[s+1]==="**";)s++;s!==E&&t.splice(E,s-E)}return t})}levelOneOptimize(A){return A.map(t=>(t=t.reduce((E,s)=>{let r=E[E.length-1];return s==="**"&&r==="**"?E:s===".."&&r&&r!==".."&&r!=="."&&r!=="**"?(E.pop(),E):(E.push(s),E)},[]),t.length===0?[""]:t))}levelTwoFileOptimize(A){Array.isArray(A)||(A=this.slashSplit(A));let t=!1;do{if(t=!1,!this.preserveMultipleSlashes){for(let s=1;s<A.length-1;s++){let r=A[s];s===1&&r===""&&A[0]===""||(r==="."||r==="")&&(t=!0,A.splice(s,1),s--)}A[0]==="."&&A.length===2&&(A[1]==="."||A[1]==="")&&(t=!0,A.pop())}let E=0;for(;(E=A.indexOf("..",E+1))!==-1;){let s=A[E-1];s&&s!=="."&&s!==".."&&s!=="**"&&(t=!0,A.splice(E-1,2),E-=2)}}while(t);return A.length===0?[""]:A}firstPhasePreProcess(A){let t=!1;do{t=!1;for(let E of A){let s=-1;for(;(s=E.indexOf("**",s+1))!==-1;){let i=s;for(;E[i+1]==="**";)i++;i>s&&E.splice(s+1,i-s);let o=E[s+1],n=E[s+2],I=E[s+3];if(o!==".."||!n||n==="."||n===".."||!I||I==="."||I==="..")continue;t=!0,E.splice(s,1);let C=E.slice(0);C[s]="**",A.push(C),s--}if(!this.preserveMultipleSlashes){for(let i=1;i<E.length-1;i++){let o=E[i];i===1&&o===""&&E[0]===""||(o==="."||o==="")&&(t=!0,E.splice(i,1),i--)}E[0]==="."&&E.length===2&&(E[1]==="."||E[1]==="")&&(t=!0,E.pop())}let r=0;for(;(r=E.indexOf("..",r+1))!==-1;){let i=E[r-1];if(i&&i!=="."&&i!==".."&&i!=="**"){t=!0;let n=r===1&&E[r+1]==="**"?["."]:[];E.splice(r-1,2,...n),E.length===0&&E.push(""),r-=2}}}}while(t);return A}secondPhasePreProcess(A){for(let t=0;t<A.length-1;t++)for(let E=t+1;E<A.length;E++){let s=this.partsMatch(A[t],A[E],!this.preserveMultipleSlashes);s&&(A[t]=s,A[E]=[])}return A.filter(t=>t.length)}partsMatch(A,t,E=!1){let s=0,r=0,i=[],o="";for(;s<A.length&&r<t.length;)if(A[s]===t[r])i.push(o==="b"?t[r]:A[s]),s++,r++;else if(E&&A[s]==="**"&&t[r]===A[s+1])i.push(A[s]),s++;else if(E&&t[r]==="**"&&A[s]===t[r+1])i.push(t[r]),r++;else if(A[s]==="*"&&t[r]&&(this.options.dot||!t[r].startsWith("."))&&t[r]!=="**"){if(o==="b")return!1;o="a",i.push(A[s]),s++,r++}else if(t[r]==="*"&&A[s]&&(this.options.dot||!A[s].startsWith("."))&&A[s]!=="**"){if(o==="a")return!1;o="b",i.push(t[r]),s++,r++}else return!1;return A.length===t.length&&i}parseNegate(){if(this.nonegate)return;let A=this.pattern,t=!1,E=0;for(let s=0;s<A.length&&A.charAt(s)==="!";s++)t=!t,E++;E&&(this.pattern=A.slice(E)),this.negate=t}matchOne(A,t,E=!1){let s=this.options;if(this.isWindows){let B=typeof A[0]=="string"&&/^[a-z]:$/i.test(A[0]),c=!B&&A[0]===""&&A[1]===""&&A[2]==="?"&&/^[a-z]:$/i.test(A[3]),g=typeof t[0]=="string"&&/^[a-z]:$/i.test(t[0]),l=!g&&t[0]===""&&t[1]===""&&t[2]==="?"&&typeof t[3]=="string"&&/^[a-z]:$/i.test(t[3]),Q=c?3:B?0:void 0,L=l?3:g?0:void 0;if(typeof Q=="number"&&typeof L=="number"){let[w,m]=[A[Q],t[L]];w.toLowerCase()===m.toLowerCase()&&(t[L]=w,L>Q?t=t.slice(L):Q>L&&(A=A.slice(Q)))}}let{optimizationLevel:r=1}=this.options;r>=2&&(A=this.levelTwoFileOptimize(A)),this.debug("matchOne",this,{file:A,pattern:t}),this.debug("matchOne",A.length,t.length);for(var i=0,o=0,n=A.length,I=t.length;i<n&&o<I;i++,o++){this.debug("matchOne loop");var C=t[o],a=A[i];if(this.debug(t,C,a),C===!1)return!1;if(C===xA){this.debug("GLOBSTAR",[t,C,a]);var R=i,T=o+1;if(T===I){for(this.debug("** at the end");i<n;i++)if(A[i]==="."||A[i]===".."||!s.dot&&A[i].charAt(0)===".")return!1;return!0}for(;R<n;){var h=A[R];if(this.debug(`
+`;case 6:return this.indentation.getSingleIndent();default:return e}}},fD=e=>e===0||e===6,DD=e=>e===0||e===6||e===3;function fT(e,A){if(A==="standard")return e;let t=[];return e.length>=10&&e.includes(" ")&&([e,...t]=e.split(" ")),A==="tabularLeft"?e=e.padEnd(9," "):e=e.padStart(9," "),e+["",...t].join(" ")}function DT(e){return qu(e)||e==="RESERVED_CLAUSE"||e==="RESERVED_SELECT"||e==="RESERVED_SET_OPERATION"||e==="RESERVED_JOIN"||e==="LIMIT"}var OI="top-level",dD="block-level",WT=class{constructor(e){this.indent=e,this.indentTypes=[]}getSingleIndent(){return this.indent}getLevel(){return this.indentTypes.length}increaseTopLevel(){this.indentTypes.push(OI)}increaseBlockLevel(){this.indentTypes.push(dD)}decreaseTopLevel(){this.indentTypes.length>0&&nr(this.indentTypes)===OI&&this.indentTypes.pop()}decreaseBlockLevel(){for(;this.indentTypes.length>0&&this.indentTypes.pop()===OI;);}},_D=class extends xT{constructor(e){super(new WT("")),this.expressionWidth=e,this.length=0,this.trailingSpace=!1}add(...e){if(e.forEach(A=>this.addToLength(A)),this.length>this.expressionWidth)throw new LI;super.add(...e)}addToLength(e){if(typeof e=="string")this.length+=e.length,this.trailingSpace=!1;else{if(e===4||e===3)throw new LI;e===5||e===6||e===0?this.trailingSpace||(this.length++,this.trailingSpace=!0):(e===2||e===1)&&this.trailingSpace&&(this.trailingSpace=!1,this.length--)}}},LI=class extends Error{},UD=class fI{constructor({cfg:A,dialectCfg:t,params:E,layout:s,inline:r=!1}){this.inline=!1,this.nodes=[],this.index=-1,this.cfg=A,this.dialectCfg=t,this.inline=r,this.params=E,this.layout=s}format(A){for(this.nodes=A,this.index=0;this.index<this.nodes.length;this.index++)this.formatNode(this.nodes[this.index]);return this.layout}formatNode(A){this.formatComments(A.leadingComments),this.formatNodeWithoutComments(A),this.formatComments(A.trailingComments)}formatNodeWithoutComments(A){switch(A.type){case"function_call":return this.formatFunctionCall(A);case"parameterized_data_type":return this.formatParameterizedDataType(A);case"array_subscript":return this.formatArraySubscript(A);case"property_access":return this.formatPropertyAccess(A);case"parenthesis":return this.formatParenthesis(A);case"between_predicate":return this.formatBetweenPredicate(A);case"case_expression":return this.formatCaseExpression(A);case"case_when":return this.formatCaseWhen(A);case"case_else":return this.formatCaseElse(A);case"clause":return this.formatClause(A);case"set_operation":return this.formatSetOperation(A);case"limit_clause":return this.formatLimitClause(A);case"all_columns_asterisk":return this.formatAllColumnsAsterisk(A);case"literal":return this.formatLiteral(A);case"identifier":return this.formatIdentifier(A);case"parameter":return this.formatParameter(A);case"operator":return this.formatOperator(A);case"comma":return this.formatComma(A);case"line_comment":return this.formatLineComment(A);case"block_comment":return this.formatBlockComment(A);case"disable_comment":return this.formatBlockComment(A);case"data_type":return this.formatDataType(A);case"keyword":return this.formatKeywordNode(A)}}formatFunctionCall(A){this.withComments(A.nameKw,()=>{this.layout.add(this.showFunctionKw(A.nameKw))}),this.formatNode(A.parenthesis)}formatParameterizedDataType(A){this.withComments(A.dataType,()=>{this.layout.add(this.showDataType(A.dataType))}),this.formatNode(A.parenthesis)}formatArraySubscript(A){let t;switch(A.array.type){case"data_type":t=this.showDataType(A.array);break;case"keyword":t=this.showKw(A.array);break;default:t=this.showIdentifier(A.array);break}this.withComments(A.array,()=>{this.layout.add(t)}),this.formatNode(A.parenthesis)}formatPropertyAccess(A){this.formatNode(A.object),this.layout.add(1,A.operator),this.formatNode(A.property)}formatParenthesis(A){let t=this.formatInlineExpression(A.children);t?(this.layout.add(A.openParen),this.layout.add(...t.getLayoutItems()),this.layout.add(1,A.closeParen,0)):(this.layout.add(A.openParen,3),XE(this.cfg)?(this.layout.add(5),this.layout=this.formatSubExpression(A.children)):(this.layout.indentation.increaseBlockLevel(),this.layout.add(5),this.layout=this.formatSubExpression(A.children),this.layout.indentation.decreaseBlockLevel()),this.layout.add(3,5,A.closeParen,0))}formatBetweenPredicate(A){this.layout.add(this.showKw(A.betweenKw),0),this.layout=this.formatSubExpression(A.expr1),this.layout.add(1,0,this.showNonTabularKw(A.andKw),0),this.layout=this.formatSubExpression(A.expr2),this.layout.add(0)}formatCaseExpression(A){this.formatNode(A.caseKw),this.layout.indentation.increaseBlockLevel(),this.layout=this.formatSubExpression(A.expr),this.layout=this.formatSubExpression(A.clauses),this.layout.indentation.decreaseBlockLevel(),this.layout.add(3,5),this.formatNode(A.endKw)}formatCaseWhen(A){this.layout.add(3,5),this.formatNode(A.whenKw),this.layout=this.formatSubExpression(A.condition),this.formatNode(A.thenKw),this.layout=this.formatSubExpression(A.result)}formatCaseElse(A){this.layout.add(3,5),this.formatNode(A.elseKw),this.layout=this.formatSubExpression(A.result)}formatClause(A){this.isOnelineClause(A)?this.formatClauseInOnelineStyle(A):XE(this.cfg)?this.formatClauseInTabularStyle(A):this.formatClauseInIndentedStyle(A)}isOnelineClause(A){return XE(this.cfg)?this.dialectCfg.tabularOnelineClauses[A.nameKw.text]:this.dialectCfg.onelineClauses[A.nameKw.text]}formatClauseInIndentedStyle(A){this.layout.add(3,5,this.showKw(A.nameKw),3),this.layout.indentation.increaseTopLevel(),this.layout.add(5),this.layout=this.formatSubExpression(A.children),this.layout.indentation.decreaseTopLevel()}formatClauseInOnelineStyle(A){this.layout.add(3,5,this.showKw(A.nameKw),0),this.layout=this.formatSubExpression(A.children)}formatClauseInTabularStyle(A){this.layout.add(3,5,this.showKw(A.nameKw),0),this.layout.indentation.increaseTopLevel(),this.layout=this.formatSubExpression(A.children),this.layout.indentation.decreaseTopLevel()}formatSetOperation(A){this.layout.add(3,5,this.showKw(A.nameKw),3),this.layout.add(5),this.layout=this.formatSubExpression(A.children)}formatLimitClause(A){this.withComments(A.limitKw,()=>{this.layout.add(3,5,this.showKw(A.limitKw))}),this.layout.indentation.increaseTopLevel(),XE(this.cfg)?this.layout.add(0):this.layout.add(3,5),A.offset?(this.layout=this.formatSubExpression(A.offset),this.layout.add(1,",",0),this.layout=this.formatSubExpression(A.count)):this.layout=this.formatSubExpression(A.count),this.layout.indentation.decreaseTopLevel()}formatAllColumnsAsterisk(A){this.layout.add("*",0)}formatLiteral(A){this.layout.add(A.text,0)}formatIdentifier(A){this.layout.add(this.showIdentifier(A),0)}formatParameter(A){this.layout.add(this.params.get(A),0)}formatOperator({text:A}){this.cfg.denseOperators||this.dialectCfg.alwaysDenseOperators.includes(A)?this.layout.add(1,A):A===":"?this.layout.add(1,A,0):this.layout.add(A,0)}formatComma(A){this.inline?this.layout.add(1,",",0):this.layout.add(1,",",3,5)}withComments(A,t){this.formatComments(A.leadingComments),t(),this.formatComments(A.trailingComments)}formatComments(A){A&&A.forEach(t=>{t.type==="line_comment"?this.formatLineComment(t):this.formatBlockComment(t)})}formatLineComment(A){NI(A.precedingWhitespace||"")?this.layout.add(3,5,A.text,4,5):this.layout.getLayoutItems().length>0?this.layout.add(2,0,A.text,4,5):this.layout.add(A.text,4,5)}formatBlockComment(A){A.type==="block_comment"&&this.isMultilineBlockComment(A)?(this.splitBlockComment(A.text).forEach(t=>{this.layout.add(3,5,t)}),this.layout.add(3,5)):this.layout.add(A.text,0)}isMultilineBlockComment(A){return NI(A.text)||NI(A.precedingWhitespace||"")}isDocComment(A){let t=A.split(/\n/);return/^\/\*\*?$/.test(t[0])&&t.slice(1,t.length-1).every(E=>/^\s*\*/.test(E))&&/^\s*\*\/$/.test(nr(t))}splitBlockComment(A){return this.isDocComment(A)?A.split(/\n/).map(t=>/^\s*\*/.test(t)?" "+t.replace(/^\s*/,""):t):A.split(/\n/).map(t=>t.replace(/^\s*/,""))}formatSubExpression(A){return new fI({cfg:this.cfg,dialectCfg:this.dialectCfg,params:this.params,layout:this.layout,inline:this.inline}).format(A)}formatInlineExpression(A){let t=this.params.getPositionalParameterIndex();try{return new fI({cfg:this.cfg,dialectCfg:this.dialectCfg,params:this.params,layout:new _D(this.cfg.expressionWidth),inline:!0}).format(A)}catch(E){if(E instanceof LI){this.params.setPositionalParameterIndex(t);}else throw E}}formatKeywordNode(A){switch(A.tokenType){case"RESERVED_JOIN":return this.formatJoin(A);case"AND":case"OR":case"XOR":return this.formatLogicalOperator(A);default:return this.formatKeyword(A)}}formatJoin(A){XE(this.cfg)?(this.layout.indentation.decreaseTopLevel(),this.layout.add(3,5,this.showKw(A),0),this.layout.indentation.increaseTopLevel()):this.layout.add(3,5,this.showKw(A),0)}formatKeyword(A){this.layout.add(this.showKw(A),0)}formatLogicalOperator(A){this.cfg.logicalOperatorNewline==="before"?XE(this.cfg)?(this.layout.indentation.decreaseTopLevel(),this.layout.add(3,5,this.showKw(A),0),this.layout.indentation.increaseTopLevel()):this.layout.add(3,5,this.showKw(A),0):this.layout.add(this.showKw(A),3,5)}formatDataType(A){this.layout.add(this.showDataType(A),0)}showKw(A){return DT(A.tokenType)?fT(this.showNonTabularKw(A),this.cfg.indentStyle):this.showNonTabularKw(A)}showNonTabularKw(A){switch(this.cfg.keywordCase){case"preserve":return Hi(A.raw);case"upper":return A.text;case"lower":return A.text.toLowerCase()}}showFunctionKw(A){return DT(A.tokenType)?fT(this.showNonTabularFunctionKw(A),this.cfg.indentStyle):this.showNonTabularFunctionKw(A)}showNonTabularFunctionKw(A){switch(this.cfg.functionCase){case"preserve":return Hi(A.raw);case"upper":return A.text;case"lower":return A.text.toLowerCase()}}showIdentifier(A){if(A.quoted)return A.text;switch(this.cfg.identifierCase){case"preserve":return A.text;case"upper":return A.text.toUpperCase();case"lower":return A.text.toLowerCase()}}showDataType(A){switch(this.cfg.dataTypeCase){case"preserve":return Hi(A.raw);case"upper":return A.text;case"lower":return A.text.toLowerCase()}}},pD=class{constructor(e,A){this.dialect=e,this.cfg=A,this.params=new CD(this.cfg.params)}format(e){let A=this.parse(e);return this.formatAst(A).trimEnd()}parse(e){return LD(this.dialect.tokenizer).parse(e,this.cfg.paramTypes||{})}formatAst(e){return e.map(A=>this.formatStatement(A)).join(`
+`.repeat(this.cfg.linesBetweenQueries+1))}formatStatement(e){let A=new UD({cfg:this.cfg,dialectCfg:this.dialect.formatOptions,params:this.params,layout:new xT(new WT(ID(this.cfg)))}).format(e.children);return e.hasSemicolon&&(this.cfg.newlineBeforeSemicolon?A.add(3,";"):A.add(2,";")),A.toString()}},DI=class extends Error{};function MD(e){let A=["multilineLists","newlineBeforeOpenParen","newlineBeforeCloseParen","aliasAs","commaPosition","tabulateAlias"];for(let t of A)if(t in e)throw new DI(`${t} config is no more supported.`);if(e.expressionWidth<=0)throw new DI(`expressionWidth config must be positive number. Received ${e.expressionWidth} instead.`);return e.params&&!yD(e.params)&&console.warn('WARNING: All "params" option values should be strings.'),e}function yD(e){return(e instanceof Array?e:Object.values(e)).every(t=>typeof t=="string")}var JT={bigquery:"bigquery",db2:"db2",db2i:"db2i",hive:"hive",mariadb:"mariadb",mysql:"mysql",n1ql:"n1ql",plsql:"plsql",postgresql:"postgresql",redshift:"redshift",spark:"spark",sqlite:"sqlite",sql:"sql",trino:"trino",transactsql:"transactsql",tsql:"transactsql",singlestoredb:"singlestoredb",snowflake:"snowflake"},PD=Object.keys(JT),FD={tabWidth:2,useTabs:!1,keywordCase:"preserve",identifierCase:"preserve",dataTypeCase:"preserve",functionCase:"preserve",indentStyle:"standard",logicalOperatorNewline:"before",expressionWidth:50,linesBetweenQueries:1,denseOperators:!1,newlineBeforeSemicolon:!1},vT=(e,A={})=>{if(typeof A.language=="string"&&!PD.includes(A.language))throw new DI(`Unsupported SQL dialect: ${A.language}`);let t=JT[A.language||"sql"];return wD(e,zA(mA({},A),{dialect:pT[t]}))},wD=(e,A)=>{var t=A,{dialect:E}=t,s=bu(t,["dialect"]);if(typeof e!="string")throw new Error("Invalid query argument. Expected string, instead got "+typeof e);let r=MD(mA(mA({},FD),s));return new pD(iD(E),r).format(e)};var du=ut(NR()),AI=ut(require("fs"));var qQ=ut(bQ(),1);var li=e=>{if(typeof e!="string")throw new TypeError("invalid pattern");if(e.length>65536)throw new TypeError("pattern is too long")};var ab={"[:alnum:]":["\\p{L}\\p{Nl}\\p{Nd}",!0],"[:alpha:]":["\\p{L}\\p{Nl}",!0],"[:ascii:]":["\\x00-\\x7f",!1],"[:blank:]":["\\p{Zs}\\t",!0],"[:cntrl:]":["\\p{Cc}",!0],"[:digit:]":["\\p{Nd}",!0],"[:graph:]":["\\p{Z}\\p{C}",!0,!0],"[:lower:]":["\\p{Ll}",!0],"[:print:]":["\\p{C}",!0],"[:punct:]":["\\p{P}",!0],"[:space:]":["\\p{Z}\\t\\r\\n\\v\\f",!0],"[:upper:]":["\\p{Lu}",!0],"[:word:]":["\\p{L}\\p{Nl}\\p{Nd}\\p{Pc}",!0],"[:xdigit:]":["A-Fa-f0-9",!1]},Ni=e=>e.replace(/[[\]\\-]/g,"\\$&"),Rb=e=>e.replace(/[-[\]{}()*+?.,\\^$|#\s]/g,"\\$&"),YQ=e=>e.join(""),HQ=(e,A)=>{let t=A;if(e.charAt(t)!=="[")throw new Error("not in a brace expression");let E=[],s=[],r=t+1,i=!1,o=!1,n=!1,I=!1,C=t,a="";A:for(;r<e.length;){let B=e.charAt(r);if((B==="!"||B==="^")&&r===t+1){I=!0,r++;continue}if(B==="]"&&i&&!n){C=r+1;break}if(i=!0,B==="\\"&&!n){n=!0,r++;continue}if(B==="["&&!n){for(let[c,[g,l,Q]]of Object.entries(ab))if(e.startsWith(c,r)){if(a)return["$.",!1,e.length-t,!0];r+=c.length,Q?s.push(g):E.push(g),o=o||l;continue A}}if(n=!1,a){B>a?E.push(Ni(a)+"-"+Ni(B)):B===a&&E.push(Ni(B)),a="",r++;continue}if(e.startsWith("-]",r+1)){E.push(Ni(B+"-")),r+=2;continue}if(e.startsWith("-",r+1)){a=B,r+=2;continue}E.push(Ni(B)),r++}if(C<r)return["",!1,0,!1];if(!E.length&&!s.length)return["$.",!1,e.length-t,!0];if(s.length===0&&E.length===1&&/^\\?.$/.test(E[0])&&!I){let B=E[0].length===2?E[0].slice(-1):E[0];return[Rb(B),!1,C-t,!1]}let R="["+(I?"^":"")+YQ(E)+"]",T="["+(I?"":"^")+YQ(s)+"]";return[E.length&&s.length?"("+R+"|"+T+")":E.length?R:T,o,C-t,!0]};var je=(e,{windowsPathsNoEscape:A=!1}={})=>A?e.replace(/\[([^\/\\])\]/g,"$1"):e.replace(/((?!\\).|^)\[([^\/\\])\]/g,"$1$2").replace(/\\([^\/])/g,"$1");var Tb=new Set(["!","?","+","*","@"]),kQ=e=>Tb.has(e),hb="(?!(?:^|/)\\.\\.?(?:$|/))",yo="(?!\\.)",Bb=new Set(["[","."]),cb=new Set(["..","."]),gb=new Set("().*{}+?[]^$\\!"),Sb=e=>e.replace(/[-[\]{}()*+?.,\\^$|#\s]/g,"\\$&"),MR="[^/]",VQ=MR+"*?",xQ=MR+"+?",OA,yA,Gt,nA,QA,oE,HE,IE,bt,kE,Qi,Fo,WQ,Js,Po,ui,pR,wo,JQ,ce=class{constructor(A,t,E={}){DA(this,Fo);DA(this,ui);KR(this,"type");DA(this,OA,void 0);DA(this,yA,void 0);DA(this,Gt,!1);DA(this,nA,[]);DA(this,QA,void 0);DA(this,oE,void 0);DA(this,HE,void 0);DA(this,IE,!1);DA(this,bt,void 0);DA(this,kE,void 0);DA(this,Qi,!1);this.type=A,A&&rA(this,yA,!0),rA(this,QA,t),rA(this,OA,O(this,QA)?O(O(this,QA),OA):this),rA(this,bt,O(this,OA)===this?E:O(O(this,OA),bt)),rA(this,HE,O(this,OA)===this?[]:O(O(this,OA),HE)),A==="!"&&!O(O(this,OA),IE)&&O(this,HE).push(this),rA(this,oE,O(this,QA)?O(O(this,QA),nA).length:0)}get hasMagic(){if(O(this,yA)!==void 0)return O(this,yA);for(let A of O(this,nA))if(typeof A!="string"&&(A.type||A.hasMagic))return rA(this,yA,!0);return O(this,yA)}toString(){return O(this,kE)!==void 0?O(this,kE):this.type?rA(this,kE,this.type+"("+O(this,nA).map(A=>String(A)).join("|")+")"):rA(this,kE,O(this,nA).map(A=>String(A)).join(""))}push(...A){for(let t of A)if(t!==""){if(typeof t!="string"&&!(t instanceof ce&&O(t,QA)===this))throw new Error("invalid part: "+t);O(this,nA).push(t)}}toJSON(){let A=this.type===null?O(this,nA).slice().map(t=>typeof t=="string"?t:t.toJSON()):[this.type,...O(this,nA).map(t=>t.toJSON())];return this.isStart()&&!this.type&&A.unshift([]),this.isEnd()&&(this===O(this,OA)||O(O(this,OA),IE)&&O(this,QA)?.type==="!")&&A.push({}),A}isStart(){if(O(this,OA)===this)return!0;if(!O(this,QA)?.isStart())return!1;if(O(this,oE)===0)return!0;let A=O(this,QA);for(let t=0;t<O(this,oE);t++){let E=O(A,nA)[t];if(!(E instanceof ce&&E.type==="!"))return!1}return!0}isEnd(){if(O(this,OA)===this||O(this,QA)?.type==="!")return!0;if(!O(this,QA)?.isEnd())return!1;if(!this.type)return O(this,QA)?.isEnd();let A=O(this,QA)?O(O(this,QA),nA).length:0;return O(this,oE)===A-1}copyIn(A){typeof A=="string"?this.push(A):this.push(A.clone(this))}clone(A){let t=new ce(this.type,A);for(let E of O(this,nA))t.copyIn(E);return t}static fromGlob(A,t={}){var s;let E=new ce(null,void 0,t);return Vt(s=ce,Js,Po).call(s,A,E,0,t),E}toMMPattern(){if(this!==O(this,OA))return O(this,OA).toMMPattern();let A=this.toString(),[t,E,s,r]=this.toRegExpSource();if(!(s||O(this,yA)||O(this,bt).nocase&&!O(this,bt).nocaseMagicOnly&&A.toUpperCase()!==A.toLowerCase()))return E;let o=(O(this,bt).nocase?"i":"")+(r?"u":"");return Object.assign(new RegExp(`^${t}$`,o),{_src:t,_glob:A})}toRegExpSource(A){let t=A??!!O(this,bt).dot;if(O(this,OA)===this&&Vt(this,Fo,WQ).call(this),!this.type){let n=this.isStart()&&this.isEnd(),I=O(this,nA).map(T=>{var l;let[h,B,c,g]=typeof T=="string"?Vt(l=ce,wo,JQ).call(l,T,O(this,yA),n):T.toRegExpSource(A);return rA(this,yA,O(this,yA)||c),rA(this,Gt,O(this,Gt)||g),h}).join(""),C="";if(this.isStart()&&typeof O(this,nA)[0]=="string"&&!(O(this,nA).length===1&&cb.has(O(this,nA)[0]))){let h=Bb,B=t&&h.has(I.charAt(0))||I.startsWith("\\.")&&h.has(I.charAt(2))||I.startsWith("\\.\\.")&&h.has(I.charAt(4)),c=!t&&!A&&h.has(I.charAt(0));C=B?hb:c?yo:""}let a="";return this.isEnd()&&O(O(this,OA),IE)&&O(this,QA)?.type==="!"&&(a="(?:$|\\/)"),[C+I+a,je(I),rA(this,yA,!!O(this,yA)),O(this,Gt)]}let E=this.type==="*"||this.type==="+",s=this.type==="!"?"(?:(?!(?:":"(?:",r=Vt(this,ui,pR).call(this,t);if(this.isStart()&&this.isEnd()&&!r&&this.type!=="!"){let n=this.toString();return rA(this,nA,[n]),this.type=null,rA(this,yA,void 0),[n,je(this.toString()),!1,!1]}let i=!E||A||t||!yo?"":Vt(this,ui,pR).call(this,!0);i===r&&(i=""),i&&(r=`(?:${r})(?:${i})*?`);let o="";if(this.type==="!"&&O(this,Qi))o=(this.isStart()&&!t?yo:"")+xQ;else{let n=this.type==="!"?"))"+(this.isStart()&&!t&&!A?yo:"")+VQ+")":this.type==="@"?")":this.type==="?"?")?":this.type==="+"&&i?")":this.type==="*"&&i?")?":`)${this.type}`;o=s+r+n}return[o,je(r),rA(this,yA,!!O(this,yA)),O(this,Gt)]}},CE=ce;OA=new WeakMap,yA=new WeakMap,Gt=new WeakMap,nA=new WeakMap,QA=new WeakMap,oE=new WeakMap,HE=new WeakMap,IE=new WeakMap,bt=new WeakMap,kE=new WeakMap,Qi=new WeakMap,Fo=new WeakSet,WQ=function(){if(this!==O(this,OA))throw new Error("should only call on root");if(O(this,IE))return this;this.toString(),rA(this,IE,!0);let A;for(;A=O(this,HE).pop();){if(A.type!=="!")continue;let t=A,E=O(t,QA);for(;E;){for(let s=O(t,oE)+1;!E.type&&s<O(E,nA).length;s++)for(let r of O(A,nA)){if(typeof r=="string")throw new Error("string part in extglob AST??");r.copyIn(O(E,nA)[s])}t=E,E=O(t,QA)}}return this},Js=new WeakSet,Po=function(A,t,E,s){var T,h;let r=!1,i=!1,o=-1,n=!1;if(t.type===null){let B=E,c="";for(;B<A.length;){let g=A.charAt(B++);if(r||g==="\\"){r=!r,c+=g;continue}if(i){B===o+1?(g==="^"||g==="!")&&(n=!0):g==="]"&&!(B===o+2&&n)&&(i=!1),c+=g;continue}else if(g==="["){i=!0,o=B,n=!1,c+=g;continue}if(!s.noext&&kQ(g)&&A.charAt(B)==="("){t.push(c),c="";let l=new ce(g,t);B=Vt(T=ce,Js,Po).call(T,A,l,B,s),t.push(l);continue}c+=g}return t.push(c),B}let I=E+1,C=new ce(null,t),a=[],R="";for(;I<A.length;){let B=A.charAt(I++);if(r||B==="\\"){r=!r,R+=B;continue}if(i){I===o+1?(B==="^"||B==="!")&&(n=!0):B==="]"&&!(I===o+2&&n)&&(i=!1),R+=B;continue}else if(B==="["){i=!0,o=I,n=!1,R+=B;continue}if(kQ(B)&&A.charAt(I)==="("){C.push(R),R="";let c=new ce(B,C);C.push(c),I=Vt(h=ce,Js,Po).call(h,A,c,I,s);continue}if(B==="|"){C.push(R),R="",a.push(C),C=new ce(null,t);continue}if(B===")")return R===""&&O(t,nA).length===0&&rA(t,Qi,!0),C.push(R),R="",t.push(...a,C),I;R+=B}return t.type=null,rA(t,yA,void 0),rA(t,nA,[A.substring(E-1)]),I},ui=new WeakSet,pR=function(A){return O(this,nA).map(t=>{if(typeof t=="string")throw new Error("string type in extglob ast??");let[E,s,r,i]=t.toRegExpSource(A);return rA(this,Gt,O(this,Gt)||i),E}).filter(t=>!(this.isStart()&&this.isEnd())||!!t).join("|")},wo=new WeakSet,JQ=function(A,t,E=!1){let s=!1,r="",i=!1;for(let o=0;o<A.length;o++){let n=A.charAt(o);if(s){s=!1,r+=(gb.has(n)?"\\":"")+n;continue}if(n==="\\"){o===A.length-1?r+="\\\\":s=!0;continue}if(n==="["){let[I,C,a,R]=HQ(A,o);if(a){r+=I,i=i||C,o+=a-1,t=t||R;continue}}if(n==="*"){E&&A==="*"?r+=xQ:r+=VQ,t=!0;continue}if(n==="?"){r+=MR,t=!0;continue}r+=Sb(n)}return[r,je(A),!!t,i]},DA(CE,Js),DA(CE,wo);var vs=(e,{windowsPathsNoEscape:A=!1}={})=>A?e.replace(/[?*()[\]]/g,"[$&]"):e.replace(/[?*()[\]\\]/g,"\\$&");var re=(e,A,t={})=>(li(A),!t.nocomment&&A.charAt(0)==="#"?!1:new _e(A,t).match(e)),lb=/^\*+([^+@!?\*\[\(]*)$/,Nb=e=>A=>!A.startsWith(".")&&A.endsWith(e),Qb=e=>A=>A.endsWith(e),ub=e=>(e=e.toLowerCase(),A=>!A.startsWith(".")&&A.toLowerCase().endsWith(e)),Ob=e=>(e=e.toLowerCase(),A=>A.toLowerCase().endsWith(e)),Lb=/^\*+\.\*+$/,fb=e=>!e.startsWith(".")&&e.includes("."),Db=e=>e!=="."&&e!==".."&&e.includes("."),db=/^\.\*+$/,_b=e=>e!=="."&&e!==".."&&e.startsWith("."),Ub=/^\*+$/,pb=e=>e.length!==0&&!e.startsWith("."),Mb=e=>e.length!==0&&e!=="."&&e!=="..",yb=/^\?+([^+@!?\*\[\(]*)?$/,Pb=([e,A=""])=>{let t=KQ([e]);return A?(A=A.toLowerCase(),E=>t(E)&&E.toLowerCase().endsWith(A)):t},Fb=([e,A=""])=>{let t=ZQ([e]);return A?(A=A.toLowerCase(),E=>t(E)&&E.toLowerCase().endsWith(A)):t},wb=([e,A=""])=>{let t=ZQ([e]);return A?E=>t(E)&&E.endsWith(A):t},mb=([e,A=""])=>{let t=KQ([e]);return A?E=>t(E)&&E.endsWith(A):t},KQ=([e])=>{let A=e.length;return t=>t.length===A&&!t.startsWith(".")},ZQ=([e])=>{let A=e.length;return t=>t.length===A&&t!=="."&&t!==".."},zQ=typeof process=="object"&&process?typeof process.env=="object"&&process.env&&process.env.__MINIMATCH_TESTING_PLATFORM__||process.platform:"posix",vQ={win32:{sep:"\\"},posix:{sep:"/"}},Gb=zQ==="win32"?vQ.win32.sep:vQ.posix.sep;re.sep=Gb;var xA=Symbol("globstar **");re.GLOBSTAR=xA;var bb="[^/]",Yb=bb+"*?",Hb="(?:(?!(?:\\/|^)(?:\\.{1,2})($|\\/)).)*?",kb="(?:(?!(?:\\/|^)\\.).)*?",Vb=(e,A={})=>t=>re(t,e,A);re.filter=Vb;var xe=(e,A={})=>Object.assign({},e,A),xb=e=>{if(!e||typeof e!="object"||!Object.keys(e).length)return re;let A=re;return Object.assign((E,s,r={})=>A(E,s,xe(e,r)),{Minimatch:class extends A.Minimatch{constructor(s,r={}){super(s,xe(e,r))}static defaults(s){return A.defaults(xe(e,s)).Minimatch}},AST:class extends A.AST{constructor(s,r,i={}){super(s,r,xe(e,i))}static fromGlob(s,r={}){return A.AST.fromGlob(s,xe(e,r))}},unescape:(E,s={})=>A.unescape(E,xe(e,s)),escape:(E,s={})=>A.escape(E,xe(e,s)),filter:(E,s={})=>A.filter(E,xe(e,s)),defaults:E=>A.defaults(xe(e,E)),makeRe:(E,s={})=>A.makeRe(E,xe(e,s)),braceExpand:(E,s={})=>A.braceExpand(E,xe(e,s)),match:(E,s,r={})=>A.match(E,s,xe(e,r)),sep:A.sep,GLOBSTAR:xA})};re.defaults=xb;var jQ=(e,A={})=>(li(e),A.nobrace||!/\{(?:(?!\{).)*\}/.test(e)?[e]:(0,qQ.default)(e));re.braceExpand=jQ;var Wb=(e,A={})=>new _e(e,A).makeRe();re.makeRe=Wb;var Jb=(e,A,t={})=>{let E=new _e(A,t);return e=e.filter(s=>E.match(s)),E.options.nonull&&!e.length&&e.push(A),e};re.match=Jb;var XQ=/[?*]|[+@!]\(.*?\)|\[|\]/,vb=e=>e.replace(/[-[\]{}()*+?.,\\^$|#\s]/g,"\\$&"),_e=class{options;set;pattern;windowsPathsNoEscape;nonegate;negate;comment;empty;preserveMultipleSlashes;partial;globSet;globParts;nocase;isWindows;platform;windowsNoMagicRoot;regexp;constructor(A,t={}){li(A),t=t||{},this.options=t,this.pattern=A,this.platform=t.platform||zQ,this.isWindows=this.platform==="win32",this.windowsPathsNoEscape=!!t.windowsPathsNoEscape||t.allowWindowsEscape===!1,this.windowsPathsNoEscape&&(this.pattern=this.pattern.replace(/\\/g,"/")),this.preserveMultipleSlashes=!!t.preserveMultipleSlashes,this.regexp=null,this.negate=!1,this.nonegate=!!t.nonegate,this.comment=!1,this.empty=!1,this.partial=!!t.partial,this.nocase=!!this.options.nocase,this.windowsNoMagicRoot=t.windowsNoMagicRoot!==void 0?t.windowsNoMagicRoot:!!(this.isWindows&&this.nocase),this.globSet=[],this.globParts=[],this.set=[],this.make()}hasMagic(){if(this.options.magicalBraces&&this.set.length>1)return!0;for(let A of this.set)for(let t of A)if(typeof t!="string")return!0;return!1}debug(...A){}make(){let A=this.pattern,t=this.options;if(!t.nocomment&&A.charAt(0)==="#"){this.comment=!0;return}if(!A){this.empty=!0;return}this.parseNegate(),this.globSet=[...new Set(this.braceExpand())],t.debug&&(this.debug=(...r)=>console.error(...r)),this.debug(this.pattern,this.globSet);let E=this.globSet.map(r=>this.slashSplit(r));this.globParts=this.preprocess(E),this.debug(this.pattern,this.globParts);let s=this.globParts.map((r,i,o)=>{if(this.isWindows&&this.windowsNoMagicRoot){let n=r[0]===""&&r[1]===""&&(r[2]==="?"||!XQ.test(r[2]))&&!XQ.test(r[3]),I=/^[a-z]:/i.test(r[0]);if(n)return[...r.slice(0,4),...r.slice(4).map(C=>this.parse(C))];if(I)return[r[0],...r.slice(1).map(C=>this.parse(C))]}return r.map(n=>this.parse(n))});if(this.debug(this.pattern,s),this.set=s.filter(r=>r.indexOf(!1)===-1),this.isWindows)for(let r=0;r<this.set.length;r++){let i=this.set[r];i[0]===""&&i[1]===""&&this.globParts[r][2]==="?"&&typeof i[3]=="string"&&/^[a-z]:$/i.test(i[3])&&(i[2]="?")}this.debug(this.pattern,this.set)}preprocess(A){if(this.options.noglobstar)for(let E=0;E<A.length;E++)for(let s=0;s<A[E].length;s++)A[E][s]==="**"&&(A[E][s]="*");let{optimizationLevel:t=1}=this.options;return t>=2?(A=this.firstPhasePreProcess(A),A=this.secondPhasePreProcess(A)):t>=1?A=this.levelOneOptimize(A):A=this.adjascentGlobstarOptimize(A),A}adjascentGlobstarOptimize(A){return A.map(t=>{let E=-1;for(;(E=t.indexOf("**",E+1))!==-1;){let s=E;for(;t[s+1]==="**";)s++;s!==E&&t.splice(E,s-E)}return t})}levelOneOptimize(A){return A.map(t=>(t=t.reduce((E,s)=>{let r=E[E.length-1];return s==="**"&&r==="**"?E:s===".."&&r&&r!==".."&&r!=="."&&r!=="**"?(E.pop(),E):(E.push(s),E)},[]),t.length===0?[""]:t))}levelTwoFileOptimize(A){Array.isArray(A)||(A=this.slashSplit(A));let t=!1;do{if(t=!1,!this.preserveMultipleSlashes){for(let s=1;s<A.length-1;s++){let r=A[s];s===1&&r===""&&A[0]===""||(r==="."||r==="")&&(t=!0,A.splice(s,1),s--)}A[0]==="."&&A.length===2&&(A[1]==="."||A[1]==="")&&(t=!0,A.pop())}let E=0;for(;(E=A.indexOf("..",E+1))!==-1;){let s=A[E-1];s&&s!=="."&&s!==".."&&s!=="**"&&(t=!0,A.splice(E-1,2),E-=2)}}while(t);return A.length===0?[""]:A}firstPhasePreProcess(A){let t=!1;do{t=!1;for(let E of A){let s=-1;for(;(s=E.indexOf("**",s+1))!==-1;){let i=s;for(;E[i+1]==="**";)i++;i>s&&E.splice(s+1,i-s);let o=E[s+1],n=E[s+2],I=E[s+3];if(o!==".."||!n||n==="."||n===".."||!I||I==="."||I==="..")continue;t=!0,E.splice(s,1);let C=E.slice(0);C[s]="**",A.push(C),s--}if(!this.preserveMultipleSlashes){for(let i=1;i<E.length-1;i++){let o=E[i];i===1&&o===""&&E[0]===""||(o==="."||o==="")&&(t=!0,E.splice(i,1),i--)}E[0]==="."&&E.length===2&&(E[1]==="."||E[1]==="")&&(t=!0,E.pop())}let r=0;for(;(r=E.indexOf("..",r+1))!==-1;){let i=E[r-1];if(i&&i!=="."&&i!==".."&&i!=="**"){t=!0;let n=r===1&&E[r+1]==="**"?["."]:[];E.splice(r-1,2,...n),E.length===0&&E.push(""),r-=2}}}}while(t);return A}secondPhasePreProcess(A){for(let t=0;t<A.length-1;t++)for(let E=t+1;E<A.length;E++){let s=this.partsMatch(A[t],A[E],!this.preserveMultipleSlashes);s&&(A[t]=s,A[E]=[])}return A.filter(t=>t.length)}partsMatch(A,t,E=!1){let s=0,r=0,i=[],o="";for(;s<A.length&&r<t.length;)if(A[s]===t[r])i.push(o==="b"?t[r]:A[s]),s++,r++;else if(E&&A[s]==="**"&&t[r]===A[s+1])i.push(A[s]),s++;else if(E&&t[r]==="**"&&A[s]===t[r+1])i.push(t[r]),r++;else if(A[s]==="*"&&t[r]&&(this.options.dot||!t[r].startsWith("."))&&t[r]!=="**"){if(o==="b")return!1;o="a",i.push(A[s]),s++,r++}else if(t[r]==="*"&&A[s]&&(this.options.dot||!A[s].startsWith("."))&&A[s]!=="**"){if(o==="a")return!1;o="b",i.push(t[r]),s++,r++}else return!1;return A.length===t.length&&i}parseNegate(){if(this.nonegate)return;let A=this.pattern,t=!1,E=0;for(let s=0;s<A.length&&A.charAt(s)==="!";s++)t=!t,E++;E&&(this.pattern=A.slice(E)),this.negate=t}    static defaults(A) {
+        return re.defaults(A).Minimatch
+    }
+
+matchOne(A,t,E=!1){let s=this.options;if(this.isWindows){let B=typeof A[0]=="string"&&/^[a-z]:$/i.test(A[0]),c=!B&&A[0]===""&&A[1]===""&&A[2]==="?"&&/^[a-z]:$/i.test(A[3]),g=typeof t[0]=="string"&&/^[a-z]:$/i.test(t[0]),l=!g&&t[0]===""&&t[1]===""&&t[2]==="?"&&typeof t[3]=="string"&&/^[a-z]:$/i.test(t[3]),Q=c?3:B?0:void 0,L=l?3:g?0:void 0;if(typeof Q=="number"&&typeof L=="number"){let[w,m]=[A[Q],t[L]];w.toLowerCase()===m.toLowerCase()&&(t[L]=w,L>Q?t=t.slice(L):Q>L&&(A=A.slice(Q)))}}let{optimizationLevel:r=1}=this.options;r>=2&&(A=this.levelTwoFileOptimize(A)),this.debug("matchOne",this,{file:A,pattern:t}),this.debug("matchOne",A.length,t.length);for(var i=0,o=0,n=A.length,I=t.length;i<n&&o<I;i++,o++){this.debug("matchOne loop");var C=t[o],a=A[i];if(this.debug(t,C,a),C===!1)return!1;if(C===xA){this.debug("GLOBSTAR",[t,C,a]);var R=i,T=o+1;if(T===I){for(this.debug("** at the end");i<n;i++)if(A[i]==="."||A[i]===".."||!s.dot&&A[i].charAt(0)===".")return!1;return!0}for(;R<n;){var h=A[R];if(this.debug(`
 globstar while`,A,R,t,T,h),this.matchOne(A.slice(R),t.slice(T),E))return this.debug("globstar found match!",R,n,h),!0;if(h==="."||h===".."||!s.dot&&h.charAt(0)==="."){this.debug("dot detected!",A,R,t,T);break}this.debug("globstar swallow a segment, and continue"),R++}return!!(E&&(this.debug(`
->>> no match, partial?`,A,R,t,T),R===n))}let B;if(typeof C=="string"?(B=a===C,this.debug("string match",C,a,B)):(B=C.test(a),this.debug("pattern match",C,a,B)),!B)return!1}if(i===n&&o===I)return!0;if(i===n)return E;if(o===I)return i===n-1&&A[i]==="";throw new Error("wtf?")}braceExpand(){return jQ(this.pattern,this.options)}parse(A){li(A);let t=this.options;if(A==="**")return xA;if(A==="")return"";let E,s=null;(E=A.match(Ub))?s=t.dot?Mb:pb:(E=A.match(lb))?s=(t.nocase?t.dot?Ob:ub:t.dot?Qb:Nb)(E[1]):(E=A.match(yb))?s=(t.nocase?t.dot?Fb:Pb:t.dot?wb:mb)(E):(E=A.match(Lb))?s=t.dot?Db:fb:(E=A.match(db))&&(s=_b);let r=CE.fromGlob(A,this.options).toMMPattern();return s?Object.assign(r,{test:s}):r}makeRe(){if(this.regexp||this.regexp===!1)return this.regexp;let A=this.set;if(!A.length)return this.regexp=!1,this.regexp;let t=this.options,E=t.noglobstar?Yb:t.dot?Hb:kb,s=new Set(t.nocase?["i"]:[]),r=A.map(n=>{let I=n.map(C=>{if(C instanceof RegExp)for(let a of C.flags.split(""))s.add(a);return typeof C=="string"?vb(C):C===xA?xA:C._src});return I.forEach((C,a)=>{let R=I[a+1],T=I[a-1];C!==xA||T===xA||(T===void 0?R!==void 0&&R!==xA?I[a+1]="(?:\\/|"+E+"\\/)?"+R:I[a]=E:R===void 0?I[a-1]=T+"(?:\\/|"+E+")?":R!==xA&&(I[a-1]=T+"(?:\\/|\\/"+E+"\\/)"+R,I[a+1]=xA))}),I.filter(C=>C!==xA).join("/")}).join("|"),[i,o]=A.length>1?["(?:",")"]:["",""];r="^"+i+r+o+"$",this.negate&&(r="^(?!"+r+").+$");try{this.regexp=new RegExp(r,[...s].join(""))}catch{this.regexp=!1}return this.regexp}slashSplit(A){return this.preserveMultipleSlashes?A.split("/"):this.isWindows&&/^\/\/[^\/]+/.test(A)?["",...A.split(/\/+/)]:A.split(/\/+/)}match(A,t=this.partial){if(this.debug("match",A,this.pattern),this.comment)return!1;if(this.empty)return A==="";if(A==="/"&&t)return!0;let E=this.options;this.isWindows&&(A=A.split("\\").join("/"));let s=this.slashSplit(A);this.debug(this.pattern,"split",s);let r=this.set;this.debug(this.pattern,"set",r);let i=s[s.length-1];if(!i)for(let o=s.length-2;!i&&o>=0;o--)i=s[o];for(let o=0;o<r.length;o++){let n=r[o],I=s;if(E.matchBase&&n.length===1&&(I=[i]),this.matchOne(I,n,t))return E.flipNegate?!0:!this.negate}return E.flipNegate?!1:this.negate}static defaults(A){return re.defaults(A).Minimatch}};re.AST=CE;re.Minimatch=_e;re.escape=vs;re.unescape=je;var Xs=typeof performance=="object"&&performance&&typeof performance.now=="function"?performance:Date,Au=new Set,yR=typeof process=="object"&&process?process:{},eu=(e,A,t,E)=>{typeof yR.emitWarning=="function"?yR.emitWarning(e,A,t,E):console.error(`[${t}] ${A}: ${e}`)},Go=globalThis.AbortController,$Q=globalThis.AbortSignal;if(typeof Go>"u"){$Q=class{onabort;_onabort=[];reason;aborted=!1;addEventListener(E,s){this._onabort.push(s)}},Go=class{constructor(){A()}signal=new $Q;abort(E){if(!this.signal.aborted){this.signal.reason=E,this.signal.aborted=!0;for(let s of this.signal._onabort)s(E);this.signal.onabort?.(E)}}};let e=yR.env?.LRU_CACHE_IGNORE_AC_WARNING!=="1",A=()=>{e&&(e=!1,eu("AbortController is not defined. If using lru-cache in node 14, load an AbortController polyfill from the `node-abort-controller` package. A minimal polyfill is provided for use by LRUCache.fetch(), but it should not be relied upon in other contexts (eg, passing it to other APIs that use AbortController/AbortSignal might have undesirable effects). You may disable this with LRU_CACHE_IGNORE_AC_WARNING=1 in the env.","NO_ABORT_CONTROLLER","ENOTSUP",A))}}var Xb=e=>!Au.has(e),VV=Symbol("type"),aE=e=>e&&e===Math.floor(e)&&e>0&&isFinite(e),tu=e=>aE(e)?e<=Math.pow(2,8)?Uint8Array:e<=Math.pow(2,16)?Uint16Array:e<=Math.pow(2,32)?Uint32Array:e<=Number.MAX_SAFE_INTEGER?Ks:null:null,Ks=class extends Array{constructor(A){super(A),this.fill(0)}},Zs,qs=class{heap;length;static create(A){let t=tu(A);if(!t)return[];rA(qs,Zs,!0);let E=new qs(A,t);return rA(qs,Zs,!1),E}constructor(A,t){if(!O(qs,Zs))throw new TypeError("instantiate Stack using Stack.create(n)");this.heap=new t(A),this.length=0}push(A){this.heap[this.length++]=A}pop(){return this.heap[--this.length]}},mo=qs;Zs=new WeakMap,DA(mo,Zs,!1);var VE=class{#A;#t;#E;#e;#I;ttl;ttlResolution;ttlAutopurge;updateAgeOnGet;updateAgeOnHas;allowStale;noDisposeOnSet;noUpdateTTL;maxEntrySize;sizeCalculation;noDeleteOnFetchRejection;noDeleteOnStaleGet;allowStaleOnFetchAbort;allowStaleOnFetchRejection;ignoreFetchAbort;#C;#h;#o;#i;#s;#c;#l;#B;#R;#L;#T;#f;#D;#N;#S;#_;#a;static unsafeExposeInternals(A){return{starts:A.#D,ttls:A.#N,sizes:A.#f,keyMap:A.#o,keyList:A.#i,valList:A.#s,next:A.#c,prev:A.#l,get head(){return A.#B},get tail(){return A.#R},free:A.#L,isBackgroundFetch:t=>A.#n(t),backgroundFetch:(t,E,s,r)=>A.#F(t,E,s,r),moveToTail:t=>A.#P(t),indexes:t=>A.#O(t),rindexes:t=>A.#U(t),isStale:t=>A.#g(t)}}get max(){return this.#A}get maxSize(){return this.#t}get calculatedSize(){return this.#h}get size(){return this.#C}get fetchMethod(){return this.#I}get dispose(){return this.#E}get disposeAfter(){return this.#e}constructor(A){let{max:t=0,ttl:E,ttlResolution:s=1,ttlAutopurge:r,updateAgeOnGet:i,updateAgeOnHas:o,allowStale:n,dispose:I,disposeAfter:C,noDisposeOnSet:a,noUpdateTTL:R,maxSize:T=0,maxEntrySize:h=0,sizeCalculation:B,fetchMethod:c,noDeleteOnFetchRejection:g,noDeleteOnStaleGet:l,allowStaleOnFetchRejection:Q,allowStaleOnFetchAbort:L,ignoreFetchAbort:w}=A;if(t!==0&&!aE(t))throw new TypeError("max option must be a nonnegative integer");let m=t?tu(t):Array;if(!m)throw new Error("invalid max value: "+t);if(this.#A=t,this.#t=T,this.maxEntrySize=h||this.#t,this.sizeCalculation=B,this.sizeCalculation){if(!this.#t&&!this.maxEntrySize)throw new TypeError("cannot set sizeCalculation without setting maxSize or maxEntrySize");if(typeof this.sizeCalculation!="function")throw new TypeError("sizeCalculation set to non-function")}if(c!==void 0&&typeof c!="function")throw new TypeError("fetchMethod must be a function if specified");if(this.#I=c,this.#_=!!c,this.#o=new Map,this.#i=new Array(t).fill(void 0),this.#s=new Array(t).fill(void 0),this.#c=new m(t),this.#l=new m(t),this.#B=0,this.#R=0,this.#L=mo.create(t),this.#C=0,this.#h=0,typeof I=="function"&&(this.#E=I),typeof C=="function"?(this.#e=C,this.#T=[]):(this.#e=void 0,this.#T=void 0),this.#S=!!this.#E,this.#a=!!this.#e,this.noDisposeOnSet=!!a,this.noUpdateTTL=!!R,this.noDeleteOnFetchRejection=!!g,this.allowStaleOnFetchRejection=!!Q,this.allowStaleOnFetchAbort=!!L,this.ignoreFetchAbort=!!w,this.maxEntrySize!==0){if(this.#t!==0&&!aE(this.#t))throw new TypeError("maxSize must be a positive integer if specified");if(!aE(this.maxEntrySize))throw new TypeError("maxEntrySize must be a positive integer if specified");this.#M()}if(this.allowStale=!!n,this.noDeleteOnStaleGet=!!l,this.updateAgeOnGet=!!i,this.updateAgeOnHas=!!o,this.ttlResolution=aE(s)||s===0?s:1,this.ttlAutopurge=!!r,this.ttl=E||0,this.ttl){if(!aE(this.ttl))throw new TypeError("ttl must be a positive integer if specified");this.#p()}if(this.#A===0&&this.ttl===0&&this.#t===0)throw new TypeError("At least one of max, maxSize, or ttl is required");if(!this.ttlAutopurge&&!this.#A&&!this.#t){let W="LRU_CACHE_UNBOUNDED";Xb(W)&&(Au.add(W),eu("TTL caching without ttlAutopurge, max, or maxSize can result in unbounded memory consumption.","UnboundedCacheWarning",W,VE))}}getRemainingTTL(A){return this.#o.has(A)?1/0:0}#p(){let A=new Ks(this.#A),t=new Ks(this.#A);this.#N=A,this.#D=t,this.#r=(r,i,o=Xs.now())=>{if(t[r]=i!==0?o:0,A[r]=i,i!==0&&this.ttlAutopurge){let n=setTimeout(()=>{this.#g(r)&&this.delete(this.#i[r])},i+1);n.unref&&n.unref()}},this.#d=r=>{t[r]=A[r]!==0?Xs.now():0},this.#Q=(r,i)=>{if(A[i]){let o=A[i],n=t[i];if(!o||!n)return;r.ttl=o,r.start=n,r.now=E||s();let I=r.now-n;r.remainingTTL=o-I}};let E=0,s=()=>{let r=Xs.now();if(this.ttlResolution>0){E=r;let i=setTimeout(()=>E=0,this.ttlResolution);i.unref&&i.unref()}return r};this.getRemainingTTL=r=>{let i=this.#o.get(r);if(i===void 0)return 0;let o=A[i],n=t[i];if(!o||!n)return 1/0;let I=(E||s())-n;return o-I},this.#g=r=>{let i=t[r],o=A[r];return!!o&&!!i&&(E||s())-i>o}}#d=()=>{};#Q=()=>{};#r=()=>{};#g=()=>!1;#M(){let A=new Ks(this.#A);this.#h=0,this.#f=A,this.#u=t=>{this.#h-=A[t],A[t]=0},this.#m=(t,E,s,r)=>{if(this.#n(E))return 0;if(!aE(s))if(r){if(typeof r!="function")throw new TypeError("sizeCalculation must be a function");if(s=r(E,t),!aE(s))throw new TypeError("sizeCalculation return invalid (expect positive integer)")}else throw new TypeError("invalid size value (must be positive integer). When maxSize or maxEntrySize is used, sizeCalculation or size must be set.");return s},this.#w=(t,E,s)=>{if(A[t]=E,this.#t){let r=this.#t-A[t];for(;this.#h>r;)this.#y(!0)}this.#h+=A[t],s&&(s.entrySize=E,s.totalCalculatedSize=this.#h)}}#u=A=>{};#w=(A,t,E)=>{};#m=(A,t,E,s)=>{if(E||s)throw new TypeError("cannot set size without setting maxSize or maxEntrySize on cache");return 0};*#O({allowStale:A=this.allowStale}={}){if(this.#C)for(let t=this.#R;!(!this.#G(t)||((A||!this.#g(t))&&(yield t),t===this.#B));)t=this.#l[t]}*#U({allowStale:A=this.allowStale}={}){if(this.#C)for(let t=this.#B;!(!this.#G(t)||((A||!this.#g(t))&&(yield t),t===this.#R));)t=this.#c[t]}#G(A){return A!==void 0&&this.#o.get(this.#i[A])===A}*entries(){for(let A of this.#O())this.#s[A]!==void 0&&this.#i[A]!==void 0&&!this.#n(this.#s[A])&&(yield[this.#i[A],this.#s[A]])}*rentries(){for(let A of this.#U())this.#s[A]!==void 0&&this.#i[A]!==void 0&&!this.#n(this.#s[A])&&(yield[this.#i[A],this.#s[A]])}*keys(){for(let A of this.#O()){let t=this.#i[A];t!==void 0&&!this.#n(this.#s[A])&&(yield t)}}*rkeys(){for(let A of this.#U()){let t=this.#i[A];t!==void 0&&!this.#n(this.#s[A])&&(yield t)}}*values(){for(let A of this.#O())this.#s[A]!==void 0&&!this.#n(this.#s[A])&&(yield this.#s[A])}*rvalues(){for(let A of this.#U())this.#s[A]!==void 0&&!this.#n(this.#s[A])&&(yield this.#s[A])}[Symbol.iterator](){return this.entries()}[Symbol.toStringTag]="LRUCache";find(A,t={}){for(let E of this.#O()){let s=this.#s[E],r=this.#n(s)?s.__staleWhileFetching:s;if(r!==void 0&&A(r,this.#i[E],this))return this.get(this.#i[E],t)}}forEach(A,t=this){for(let E of this.#O()){let s=this.#s[E],r=this.#n(s)?s.__staleWhileFetching:s;r!==void 0&&A.call(t,r,this.#i[E],this)}}rforEach(A,t=this){for(let E of this.#U()){let s=this.#s[E],r=this.#n(s)?s.__staleWhileFetching:s;r!==void 0&&A.call(t,r,this.#i[E],this)}}purgeStale(){let A=!1;for(let t of this.#U({allowStale:!0}))this.#g(t)&&(this.delete(this.#i[t]),A=!0);return A}info(A){let t=this.#o.get(A);if(t===void 0)return;let E=this.#s[t],s=this.#n(E)?E.__staleWhileFetching:E;if(s===void 0)return;let r={value:s};if(this.#N&&this.#D){let i=this.#N[t],o=this.#D[t];if(i&&o){let n=i-(Xs.now()-o);r.ttl=n,r.start=Date.now()}}return this.#f&&(r.size=this.#f[t]),r}dump(){let A=[];for(let t of this.#O({allowStale:!0})){let E=this.#i[t],s=this.#s[t],r=this.#n(s)?s.__staleWhileFetching:s;if(r===void 0||E===void 0)continue;let i={value:r};if(this.#N&&this.#D){i.ttl=this.#N[t];let o=Xs.now()-this.#D[t];i.start=Math.floor(Date.now()-o)}this.#f&&(i.size=this.#f[t]),A.unshift([E,i])}return A}load(A){this.clear();for(let[t,E]of A){if(E.start){let s=Date.now()-E.start;E.start=Xs.now()-s}this.set(t,E.value,E)}}set(A,t,E={}){if(t===void 0)return this.delete(A),this;let{ttl:s=this.ttl,start:r,noDisposeOnSet:i=this.noDisposeOnSet,sizeCalculation:o=this.sizeCalculation,status:n}=E,{noUpdateTTL:I=this.noUpdateTTL}=E,C=this.#m(A,t,E.size||0,o);if(this.maxEntrySize&&C>this.maxEntrySize)return n&&(n.set="miss",n.maxEntrySizeExceeded=!0),this.delete(A),this;let a=this.#C===0?void 0:this.#o.get(A);if(a===void 0)a=this.#C===0?this.#R:this.#L.length!==0?this.#L.pop():this.#C===this.#A?this.#y(!1):this.#C,this.#i[a]=A,this.#s[a]=t,this.#o.set(A,a),this.#c[this.#R]=a,this.#l[a]=this.#R,this.#R=a,this.#C++,this.#w(a,C,n),n&&(n.set="add"),I=!1;else{this.#P(a);let R=this.#s[a];if(t!==R){if(this.#_&&this.#n(R)){R.__abortController.abort(new Error("replaced"));let{__staleWhileFetching:T}=R;T!==void 0&&!i&&(this.#S&&this.#E?.(T,A,"set"),this.#a&&this.#T?.push([T,A,"set"]))}else i||(this.#S&&this.#E?.(R,A,"set"),this.#a&&this.#T?.push([R,A,"set"]));if(this.#u(a),this.#w(a,C,n),this.#s[a]=t,n){n.set="replace";let T=R&&this.#n(R)?R.__staleWhileFetching:R;T!==void 0&&(n.oldValue=T)}}else n&&(n.set="update")}if(s!==0&&!this.#N&&this.#p(),this.#N&&(I||this.#r(a,s,r),n&&this.#Q(n,a)),!i&&this.#a&&this.#T){let R=this.#T,T;for(;T=R?.shift();)this.#e?.(...T)}return this}pop(){try{for(;this.#C;){let A=this.#s[this.#B];if(this.#y(!0),this.#n(A)){if(A.__staleWhileFetching)return A.__staleWhileFetching}else if(A!==void 0)return A}}finally{if(this.#a&&this.#T){let A=this.#T,t;for(;t=A?.shift();)this.#e?.(...t)}}}#y(A){let t=this.#B,E=this.#i[t],s=this.#s[t];return this.#_&&this.#n(s)?s.__abortController.abort(new Error("evicted")):(this.#S||this.#a)&&(this.#S&&this.#E?.(s,E,"evict"),this.#a&&this.#T?.push([s,E,"evict"])),this.#u(t),A&&(this.#i[t]=void 0,this.#s[t]=void 0,this.#L.push(t)),this.#C===1?(this.#B=this.#R=0,this.#L.length=0):this.#B=this.#c[t],this.#o.delete(E),this.#C--,t}has(A,t={}){let{updateAgeOnHas:E=this.updateAgeOnHas,status:s}=t,r=this.#o.get(A);if(r!==void 0){let i=this.#s[r];if(this.#n(i)&&i.__staleWhileFetching===void 0)return!1;if(this.#g(r))s&&(s.has="stale",this.#Q(s,r));else return E&&this.#d(r),s&&(s.has="hit",this.#Q(s,r)),!0}else s&&(s.has="miss");return!1}peek(A,t={}){let{allowStale:E=this.allowStale}=t,s=this.#o.get(A);if(s===void 0||!E&&this.#g(s))return;let r=this.#s[s];return this.#n(r)?r.__staleWhileFetching:r}#F(A,t,E,s){let r=t===void 0?void 0:this.#s[t];if(this.#n(r))return r;let i=new Go,{signal:o}=E;o?.addEventListener("abort",()=>i.abort(o.reason),{signal:i.signal});let n={signal:i.signal,options:E,context:s},I=(B,c=!1)=>{let{aborted:g}=i.signal,l=E.ignoreFetchAbort&&B!==void 0;if(E.status&&(g&&!c?(E.status.fetchAborted=!0,E.status.fetchError=i.signal.reason,l&&(E.status.fetchAbortIgnored=!0)):E.status.fetchResolved=!0),g&&!l&&!c)return a(i.signal.reason);let Q=T;return this.#s[t]===T&&(B===void 0?Q.__staleWhileFetching?this.#s[t]=Q.__staleWhileFetching:this.delete(A):(E.status&&(E.status.fetchUpdated=!0),this.set(A,B,n.options))),B},C=B=>(E.status&&(E.status.fetchRejected=!0,E.status.fetchError=B),a(B)),a=B=>{let{aborted:c}=i.signal,g=c&&E.allowStaleOnFetchAbort,l=g||E.allowStaleOnFetchRejection,Q=l||E.noDeleteOnFetchRejection,L=T;if(this.#s[t]===T&&(!Q||L.__staleWhileFetching===void 0?this.delete(A):g||(this.#s[t]=L.__staleWhileFetching)),l)return E.status&&L.__staleWhileFetching!==void 0&&(E.status.returnedStale=!0),L.__staleWhileFetching;if(L.__returned===L)throw B},R=(B,c)=>{let g=this.#I?.(A,r,n);g&&g instanceof Promise&&g.then(l=>B(l===void 0?void 0:l),c),i.signal.addEventListener("abort",()=>{(!E.ignoreFetchAbort||E.allowStaleOnFetchAbort)&&(B(void 0),E.allowStaleOnFetchAbort&&(B=l=>I(l,!0)))})};E.status&&(E.status.fetchDispatched=!0);let T=new Promise(R).then(I,C),h=Object.assign(T,{__abortController:i,__staleWhileFetching:r,__returned:void 0});return t===void 0?(this.set(A,h,{...n.options,status:void 0}),t=this.#o.get(A)):this.#s[t]=h,h}#n(A){if(!this.#_)return!1;let t=A;return!!t&&t instanceof Promise&&t.hasOwnProperty("__staleWhileFetching")&&t.__abortController instanceof Go}async fetch(A,t={}){let{allowStale:E=this.allowStale,updateAgeOnGet:s=this.updateAgeOnGet,noDeleteOnStaleGet:r=this.noDeleteOnStaleGet,ttl:i=this.ttl,noDisposeOnSet:o=this.noDisposeOnSet,size:n=0,sizeCalculation:I=this.sizeCalculation,noUpdateTTL:C=this.noUpdateTTL,noDeleteOnFetchRejection:a=this.noDeleteOnFetchRejection,allowStaleOnFetchRejection:R=this.allowStaleOnFetchRejection,ignoreFetchAbort:T=this.ignoreFetchAbort,allowStaleOnFetchAbort:h=this.allowStaleOnFetchAbort,context:B,forceRefresh:c=!1,status:g,signal:l}=t;if(!this.#_)return g&&(g.fetch="get"),this.get(A,{allowStale:E,updateAgeOnGet:s,noDeleteOnStaleGet:r,status:g});let Q={allowStale:E,updateAgeOnGet:s,noDeleteOnStaleGet:r,ttl:i,noDisposeOnSet:o,size:n,sizeCalculation:I,noUpdateTTL:C,noDeleteOnFetchRejection:a,allowStaleOnFetchRejection:R,allowStaleOnFetchAbort:h,ignoreFetchAbort:T,status:g,signal:l},L=this.#o.get(A);if(L===void 0){g&&(g.fetch="miss");let w=this.#F(A,L,Q,B);return w.__returned=w}else{let w=this.#s[L];if(this.#n(w)){let LA=E&&w.__staleWhileFetching!==void 0;return g&&(g.fetch="inflight",LA&&(g.returnedStale=!0)),LA?w.__staleWhileFetching:w.__returned=w}let m=this.#g(L);if(!c&&!m)return g&&(g.fetch="hit"),this.#P(L),s&&this.#d(L),g&&this.#Q(g,L),w;let W=this.#F(A,L,Q,B),oA=W.__staleWhileFetching!==void 0&&E;return g&&(g.fetch=m?"stale":"refresh",oA&&m&&(g.returnedStale=!0)),oA?W.__staleWhileFetching:W.__returned=W}}get(A,t={}){let{allowStale:E=this.allowStale,updateAgeOnGet:s=this.updateAgeOnGet,noDeleteOnStaleGet:r=this.noDeleteOnStaleGet,status:i}=t,o=this.#o.get(A);if(o!==void 0){let n=this.#s[o],I=this.#n(n);return i&&this.#Q(i,o),this.#g(o)?(i&&(i.get="stale"),I?(i&&E&&n.__staleWhileFetching!==void 0&&(i.returnedStale=!0),E?n.__staleWhileFetching:void 0):(r||this.delete(A),i&&E&&(i.returnedStale=!0),E?n:void 0)):(i&&(i.get="hit"),I?n.__staleWhileFetching:(this.#P(o),s&&this.#d(o),n))}else i&&(i.get="miss")}#b(A,t){this.#l[t]=A,this.#c[A]=t}#P(A){A!==this.#R&&(A===this.#B?this.#B=this.#c[A]:this.#b(this.#l[A],this.#c[A]),this.#b(this.#R,A),this.#R=A)}delete(A){let t=!1;if(this.#C!==0){let E=this.#o.get(A);if(E!==void 0)if(t=!0,this.#C===1)this.clear();else{this.#u(E);let s=this.#s[E];if(this.#n(s)?s.__abortController.abort(new Error("deleted")):(this.#S||this.#a)&&(this.#S&&this.#E?.(s,A,"delete"),this.#a&&this.#T?.push([s,A,"delete"])),this.#o.delete(A),this.#i[E]=void 0,this.#s[E]=void 0,E===this.#R)this.#R=this.#l[E];else if(E===this.#B)this.#B=this.#c[E];else{let r=this.#l[E];this.#c[r]=this.#c[E];let i=this.#c[E];this.#l[i]=this.#l[E]}this.#C--,this.#L.push(E)}}if(this.#a&&this.#T?.length){let E=this.#T,s;for(;s=E?.shift();)this.#e?.(...s)}return t}clear(){for(let A of this.#U({allowStale:!0})){let t=this.#s[A];if(this.#n(t))t.__abortController.abort(new Error("deleted"));else{let E=this.#i[A];this.#S&&this.#E?.(t,E,"delete"),this.#a&&this.#T?.push([t,E,"delete"])}}if(this.#o.clear(),this.#s.fill(void 0),this.#i.fill(void 0),this.#N&&this.#D&&(this.#N.fill(0),this.#D.fill(0)),this.#f&&this.#f.fill(0),this.#B=0,this.#R=0,this.#L.length=0,this.#h=0,this.#C=0,this.#a&&this.#T){let A=this.#T,t;for(;t=A?.shift();)this.#e?.(...t)}}};var $s=require("path"),Ru=require("url"),EY=ut(require("fs"),1),Nt=require("fs"),hE=require("fs/promises");var Wo=require("events"),YR=ut(require("stream"),1),nu=require("string_decoder"),Eu=typeof process=="object"&&process?process:{stdout:null,stderr:null},qb=e=>!!e&&typeof e=="object"&&(e instanceof TE||e instanceof YR.default||Kb(e)||Zb(e)),Kb=e=>!!e&&typeof e=="object"&&e instanceof Wo.EventEmitter&&typeof e.pipe=="function"&&e.pipe!==YR.default.Writable.prototype.pipe,Zb=e=>!!e&&typeof e=="object"&&e instanceof Wo.EventEmitter&&typeof e.write=="function"&&typeof e.end=="function",Yt=Symbol("EOF"),Ht=Symbol("maybeEmitEnd"),RE=Symbol("emittedEnd"),bo=Symbol("emittingEnd"),Oi=Symbol("emittedError"),Yo=Symbol("closed"),su=Symbol("read"),Ho=Symbol("flush"),ru=Symbol("flushChunk"),$e=Symbol("encoding"),zs=Symbol("decoder"),PA=Symbol("flowing"),Li=Symbol("paused"),js=Symbol("resume"),FA=Symbol("buffer"),ie=Symbol("pipes"),wA=Symbol("bufferLength"),PR=Symbol("bufferPush"),ko=Symbol("bufferShift"),qA=Symbol("objectMode"),SA=Symbol("destroyed"),FR=Symbol("error"),wR=Symbol("emitData"),iu=Symbol("emitEnd"),mR=Symbol("emitEnd2"),St=Symbol("async"),GR=Symbol("abort"),Vo=Symbol("aborted"),fi=Symbol("signal"),xE=Symbol("dataListeners"),Ue=Symbol("discarded"),Di=e=>Promise.resolve().then(e),zb=e=>e(),jb=e=>e==="end"||e==="finish"||e==="prefinish",$b=e=>e instanceof ArrayBuffer||!!e&&typeof e=="object"&&e.constructor&&e.constructor.name==="ArrayBuffer"&&e.byteLength>=0,AY=e=>!Buffer.isBuffer(e)&&ArrayBuffer.isView(e),xo=class{src;dest;opts;ondrain;constructor(A,t,E){this.src=A,this.dest=t,this.opts=E,this.ondrain=()=>A[js](),this.dest.on("drain",this.ondrain)}unpipe(){this.dest.removeListener("drain",this.ondrain)}proxyErrors(A){}end(){this.unpipe(),this.opts.end&&this.dest.end()}},bR=class extends xo{unpipe(){this.src.removeListener("error",this.proxyErrors),super.unpipe()}constructor(A,t,E){super(A,t,E),this.proxyErrors=s=>t.emit("error",s),A.on("error",this.proxyErrors)}},eY=e=>!!e.objectMode,tY=e=>!e.objectMode&&!!e.encoding&&e.encoding!=="buffer",TE=class extends Wo.EventEmitter{[PA]=!1;[Li]=!1;[ie]=[];[FA]=[];[qA];[$e];[St];[zs];[Yt]=!1;[RE]=!1;[bo]=!1;[Yo]=!1;[Oi]=null;[wA]=0;[SA]=!1;[fi];[Vo]=!1;[xE]=0;[Ue]=!1;writable=!0;readable=!0;constructor(...A){let t=A[0]||{};if(super(),t.objectMode&&typeof t.encoding=="string")throw new TypeError("Encoding and objectMode may not be used together");eY(t)?(this[qA]=!0,this[$e]=null):tY(t)?(this[$e]=t.encoding,this[qA]=!1):(this[qA]=!1,this[$e]=null),this[St]=!!t.async,this[zs]=this[$e]?new nu.StringDecoder(this[$e]):null,t&&t.debugExposeBuffer===!0&&Object.defineProperty(this,"buffer",{get:()=>this[FA]}),t&&t.debugExposePipes===!0&&Object.defineProperty(this,"pipes",{get:()=>this[ie]});let{signal:E}=t;E&&(this[fi]=E,E.aborted?this[GR]():E.addEventListener("abort",()=>this[GR]()))}get bufferLength(){return this[wA]}get encoding(){return this[$e]}set encoding(A){throw new Error("Encoding must be set at instantiation time")}setEncoding(A){throw new Error("Encoding must be set at instantiation time")}get objectMode(){return this[qA]}set objectMode(A){throw new Error("objectMode must be set at instantiation time")}get async(){return this[St]}set async(A){this[St]=this[St]||!!A}[GR](){this[Vo]=!0,this.emit("abort",this[fi]?.reason),this.destroy(this[fi]?.reason)}get aborted(){return this[Vo]}set aborted(A){}write(A,t,E){if(this[Vo])return!1;if(this[Yt])throw new Error("write after end");if(this[SA])return this.emit("error",Object.assign(new Error("Cannot call write after a stream was destroyed"),{code:"ERR_STREAM_DESTROYED"})),!0;typeof t=="function"&&(E=t,t="utf8"),t||(t="utf8");let s=this[St]?Di:zb;if(!this[qA]&&!Buffer.isBuffer(A)){if(AY(A))A=Buffer.from(A.buffer,A.byteOffset,A.byteLength);else if($b(A))A=Buffer.from(A);else if(typeof A!="string")throw new Error("Non-contiguous data written to non-objectMode stream")}return this[qA]?(this[PA]&&this[wA]!==0&&this[Ho](!0),this[PA]?this.emit("data",A):this[PR](A),this[wA]!==0&&this.emit("readable"),E&&s(E),this[PA]):A.length?(typeof A=="string"&&!(t===this[$e]&&!this[zs]?.lastNeed)&&(A=Buffer.from(A,t)),Buffer.isBuffer(A)&&this[$e]&&(A=this[zs].write(A)),this[PA]&&this[wA]!==0&&this[Ho](!0),this[PA]?this.emit("data",A):this[PR](A),this[wA]!==0&&this.emit("readable"),E&&s(E),this[PA]):(this[wA]!==0&&this.emit("readable"),E&&s(E),this[PA])}read(A){if(this[SA])return null;if(this[Ue]=!1,this[wA]===0||A===0||A&&A>this[wA])return this[Ht](),null;this[qA]&&(A=null),this[FA].length>1&&!this[qA]&&(this[FA]=[this[$e]?this[FA].join(""):Buffer.concat(this[FA],this[wA])]);let t=this[su](A||null,this[FA][0]);return this[Ht](),t}[su](A,t){if(this[qA])this[ko]();else{let E=t;A===E.length||A===null?this[ko]():typeof E=="string"?(this[FA][0]=E.slice(A),t=E.slice(0,A),this[wA]-=A):(this[FA][0]=E.subarray(A),t=E.subarray(0,A),this[wA]-=A)}return this.emit("data",t),!this[FA].length&&!this[Yt]&&this.emit("drain"),t}end(A,t,E){return typeof A=="function"&&(E=A,A=void 0),typeof t=="function"&&(E=t,t="utf8"),A!==void 0&&this.write(A,t),E&&this.once("end",E),this[Yt]=!0,this.writable=!1,(this[PA]||!this[Li])&&this[Ht](),this}[js](){this[SA]||(!this[xE]&&!this[ie].length&&(this[Ue]=!0),this[Li]=!1,this[PA]=!0,this.emit("resume"),this[FA].length?this[Ho]():this[Yt]?this[Ht]():this.emit("drain"))}resume(){return this[js]()}pause(){this[PA]=!1,this[Li]=!0,this[Ue]=!1}get destroyed(){return this[SA]}get flowing(){return this[PA]}get paused(){return this[Li]}[PR](A){this[qA]?this[wA]+=1:this[wA]+=A.length,this[FA].push(A)}[ko](){return this[qA]?this[wA]-=1:this[wA]-=this[FA][0].length,this[FA].shift()}[Ho](A=!1){do;while(this[ru](this[ko]())&&this[FA].length);!A&&!this[FA].length&&!this[Yt]&&this.emit("drain")}[ru](A){return this.emit("data",A),this[PA]}pipe(A,t){if(this[SA])return A;this[Ue]=!1;let E=this[RE];return t=t||{},A===Eu.stdout||A===Eu.stderr?t.end=!1:t.end=t.end!==!1,t.proxyErrors=!!t.proxyErrors,E?t.end&&A.end():(this[ie].push(t.proxyErrors?new bR(this,A,t):new xo(this,A,t)),this[St]?Di(()=>this[js]()):this[js]()),A}unpipe(A){let t=this[ie].find(E=>E.dest===A);t&&(this[ie].length===1?(this[PA]&&this[xE]===0&&(this[PA]=!1),this[ie]=[]):this[ie].splice(this[ie].indexOf(t),1),t.unpipe())}addListener(A,t){return this.on(A,t)}on(A,t){let E=super.on(A,t);if(A==="data")this[Ue]=!1,this[xE]++,!this[ie].length&&!this[PA]&&this[js]();else if(A==="readable"&&this[wA]!==0)super.emit("readable");else if(jb(A)&&this[RE])super.emit(A),this.removeAllListeners(A);else if(A==="error"&&this[Oi]){let s=t;this[St]?Di(()=>s.call(this,this[Oi])):s.call(this,this[Oi])}return E}removeListener(A,t){return this.off(A,t)}off(A,t){let E=super.off(A,t);return A==="data"&&(this[xE]=this.listeners("data").length,this[xE]===0&&!this[Ue]&&!this[ie].length&&(this[PA]=!1)),E}removeAllListeners(A){let t=super.removeAllListeners(A);return(A==="data"||A===void 0)&&(this[xE]=0,!this[Ue]&&!this[ie].length&&(this[PA]=!1)),t}get emittedEnd(){return this[RE]}[Ht](){!this[bo]&&!this[RE]&&!this[SA]&&this[FA].length===0&&this[Yt]&&(this[bo]=!0,this.emit("end"),this.emit("prefinish"),this.emit("finish"),this[Yo]&&this.emit("close"),this[bo]=!1)}emit(A,...t){let E=t[0];if(A!=="error"&&A!=="close"&&A!==SA&&this[SA])return!1;if(A==="data")return!this[qA]&&!E?!1:this[St]?(Di(()=>this[wR](E)),!0):this[wR](E);if(A==="end")return this[iu]();if(A==="close"){if(this[Yo]=!0,!this[RE]&&!this[SA])return!1;let r=super.emit("close");return this.removeAllListeners("close"),r}else if(A==="error"){this[Oi]=E,super.emit(FR,E);let r=!this[fi]||this.listeners("error").length?super.emit("error",E):!1;return this[Ht](),r}else if(A==="resume"){let r=super.emit("resume");return this[Ht](),r}else if(A==="finish"||A==="prefinish"){let r=super.emit(A);return this.removeAllListeners(A),r}let s=super.emit(A,...t);return this[Ht](),s}[wR](A){for(let E of this[ie])E.dest.write(A)===!1&&this.pause();let t=this[Ue]?!1:super.emit("data",A);return this[Ht](),t}[iu](){return this[RE]?!1:(this[RE]=!0,this.readable=!1,this[St]?(Di(()=>this[mR]()),!0):this[mR]())}[mR](){if(this[zs]){let t=this[zs].end();if(t){for(let E of this[ie])E.dest.write(t);this[Ue]||super.emit("data",t)}}for(let t of this[ie])t.end();let A=super.emit("end");return this.removeAllListeners("end"),A}async collect(){let A=Object.assign([],{dataLength:0});this[qA]||(A.dataLength=0);let t=this.promise();return this.on("data",E=>{A.push(E),this[qA]||(A.dataLength+=E.length)}),await t,A}async concat(){if(this[qA])throw new Error("cannot concat in objectMode");let A=await this.collect();return this[$e]?A.join(""):Buffer.concat(A,A.dataLength)}async promise(){return new Promise((A,t)=>{this.on(SA,()=>t(new Error("stream destroyed"))),this.on("error",E=>t(E)),this.on("end",()=>A())})}[Symbol.asyncIterator](){this[Ue]=!1;let A=!1,t=async()=>(this.pause(),A=!0,{value:void 0,done:!0});return{next:()=>{if(A)return t();let s=this.read();if(s!==null)return Promise.resolve({done:!1,value:s});if(this[Yt])return t();let r,i,o=a=>{this.off("data",n),this.off("end",I),this.off(SA,C),t(),i(a)},n=a=>{this.off("error",o),this.off("end",I),this.off(SA,C),this.pause(),r({value:a,done:!!this[Yt]})},I=()=>{this.off("error",o),this.off("data",n),this.off(SA,C),t(),r({done:!0,value:void 0})},C=()=>o(new Error("stream destroyed"));return new Promise((a,R)=>{i=R,r=a,this.once(SA,C),this.once("error",o),this.once("end",I),this.once("data",n)})},throw:t,return:t,[Symbol.asyncIterator](){return this}}}[Symbol.iterator](){this[Ue]=!1;let A=!1,t=()=>(this.pause(),this.off(FR,t),this.off(SA,t),this.off("end",t),A=!0,{done:!0,value:void 0}),E=()=>{if(A)return t();let s=this.read();return s===null?t():{done:!1,value:s}};return this.once("end",t),this.once(FR,t),this.once(SA,t),{next:E,throw:t,return:t,[Symbol.iterator](){return this}}}destroy(A){if(this[SA])return A?this.emit("error",A):this.emit(SA),this;this[SA]=!0,this[Ue]=!0,this[FA].length=0,this[wA]=0;let t=this;return typeof t.close=="function"&&!this[Yo]&&t.close(),A?this.emit("error",A):this.emit(SA),this}static get isStream(){return qb}};var sY=Nt.realpathSync.native,_i={lstatSync:Nt.lstatSync,readdir:Nt.readdir,readdirSync:Nt.readdirSync,readlinkSync:Nt.readlinkSync,realpathSync:sY,promises:{lstat:hE.lstat,readdir:hE.readdir,readlink:hE.readlink,realpath:hE.realpath}},Tu=e=>!e||e===_i||e===EY?_i:{..._i,...e,promises:{..._i.promises,...e.promises||{}}},hu=/^\\\\\?\\([a-z]:)\\?$/i,rY=e=>e.replace(/\//g,"\\").replace(hu,"$1\\"),iY=/[\\\/]/,Je=0,Bu=1,cu=2,lt=4,gu=6,Su=8,WE=10,lu=12,We=15,di=~We,HR=16,ou=32,Ui=64,At=128,Jo=256,Xo=512,Iu=Ui|At|Xo,nY=1023,kR=e=>e.isFile()?Su:e.isDirectory()?lt:e.isSymbolicLink()?WE:e.isCharacterDevice()?cu:e.isBlockDevice()?gu:e.isSocket()?lu:e.isFIFO()?Bu:Je,Cu=new Map,pi=e=>{let A=Cu.get(e);if(A)return A;let t=e.normalize("NFKD");return Cu.set(e,t),t},au=new Map,vo=e=>{let A=au.get(e);if(A)return A;let t=pi(e.toLowerCase());return au.set(e,t),t},qo=class extends VE{constructor(){super({max:256})}},VR=class extends VE{constructor(A=16*1024){super({maxSize:A,sizeCalculation:t=>t.length+1})}},Nu=Symbol("PathScurry setAsCwd"),KA=class{name;root;roots;parent;nocase;#A;#t;get dev(){return this.#t}#E;get mode(){return this.#E}#e;get nlink(){return this.#e}#I;get uid(){return this.#I}#C;get gid(){return this.#C}#h;get rdev(){return this.#h}#o;get blksize(){return this.#o}#i;get ino(){return this.#i}#s;get size(){return this.#s}#c;get blocks(){return this.#c}#l;get atimeMs(){return this.#l}#B;get mtimeMs(){return this.#B}#R;get ctimeMs(){return this.#R}#L;get birthtimeMs(){return this.#L}#T;get atime(){return this.#T}#f;get mtime(){return this.#f}#D;get ctime(){return this.#D}#N;get birthtime(){return this.#N}#S;#_;#a;#p;#d;#Q;#r;#g;#M;#u;get path(){return(this.parent||this).fullpath()}constructor(A,t=Je,E,s,r,i,o){this.name=A,this.#S=r?vo(A):pi(A),this.#r=t&nY,this.nocase=r,this.roots=s,this.root=E||this,this.#g=i,this.#a=o.fullpath,this.#d=o.relative,this.#Q=o.relativePosix,this.parent=o.parent,this.parent?this.#A=this.parent.#A:this.#A=Tu(o.fs)}depth(){return this.#_!==void 0?this.#_:this.parent?this.#_=this.parent.depth()+1:this.#_=0}childrenCache(){return this.#g}resolve(A){if(!A)return this;let t=this.getRootString(A),s=A.substring(t.length).split(this.splitSep);return t?this.getRoot(t).#w(s):this.#w(s)}#w(A){let t=this;for(let E of A)t=t.child(E);return t}children(){let A=this.#g.get(this);if(A)return A;let t=Object.assign([],{provisional:0});return this.#g.set(this,t),this.#r&=~HR,t}child(A,t){if(A===""||A===".")return this;if(A==="..")return this.parent||this;let E=this.children(),s=this.nocase?vo(A):pi(A);for(let n of E)if(n.#S===s)return n;let r=this.parent?this.sep:"",i=this.#a?this.#a+r+A:void 0,o=this.newChild(A,Je,{...t,parent:this,fullpath:i});return this.canReaddir()||(o.#r|=At),E.push(o),o}relative(){if(this.#d!==void 0)return this.#d;let A=this.name,t=this.parent;if(!t)return this.#d=this.name;let E=t.relative();return E+(!E||!t.parent?"":this.sep)+A}relativePosix(){if(this.sep==="/")return this.relative();if(this.#Q!==void 0)return this.#Q;let A=this.name,t=this.parent;if(!t)return this.#Q=this.fullpathPosix();let E=t.relativePosix();return E+(!E||!t.parent?"":"/")+A}fullpath(){if(this.#a!==void 0)return this.#a;let A=this.name,t=this.parent;if(!t)return this.#a=this.name;let s=t.fullpath()+(t.parent?this.sep:"")+A;return this.#a=s}fullpathPosix(){if(this.#p!==void 0)return this.#p;if(this.sep==="/")return this.#p=this.fullpath();if(!this.parent){let s=this.fullpath().replace(/\\/g,"/");return/^[a-z]:\//i.test(s)?this.#p=`//?/${s}`:this.#p=s}let A=this.parent,t=A.fullpathPosix(),E=t+(!t||!A.parent?"":"/")+this.name;return this.#p=E}isUnknown(){return(this.#r&We)===Je}isType(A){return this[`is${A}`]()}getType(){return this.isUnknown()?"Unknown":this.isDirectory()?"Directory":this.isFile()?"File":this.isSymbolicLink()?"SymbolicLink":this.isFIFO()?"FIFO":this.isCharacterDevice()?"CharacterDevice":this.isBlockDevice()?"BlockDevice":this.isSocket()?"Socket":"Unknown"}isFile(){return(this.#r&We)===Su}isDirectory(){return(this.#r&We)===lt}isCharacterDevice(){return(this.#r&We)===cu}isBlockDevice(){return(this.#r&We)===gu}isFIFO(){return(this.#r&We)===Bu}isSocket(){return(this.#r&We)===lu}isSymbolicLink(){return(this.#r&WE)===WE}lstatCached(){return this.#r&ou?this:void 0}readlinkCached(){return this.#M}realpathCached(){return this.#u}readdirCached(){let A=this.children();return A.slice(0,A.provisional)}canReadlink(){if(this.#M)return!0;if(!this.parent)return!1;let A=this.#r&We;return!(A!==Je&&A!==WE||this.#r&Jo||this.#r&At)}calledReaddir(){return!!(this.#r&HR)}isENOENT(){return!!(this.#r&At)}isNamed(A){return this.nocase?this.#S===vo(A):this.#S===pi(A)}async readlink(){let A=this.#M;if(A)return A;if(this.canReadlink()&&this.parent)try{let t=await this.#A.promises.readlink(this.fullpath()),E=this.parent.resolve(t);if(E)return this.#M=E}catch(t){this.#b(t.code);return}}readlinkSync(){let A=this.#M;if(A)return A;if(this.canReadlink()&&this.parent)try{let t=this.#A.readlinkSync(this.fullpath()),E=this.parent.resolve(t);if(E)return this.#M=E}catch(t){this.#b(t.code);return}}#m(A){this.#r|=HR;for(let t=A.provisional;t<A.length;t++)A[t].#O()}#O(){this.#r&At||(this.#r=(this.#r|At)&di,this.#U())}#U(){let A=this.children();A.provisional=0;for(let t of A)t.#O()}#G(){this.#r|=Xo,this.#y()}#y(){if(this.#r&Ui)return;let A=this.#r;(A&We)===lt&&(A&=di),this.#r=A|Ui,this.#U()}#F(A=""){A==="ENOTDIR"||A==="EPERM"?this.#y():A==="ENOENT"?this.#O():this.children().provisional=0}#n(A=""){A==="ENOTDIR"?this.parent.#y():A==="ENOENT"&&this.#O()}#b(A=""){let t=this.#r;t|=Jo,A==="ENOENT"&&(t|=At),(A==="EINVAL"||A==="UNKNOWN")&&(t&=di),this.#r=t,A==="ENOTDIR"&&this.parent&&this.parent.#y()}#P(A,t){return this.#W(A,t)||this.#x(A,t)}#x(A,t){let E=kR(A),s=this.newChild(A.name,E,{parent:this}),r=s.#r&We;return r!==lt&&r!==WE&&r!==Je&&(s.#r|=Ui),t.unshift(s),t.provisional++,s}#W(A,t){for(let E=t.provisional;E<t.length;E++){let s=t[E];if((this.nocase?vo(A.name):pi(A.name))===s.#S)return this.#J(A,s,E,t)}}#J(A,t,E,s){let r=t.name;return t.#r=t.#r&di|kR(A),r!==A.name&&(t.name=A.name),E!==s.provisional&&(E===s.length-1?s.pop():s.splice(E,1),s.unshift(t)),s.provisional++,t}async lstat(){if(!(this.#r&At))try{return this.#V(await this.#A.promises.lstat(this.fullpath())),this}catch(A){this.#n(A.code)}}lstatSync(){if(!(this.#r&At))try{return this.#V(this.#A.lstatSync(this.fullpath())),this}catch(A){this.#n(A.code)}}#V(A){let{atime:t,atimeMs:E,birthtime:s,birthtimeMs:r,blksize:i,blocks:o,ctime:n,ctimeMs:I,dev:C,gid:a,ino:R,mode:T,mtime:h,mtimeMs:B,nlink:c,rdev:g,size:l,uid:Q}=A;this.#T=t,this.#l=E,this.#N=s,this.#L=r,this.#o=i,this.#c=o,this.#D=n,this.#R=I,this.#t=C,this.#C=a,this.#i=R,this.#E=T,this.#f=h,this.#B=B,this.#e=c,this.#h=g,this.#s=l,this.#I=Q;let L=kR(A);this.#r=this.#r&di|L|ou,L!==Je&&L!==lt&&L!==WE&&(this.#r|=Ui)}#H=[];#k=!1;#v(A){this.#k=!1;let t=this.#H.slice();this.#H.length=0,t.forEach(E=>E(null,A))}readdirCB(A,t=!1){if(!this.canReaddir()){t?A(null,[]):queueMicrotask(()=>A(null,[]));return}let E=this.children();if(this.calledReaddir()){let r=E.slice(0,E.provisional);t?A(null,r):queueMicrotask(()=>A(null,r));return}if(this.#H.push(A),this.#k)return;this.#k=!0;let s=this.fullpath();this.#A.readdir(s,{withFileTypes:!0},(r,i)=>{if(r)this.#F(r.code),E.provisional=0;else{for(let o of i)this.#P(o,E);this.#m(E)}this.#v(E.slice(0,E.provisional))})}#Y;async readdir(){if(!this.canReaddir())return[];let A=this.children();if(this.calledReaddir())return A.slice(0,A.provisional);let t=this.fullpath();if(this.#Y)await this.#Y;else{let E=()=>{};this.#Y=new Promise(s=>E=s);try{for(let s of await this.#A.promises.readdir(t,{withFileTypes:!0}))this.#P(s,A);this.#m(A)}catch(s){this.#F(s.code),A.provisional=0}this.#Y=void 0,E()}return A.slice(0,A.provisional)}readdirSync(){if(!this.canReaddir())return[];let A=this.children();if(this.calledReaddir())return A.slice(0,A.provisional);let t=this.fullpath();try{for(let E of this.#A.readdirSync(t,{withFileTypes:!0}))this.#P(E,A);this.#m(A)}catch(E){this.#F(E.code),A.provisional=0}return A.slice(0,A.provisional)}canReaddir(){if(this.#r&Iu)return!1;let A=We&this.#r;return A===Je||A===lt||A===WE}shouldWalk(A,t){return(this.#r&lt)===lt&&!(this.#r&Iu)&&!A.has(this)&&(!t||t(this))}async realpath(){if(this.#u)return this.#u;if(!((Xo|Jo|At)&this.#r))try{let A=await this.#A.promises.realpath(this.fullpath());return this.#u=this.resolve(A)}catch{this.#G()}}realpathSync(){if(this.#u)return this.#u;if(!((Xo|Jo|At)&this.#r))try{let A=this.#A.realpathSync(this.fullpath());return this.#u=this.resolve(A)}catch{this.#G()}}[Nu](A){if(A===this)return;let t=new Set([]),E=[],s=this;for(;s&&s.parent;)t.add(s),s.#d=E.join(this.sep),s.#Q=E.join("/"),s=s.parent,E.push("..");for(s=A;s&&s.parent&&!t.has(s);)s.#d=void 0,s.#Q=void 0,s=s.parent}},Ar=class extends KA{sep="\\";splitSep=iY;constructor(A,t=Je,E,s,r,i,o){super(A,t,E,s,r,i,o)}newChild(A,t=Je,E={}){return new Ar(A,t,this.root,this.roots,this.nocase,this.childrenCache(),E)}getRootString(A){return $s.win32.parse(A).root}getRoot(A){if(A=rY(A.toUpperCase()),A===this.root.name)return this.root;for(let[t,E]of Object.entries(this.roots))if(this.sameRoot(A,t))return this.roots[A]=E;return this.roots[A]=new tr(A,this).root}sameRoot(A,t=this.root.name){return A=A.toUpperCase().replace(/\//g,"\\").replace(hu,"$1\\"),A===t}},er=class extends KA{splitSep="/";sep="/";constructor(A,t=Je,E,s,r,i,o){super(A,t,E,s,r,i,o)}getRootString(A){return A.startsWith("/")?"/":""}getRoot(A){return this.root}newChild(A,t=Je,E={}){return new er(A,t,this.root,this.roots,this.nocase,this.childrenCache(),E)}},Ko=class{root;rootPath;roots;cwd;#A;#t;#E;nocase;#e;constructor(A=process.cwd(),t,E,{nocase:s,childrenCacheSize:r=16*1024,fs:i=_i}={}){this.#e=Tu(i),(A instanceof URL||A.startsWith("file://"))&&(A=(0,Ru.fileURLToPath)(A));let o=t.resolve(A);this.roots=Object.create(null),this.rootPath=this.parseRootPath(o),this.#A=new qo,this.#t=new qo,this.#E=new VR(r);let n=o.substring(this.rootPath.length).split(E);if(n.length===1&&!n[0]&&n.pop(),s===void 0)throw new TypeError("must provide nocase setting to PathScurryBase ctor");this.nocase=s,this.root=this.newRoot(this.#e),this.roots[this.rootPath]=this.root;let I=this.root,C=n.length-1,a=t.sep,R=this.rootPath,T=!1;for(let h of n){let B=C--;I=I.child(h,{relative:new Array(B).fill("..").join(a),relativePosix:new Array(B).fill("..").join("/"),fullpath:R+=(T?"":a)+h}),T=!0}this.cwd=I}depth(A=this.cwd){return typeof A=="string"&&(A=this.cwd.resolve(A)),A.depth()}childrenCache(){return this.#E}resolve(...A){let t="";for(let r=A.length-1;r>=0;r--){let i=A[r];if(!(!i||i===".")&&(t=t?`${i}/${t}`:i,this.isAbsolute(i)))break}let E=this.#A.get(t);if(E!==void 0)return E;let s=this.cwd.resolve(t).fullpath();return this.#A.set(t,s),s}resolvePosix(...A){let t="";for(let r=A.length-1;r>=0;r--){let i=A[r];if(!(!i||i===".")&&(t=t?`${i}/${t}`:i,this.isAbsolute(i)))break}let E=this.#t.get(t);if(E!==void 0)return E;let s=this.cwd.resolve(t).fullpathPosix();return this.#t.set(t,s),s}relative(A=this.cwd){return typeof A=="string"&&(A=this.cwd.resolve(A)),A.relative()}relativePosix(A=this.cwd){return typeof A=="string"&&(A=this.cwd.resolve(A)),A.relativePosix()}basename(A=this.cwd){return typeof A=="string"&&(A=this.cwd.resolve(A)),A.name}dirname(A=this.cwd){return typeof A=="string"&&(A=this.cwd.resolve(A)),(A.parent||A).fullpath()}async readdir(A=this.cwd,t={withFileTypes:!0}){typeof A=="string"?A=this.cwd.resolve(A):A instanceof KA||(t=A,A=this.cwd);let{withFileTypes:E}=t;if(A.canReaddir()){let s=await A.readdir();return E?s:s.map(r=>r.name)}else return[]}readdirSync(A=this.cwd,t={withFileTypes:!0}){typeof A=="string"?A=this.cwd.resolve(A):A instanceof KA||(t=A,A=this.cwd);let{withFileTypes:E=!0}=t;return A.canReaddir()?E?A.readdirSync():A.readdirSync().map(s=>s.name):[]}async lstat(A=this.cwd){return typeof A=="string"&&(A=this.cwd.resolve(A)),A.lstat()}lstatSync(A=this.cwd){return typeof A=="string"&&(A=this.cwd.resolve(A)),A.lstatSync()}async readlink(A=this.cwd,{withFileTypes:t}={withFileTypes:!1}){typeof A=="string"?A=this.cwd.resolve(A):A instanceof KA||(t=A.withFileTypes,A=this.cwd);let E=await A.readlink();return t?E:E?.fullpath()}readlinkSync(A=this.cwd,{withFileTypes:t}={withFileTypes:!1}){typeof A=="string"?A=this.cwd.resolve(A):A instanceof KA||(t=A.withFileTypes,A=this.cwd);let E=A.readlinkSync();return t?E:E?.fullpath()}async realpath(A=this.cwd,{withFileTypes:t}={withFileTypes:!1}){typeof A=="string"?A=this.cwd.resolve(A):A instanceof KA||(t=A.withFileTypes,A=this.cwd);let E=await A.realpath();return t?E:E?.fullpath()}realpathSync(A=this.cwd,{withFileTypes:t}={withFileTypes:!1}){typeof A=="string"?A=this.cwd.resolve(A):A instanceof KA||(t=A.withFileTypes,A=this.cwd);let E=A.realpathSync();return t?E:E?.fullpath()}async walk(A=this.cwd,t={}){typeof A=="string"?A=this.cwd.resolve(A):A instanceof KA||(t=A,A=this.cwd);let{withFileTypes:E=!0,follow:s=!1,filter:r,walkFilter:i}=t,o=[];(!r||r(A))&&o.push(E?A:A.fullpath());let n=new Set,I=(a,R)=>{n.add(a),a.readdirCB((T,h)=>{if(T)return R(T);let B=h.length;if(!B)return R();let c=()=>{--B===0&&R()};for(let g of h)(!r||r(g))&&o.push(E?g:g.fullpath()),s&&g.isSymbolicLink()?g.realpath().then(l=>l?.isUnknown()?l.lstat():l).then(l=>l?.shouldWalk(n,i)?I(l,c):c()):g.shouldWalk(n,i)?I(g,c):c()},!0)},C=A;return new Promise((a,R)=>{I(C,T=>{if(T)return R(T);a(o)})})}walkSync(A=this.cwd,t={}){typeof A=="string"?A=this.cwd.resolve(A):A instanceof KA||(t=A,A=this.cwd);let{withFileTypes:E=!0,follow:s=!1,filter:r,walkFilter:i}=t,o=[];(!r||r(A))&&o.push(E?A:A.fullpath());let n=new Set([A]);for(let I of n){let C=I.readdirSync();for(let a of C){(!r||r(a))&&o.push(E?a:a.fullpath());let R=a;if(a.isSymbolicLink()){if(!(s&&(R=a.realpathSync())))continue;R.isUnknown()&&R.lstatSync()}R.shouldWalk(n,i)&&n.add(R)}}return o}[Symbol.asyncIterator](){return this.iterate()}iterate(A=this.cwd,t={}){return typeof A=="string"?A=this.cwd.resolve(A):A instanceof KA||(t=A,A=this.cwd),this.stream(A,t)[Symbol.asyncIterator]()}[Symbol.iterator](){return this.iterateSync()}*iterateSync(A=this.cwd,t={}){typeof A=="string"?A=this.cwd.resolve(A):A instanceof KA||(t=A,A=this.cwd);let{withFileTypes:E=!0,follow:s=!1,filter:r,walkFilter:i}=t;(!r||r(A))&&(yield E?A:A.fullpath());let o=new Set([A]);for(let n of o){let I=n.readdirSync();for(let C of I){(!r||r(C))&&(yield E?C:C.fullpath());let a=C;if(C.isSymbolicLink()){if(!(s&&(a=C.realpathSync())))continue;a.isUnknown()&&a.lstatSync()}a.shouldWalk(o,i)&&o.add(a)}}}stream(A=this.cwd,t={}){typeof A=="string"?A=this.cwd.resolve(A):A instanceof KA||(t=A,A=this.cwd);let{withFileTypes:E=!0,follow:s=!1,filter:r,walkFilter:i}=t,o=new TE({objectMode:!0});(!r||r(A))&&o.write(E?A:A.fullpath());let n=new Set,I=[A],C=0,a=()=>{let R=!1;for(;!R;){let T=I.shift();if(!T){C===0&&o.end();return}C++,n.add(T);let h=(c,g,l=!1)=>{if(c)return o.emit("error",c);if(s&&!l){let Q=[];for(let L of g)L.isSymbolicLink()&&Q.push(L.realpath().then(w=>w?.isUnknown()?w.lstat():w));if(Q.length){Promise.all(Q).then(()=>h(null,g,!0));return}}for(let Q of g)Q&&(!r||r(Q))&&(o.write(E?Q:Q.fullpath())||(R=!0));C--;for(let Q of g){let L=Q.realpathCached()||Q;L.shouldWalk(n,i)&&I.push(L)}R&&!o.flowing?o.once("drain",a):B||a()},B=!0;T.readdirCB(h,!0),B=!1}};return a(),o}streamSync(A=this.cwd,t={}){typeof A=="string"?A=this.cwd.resolve(A):A instanceof KA||(t=A,A=this.cwd);let{withFileTypes:E=!0,follow:s=!1,filter:r,walkFilter:i}=t,o=new TE({objectMode:!0}),n=new Set;(!r||r(A))&&o.write(E?A:A.fullpath());let I=[A],C=0,a=()=>{let R=!1;for(;!R;){let T=I.shift();if(!T){C===0&&o.end();return}C++,n.add(T);let h=T.readdirSync();for(let B of h)(!r||r(B))&&(o.write(E?B:B.fullpath())||(R=!0));C--;for(let B of h){let c=B;if(B.isSymbolicLink()){if(!(s&&(c=B.realpathSync())))continue;c.isUnknown()&&c.lstatSync()}c.shouldWalk(n,i)&&I.push(c)}}R&&!o.flowing&&o.once("drain",a)};return a(),o}chdir(A=this.cwd){let t=this.cwd;this.cwd=typeof A=="string"?this.cwd.resolve(A):A,this.cwd[Nu](t)}},tr=class extends Ko{sep="\\";constructor(A=process.cwd(),t={}){let{nocase:E=!0}=t;super(A,$s.win32,"\\",{...t,nocase:E}),this.nocase=E;for(let s=this.cwd;s;s=s.parent)s.nocase=this.nocase}parseRootPath(A){return $s.win32.parse(A).root.toUpperCase()}newRoot(A){return new Ar(this.rootPath,lt,void 0,this.roots,this.nocase,this.childrenCache(),{fs:A})}isAbsolute(A){return A.startsWith("/")||A.startsWith("\\")||/^[a-z]:(\/|\\)/i.test(A)}},Er=class extends Ko{sep="/";constructor(A=process.cwd(),t={}){let{nocase:E=!1}=t;super(A,$s.posix,"/",{...t,nocase:E}),this.nocase=E}parseRootPath(A){return"/"}newRoot(A){return new er(this.rootPath,lt,void 0,this.roots,this.nocase,this.childrenCache(),{fs:A})}isAbsolute(A){return A.startsWith("/")}},Mi=class extends Er{constructor(A=process.cwd(),t={}){let{nocase:E=!0}=t;super(A,{...t,nocase:E})}},qV=process.platform==="win32"?Ar:er,Qu=process.platform==="win32"?tr:process.platform==="darwin"?Mi:Er;var uu=require("url");var oY=e=>e.length>=1,IY=e=>e.length>=1,BE=class{#A;#t;#E;length;#e;#I;#C;#h;#o;#i;#s=!0;constructor(A,t,E,s){if(!oY(A))throw new TypeError("empty pattern list");if(!IY(t))throw new TypeError("empty glob list");if(t.length!==A.length)throw new TypeError("mismatched pattern list and glob list lengths");if(this.length=A.length,E<0||E>=this.length)throw new TypeError("index out of range");if(this.#A=A,this.#t=t,this.#E=E,this.#e=s,this.#E===0){if(this.isUNC()){let[r,i,o,n,...I]=this.#A,[C,a,R,T,...h]=this.#t;I[0]===""&&(I.shift(),h.shift());let B=[r,i,o,n,""].join("/"),c=[C,a,R,T,""].join("/");this.#A=[B,...I],this.#t=[c,...h],this.length=this.#A.length}else if(this.isDrive()||this.isAbsolute()){let[r,...i]=this.#A,[o,...n]=this.#t;i[0]===""&&(i.shift(),n.shift());let I=r+"/",C=o+"/";this.#A=[I,...i],this.#t=[C,...n],this.length=this.#A.length}}}pattern(){return this.#A[this.#E]}isString(){return typeof this.#A[this.#E]=="string"}isGlobstar(){return this.#A[this.#E]===xA}isRegExp(){return this.#A[this.#E]instanceof RegExp}globString(){return this.#C=this.#C||(this.#E===0?this.isAbsolute()?this.#t[0]+this.#t.slice(1).join("/"):this.#t.join("/"):this.#t.slice(this.#E).join("/"))}hasMore(){return this.length>this.#E+1}rest(){return this.#I!==void 0?this.#I:this.hasMore()?(this.#I=new BE(this.#A,this.#t,this.#E+1,this.#e),this.#I.#i=this.#i,this.#I.#o=this.#o,this.#I.#h=this.#h,this.#I):this.#I=null}isUNC(){let A=this.#A;return this.#o!==void 0?this.#o:this.#o=this.#e==="win32"&&this.#E===0&&A[0]===""&&A[1]===""&&typeof A[2]=="string"&&!!A[2]&&typeof A[3]=="string"&&!!A[3]}isDrive(){let A=this.#A;return this.#h!==void 0?this.#h:this.#h=this.#e==="win32"&&this.#E===0&&this.length>1&&typeof A[0]=="string"&&/^[a-z]:$/i.test(A[0])}isAbsolute(){let A=this.#A;return this.#i!==void 0?this.#i:this.#i=A[0]===""&&A.length>1||this.isDrive()||this.isUNC()}root(){let A=this.#A[0];return typeof A=="string"&&this.isAbsolute()&&this.#E===0?A:""}checkFollowGlobstar(){return!(this.#E===0||!this.isGlobstar()||!this.#s)}markFollowGlobstar(){return this.#E===0||!this.isGlobstar()||!this.#s?!1:(this.#s=!1,!0)}};var CY=typeof process=="object"&&process&&typeof process.platform=="string"?process.platform:"linux",yi=class{relative;relativeChildren;absolute;absoluteChildren;constructor(A,{nobrace:t,nocase:E,noext:s,noglobstar:r,platform:i=CY}){this.relative=[],this.absolute=[],this.relativeChildren=[],this.absoluteChildren=[];let o={dot:!0,nobrace:t,nocase:E,noext:s,noglobstar:r,optimizationLevel:2,platform:i,nocomment:!0,nonegate:!0};for(let n of A){let I=new _e(n,o);for(let C=0;C<I.set.length;C++){let a=I.set[C],R=I.globParts[C];if(!a||!R)throw new Error("invalid pattern object");let T=new BE(a,R,0,i),h=new _e(T.globString(),o),B=R[R.length-1]==="**",c=T.isAbsolute();c?this.absolute.push(h):this.relative.push(h),B&&(c?this.absoluteChildren.push(h):this.relativeChildren.push(h))}}}ignored(A){let t=A.fullpath(),E=`${t}/`,s=A.relative()||".",r=`${s}/`;for(let i of this.relative)if(i.match(s)||i.match(r))return!0;for(let i of this.absolute)if(i.match(t)||i.match(E))return!0;return!1}childrenIgnored(A){let t=A.fullpath()+"/",E=(A.relative()||".")+"/";for(let s of this.relativeChildren)if(s.match(E))return!0;for(let s of this.absoluteChildren)if(s.match(t))return!0;return!1}};var Pi=class{store;constructor(A=new Map){this.store=A}copy(){return new Pi(new Map(this.store))}hasWalked(A,t){return this.store.get(A.fullpath())?.has(t.globString())}storeWalked(A,t){let E=A.fullpath(),s=this.store.get(E);s?s.add(t.globString()):this.store.set(E,new Set([t.globString()]))}},xR=class{store=new Map;add(A,t,E){let s=(t?2:0)|(E?1:0),r=this.store.get(A);this.store.set(A,r===void 0?s:s&r)}entries(){return[...this.store.entries()].map(([A,t])=>[A,!!(t&2),!!(t&1)])}},WR=class{store=new Map;add(A,t){if(!A.canReaddir())return;let E=this.store.get(A);E?E.find(s=>s.globString()===t.globString())||E.push(t):this.store.set(A,[t])}get(A){let t=this.store.get(A);if(!t)throw new Error("attempting to walk unknown path");return t}entries(){return this.keys().map(A=>[A,this.store.get(A)])}keys(){return[...this.store.keys()].filter(A=>A.canReaddir())}},JE=class{hasWalkedCache;matches=new xR;subwalks=new WR;patterns;follow;dot;opts;constructor(A,t){this.opts=A,this.follow=!!A.follow,this.dot=!!A.dot,this.hasWalkedCache=t?t.copy():new Pi}processPatterns(A,t){this.patterns=t;let E=t.map(s=>[A,s]);for(let[s,r]of E){this.hasWalkedCache.storeWalked(s,r);let i=r.root(),o=r.isAbsolute()&&this.opts.absolute!==!1;if(i){s=s.resolve(i==="/"&&this.opts.root!==void 0?this.opts.root:i);let a=r.rest();if(a)r=a;else{this.matches.add(s,!0,!1);continue}}if(s.isENOENT())continue;let n,I,C=!1;for(;typeof(n=r.pattern())=="string"&&(I=r.rest());)s=s.resolve(n),r=I,C=!0;if(n=r.pattern(),I=r.rest(),C){if(this.hasWalkedCache.hasWalked(s,r))continue;this.hasWalkedCache.storeWalked(s,r)}if(typeof n=="string"){let a=n===".."||n===""||n===".";this.matches.add(s.resolve(n),o,a);continue}else if(n===xA){(!s.isSymbolicLink()||this.follow||r.checkFollowGlobstar())&&this.subwalks.add(s,r);let a=I?.pattern(),R=I?.rest();if(!I||(a===""||a===".")&&!R)this.matches.add(s,o,a===""||a===".");else if(a===".."){let T=s.parent||s;R?this.hasWalkedCache.hasWalked(T,R)||this.subwalks.add(T,R):this.matches.add(T,o,!0)}}else n instanceof RegExp&&this.subwalks.add(s,r)}return this}subwalkTargets(){return this.subwalks.keys()}child(){return new JE(this.opts,this.hasWalkedCache)}filterEntries(A,t){let E=this.subwalks.get(A),s=this.child();for(let r of t)for(let i of E){let o=i.isAbsolute(),n=i.pattern(),I=i.rest();n===xA?s.testGlobstar(r,i,I,o):n instanceof RegExp?s.testRegExp(r,n,I,o):s.testString(r,n,I,o)}return s}testGlobstar(A,t,E,s){if((this.dot||!A.name.startsWith("."))&&(t.hasMore()||this.matches.add(A,s,!1),A.canReaddir()&&(this.follow||!A.isSymbolicLink()?this.subwalks.add(A,t):A.isSymbolicLink()&&(E&&t.checkFollowGlobstar()?this.subwalks.add(A,E):t.markFollowGlobstar()&&this.subwalks.add(A,t)))),E){let r=E.pattern();if(typeof r=="string"&&r!==".."&&r!==""&&r!==".")this.testString(A,r,E.rest(),s);else if(r===".."){let i=A.parent||A;this.subwalks.add(i,E)}else r instanceof RegExp&&this.testRegExp(A,r,E.rest(),s)}}testRegExp(A,t,E,s){t.test(A.name)&&(E?this.subwalks.add(A,E):this.matches.add(A,s,!1))}testString(A,t,E,s){A.isNamed(t)&&(E?this.subwalks.add(A,E):this.matches.add(A,s,!1))}};var aY=(e,A)=>typeof e=="string"?new yi([e],A):Array.isArray(e)?new yi(e,A):e,Zo=class{path;patterns;opts;seen=new Set;paused=!1;aborted=!1;#A=[];#t;#E;signal;maxDepth;constructor(A,t,E){this.patterns=A,this.path=t,this.opts=E,this.#E=!E.posix&&E.platform==="win32"?"\\":"/",E.ignore&&(this.#t=aY(E.ignore,E)),this.maxDepth=E.maxDepth||1/0,E.signal&&(this.signal=E.signal,this.signal.addEventListener("abort",()=>{this.#A.length=0}))}#e(A){return this.seen.has(A)||!!this.#t?.ignored?.(A)}#I(A){return!!this.#t?.childrenIgnored?.(A)}pause(){this.paused=!0}resume(){if(this.signal?.aborted)return;this.paused=!1;let A;for(;!this.paused&&(A=this.#A.shift());)A()}onResume(A){this.signal?.aborted||(this.paused?this.#A.push(A):A())}async matchCheck(A,t){if(t&&this.opts.nodir)return;let E;if(this.opts.realpath){if(E=A.realpathCached()||await A.realpath(),!E)return;A=E}let s=A.isUnknown()||this.opts.stat;return this.matchCheckTest(s?await A.lstat():A,t)}matchCheckTest(A,t){return A&&(this.maxDepth===1/0||A.depth()<=this.maxDepth)&&(!t||A.canReaddir())&&(!this.opts.nodir||!A.isDirectory())&&!this.#e(A)?A:void 0}matchCheckSync(A,t){if(t&&this.opts.nodir)return;let E;if(this.opts.realpath){if(E=A.realpathCached()||A.realpathSync(),!E)return;A=E}let s=A.isUnknown()||this.opts.stat;return this.matchCheckTest(s?A.lstatSync():A,t)}matchFinish(A,t){if(this.#e(A))return;let E=this.opts.absolute===void 0?t:this.opts.absolute;this.seen.add(A);let s=this.opts.mark&&A.isDirectory()?this.#E:"";if(this.opts.withFileTypes)this.matchEmit(A);else if(E){let r=this.opts.posix?A.fullpathPosix():A.fullpath();this.matchEmit(r+s)}else{let r=this.opts.posix?A.relativePosix():A.relative(),i=this.opts.dotRelative&&!r.startsWith(".."+this.#E)?"."+this.#E:"";this.matchEmit(r?i+r+s:"."+s)}}async match(A,t,E){let s=await this.matchCheck(A,E);s&&this.matchFinish(s,t)}matchSync(A,t,E){let s=this.matchCheckSync(A,E);s&&this.matchFinish(s,t)}walkCB(A,t,E){this.signal?.aborted&&E(),this.walkCB2(A,t,new JE(this.opts),E)}walkCB2(A,t,E,s){if(this.#I(A))return s();if(this.signal?.aborted&&s(),this.paused){this.onResume(()=>this.walkCB2(A,t,E,s));return}E.processPatterns(A,t);let r=1,i=()=>{--r===0&&s()};for(let[o,n,I]of E.matches.entries())this.#e(o)||(r++,this.match(o,n,I).then(()=>i()));for(let o of E.subwalkTargets()){if(this.maxDepth!==1/0&&o.depth()>=this.maxDepth)continue;r++;let n=o.readdirCached();o.calledReaddir()?this.walkCB3(o,n,E,i):o.readdirCB((I,C)=>this.walkCB3(o,C,E,i),!0)}i()}walkCB3(A,t,E,s){E=E.filterEntries(A,t);let r=1,i=()=>{--r===0&&s()};for(let[o,n,I]of E.matches.entries())this.#e(o)||(r++,this.match(o,n,I).then(()=>i()));for(let[o,n]of E.subwalks.entries())r++,this.walkCB2(o,n,E.child(),i);i()}walkCBSync(A,t,E){this.signal?.aborted&&E(),this.walkCB2Sync(A,t,new JE(this.opts),E)}walkCB2Sync(A,t,E,s){if(this.#I(A))return s();if(this.signal?.aborted&&s(),this.paused){this.onResume(()=>this.walkCB2Sync(A,t,E,s));return}E.processPatterns(A,t);let r=1,i=()=>{--r===0&&s()};for(let[o,n,I]of E.matches.entries())this.#e(o)||this.matchSync(o,n,I);for(let o of E.subwalkTargets()){if(this.maxDepth!==1/0&&o.depth()>=this.maxDepth)continue;r++;let n=o.readdirSync();this.walkCB3Sync(o,n,E,i)}i()}walkCB3Sync(A,t,E,s){E=E.filterEntries(A,t);let r=1,i=()=>{--r===0&&s()};for(let[o,n,I]of E.matches.entries())this.#e(o)||this.matchSync(o,n,I);for(let[o,n]of E.subwalks.entries())r++,this.walkCB2Sync(o,n,E.child(),i);i()}},Fi=class extends Zo{matches;constructor(A,t,E){super(A,t,E),this.matches=new Set}matchEmit(A){this.matches.add(A)}async walk(){if(this.signal?.aborted)throw this.signal.reason;return this.path.isUnknown()&&await this.path.lstat(),await new Promise((A,t)=>{this.walkCB(this.path,this.patterns,()=>{this.signal?.aborted?t(this.signal.reason):A(this.matches)})}),this.matches}walkSync(){if(this.signal?.aborted)throw this.signal.reason;return this.path.isUnknown()&&this.path.lstatSync(),this.walkCBSync(this.path,this.patterns,()=>{if(this.signal?.aborted)throw this.signal.reason}),this.matches}},wi=class extends Zo{results;constructor(A,t,E){super(A,t,E),this.results=new TE({signal:this.signal,objectMode:!0}),this.results.on("drain",()=>this.resume()),this.results.on("resume",()=>this.resume())}matchEmit(A){this.results.write(A),this.results.flowing||this.pause()}stream(){let A=this.path;return A.isUnknown()?A.lstat().then(()=>{this.walkCB(A,this.patterns,()=>this.results.end())}):this.walkCB(A,this.patterns,()=>this.results.end()),this.results}streamSync(){return this.path.isUnknown()&&this.path.lstatSync(),this.walkCBSync(this.path,this.patterns,()=>this.results.end()),this.results}};var RY=typeof process=="object"&&process&&typeof process.platform=="string"?process.platform:"linux",et=class{absolute;cwd;root;dot;dotRelative;follow;ignore;magicalBraces;mark;matchBase;maxDepth;nobrace;nocase;nodir;noext;noglobstar;pattern;platform;realpath;scurry;stat;signal;windowsPathsNoEscape;withFileTypes;opts;patterns;constructor(A,t){if(!t)throw new TypeError("glob options required");if(this.withFileTypes=!!t.withFileTypes,this.signal=t.signal,this.follow=!!t.follow,this.dot=!!t.dot,this.dotRelative=!!t.dotRelative,this.nodir=!!t.nodir,this.mark=!!t.mark,t.cwd?(t.cwd instanceof URL||t.cwd.startsWith("file://"))&&(t.cwd=(0,uu.fileURLToPath)(t.cwd)):this.cwd="",this.cwd=t.cwd||"",this.root=t.root,this.magicalBraces=!!t.magicalBraces,this.nobrace=!!t.nobrace,this.noext=!!t.noext,this.realpath=!!t.realpath,this.absolute=t.absolute,this.noglobstar=!!t.noglobstar,this.matchBase=!!t.matchBase,this.maxDepth=typeof t.maxDepth=="number"?t.maxDepth:1/0,this.stat=!!t.stat,this.ignore=t.ignore,this.withFileTypes&&this.absolute!==void 0)throw new Error("cannot set absolute and withFileTypes:true");if(typeof A=="string"&&(A=[A]),this.windowsPathsNoEscape=!!t.windowsPathsNoEscape||t.allowWindowsEscape===!1,this.windowsPathsNoEscape&&(A=A.map(n=>n.replace(/\\/g,"/"))),this.matchBase){if(t.noglobstar)throw new TypeError("base matching requires globstar");A=A.map(n=>n.includes("/")?n:`./**/${n}`)}if(this.pattern=A,this.platform=t.platform||RY,this.opts={...t,platform:this.platform},t.scurry){if(this.scurry=t.scurry,t.nocase!==void 0&&t.nocase!==t.scurry.nocase)throw new Error("nocase option contradicts provided scurry option")}else{let n=t.platform==="win32"?tr:t.platform==="darwin"?Mi:t.platform?Er:Qu;this.scurry=new n(this.cwd,{nocase:t.nocase,fs:t.fs})}this.nocase=this.scurry.nocase;let E=this.platform==="darwin"||this.platform==="win32",s={...t,dot:this.dot,matchBase:this.matchBase,nobrace:this.nobrace,nocase:this.nocase,nocaseMagicOnly:E,nocomment:!0,noext:this.noext,nonegate:!0,optimizationLevel:2,platform:this.platform,windowsPathsNoEscape:this.windowsPathsNoEscape,debug:!!this.opts.debug},r=this.pattern.map(n=>new _e(n,s)),[i,o]=r.reduce((n,I)=>(n[0].push(...I.set),n[1].push(...I.globParts),n),[[],[]]);this.patterns=i.map((n,I)=>{let C=o[I];if(!C)throw new Error("invalid pattern object");return new BE(n,C,0,this.platform)})}async walk(){return[...await new Fi(this.patterns,this.scurry.cwd,{...this.opts,maxDepth:this.maxDepth!==1/0?this.maxDepth+this.scurry.cwd.depth():1/0,platform:this.platform,nocase:this.nocase}).walk()]}walkSync(){return[...new Fi(this.patterns,this.scurry.cwd,{...this.opts,maxDepth:this.maxDepth!==1/0?this.maxDepth+this.scurry.cwd.depth():1/0,platform:this.platform,nocase:this.nocase}).walkSync()]}stream(){return new wi(this.patterns,this.scurry.cwd,{...this.opts,maxDepth:this.maxDepth!==1/0?this.maxDepth+this.scurry.cwd.depth():1/0,platform:this.platform,nocase:this.nocase}).stream()}streamSync(){return new wi(this.patterns,this.scurry.cwd,{...this.opts,maxDepth:this.maxDepth!==1/0?this.maxDepth+this.scurry.cwd.depth():1/0,platform:this.platform,nocase:this.nocase}).streamSync()}iterateSync(){return this.streamSync()[Symbol.iterator]()}[Symbol.iterator](){return this.iterateSync()}iterate(){return this.stream()[Symbol.asyncIterator]()}[Symbol.asyncIterator](){return this.iterate()}};var JR=(e,A={})=>{Array.isArray(e)||(e=[e]);for(let t of e)if(new _e(t,A).hasMagic())return!0;return!1};function jo(e,A={}){return new et(e,A).streamSync()}function Lu(e,A={}){return new et(e,A).stream()}function fu(e,A={}){return new et(e,A).walkSync()}async function Ou(e,A={}){return new et(e,A).walk()}function $o(e,A={}){return new et(e,A).iterateSync()}function Du(e,A={}){return new et(e,A).iterate()}var TY=jo,hY=Object.assign(Lu,{sync:jo}),BY=$o,cY=Object.assign(Du,{sync:$o}),gY=Object.assign(fu,{stream:jo,iterate:$o}),zo=Object.assign(Ou,{glob:Ou,globSync:fu,sync:gY,globStream:Lu,stream:hY,globStreamSync:jo,streamSync:TY,globIterate:Du,iterate:cY,globIterateSync:$o,iterateSync:BY,Glob:et,hasMagic:JR,escape:vs,unescape:je});zo.glob=zo;function SY(e){let A=e.toLowerCase();if(A==="tsql"&&(A="transactsql"),A==="bigquery"||A==="db2"||A==="db2i"||A==="hive"||A==="mariadb"||A==="mysql"||A==="n1ql"||A==="plsql"||A==="postgresql"||A==="redshift"||A==="singlestoredb"||A==="snowflake"||A==="spark"||A==="sql"||A==="sqlite"||A==="transactsql"||A==="trino")return{tabWidth:2,useTabs:!1,keywordCase:"upper",identifierCase:"preserve",dataTypeCase:"upper",functionCase:"preserve",indentStyle:"standard",logicalOperatorNewline:"before",expressionWidth:50,linesBetweenQueries:0,denseOperators:!0,newlineBeforeSemicolon:!1,language:A};throw new Error("Invalid language")}function lY(e){try{return du.default.getInput("dialect")}catch{return"tsql"}}var _u=async()=>{console.log("reformatter");try{let e=lY("dialect");console.log(`Dialect: ${e}`);let A=SY(e);console.log("looking for files");let t=await zo("**/*.sql",{ignore:"node_modules/**"});console.log(`found ${t.length} files`);for(let E of t){console.log(`${E}:`);let s=AI.readFileSync(E,"utf8"),r=vT(s,A);s===r?console.log(" * Unchanged"):(console.log(" * Changed"),AI.writeFileSync(E,r,"utf8"))}}catch(e){console.error(e.toString())}};(async()=>await _u())();0&&(module.exports={main});
+>>> no match, partial?`, A, R, t, T), R === n))
+}
+    let B;
+    if (typeof C == "string" ? (B = a === C, this.debug("string match", C, a, B)) : (B = C.test(a), this.debug("pattern match", C, a, B)), !B) return !1
+}
+    if (i === n && o === I) return !0;
+    if (i === n) return E;
+    if (o === I) return i === n - 1 && A[i] === "";
+    throw new Error("wtf?")
+}
+
+    braceExpand() {
+        return jQ(this.pattern, this.options)
+    }
+
+    parse(A) {
+        li(A);
+        let t = this.options;
+        if (A === "**") return xA;
+        if (A === "") return "";
+        let E, s = null;
+        (E = A.match(Ub)) ? s = t.dot ? Mb : pb : (E = A.match(lb)) ? s = (t.nocase ? t.dot ? Ob : ub : t.dot ? Qb : Nb)(E[1]) : (E = A.match(yb)) ? s = (t.nocase ? t.dot ? Fb : Pb : t.dot ? wb : mb)(E) : (E = A.match(Lb)) ? s = t.dot ? Db : fb : (E = A.match(db)) && (s = _b);
+        let r = CE.fromGlob(A, this.options).toMMPattern();
+        return s ? Object.assign(r, {test: s}) : r
+    }
+
+    makeRe() {
+        if (this.regexp || this.regexp === !1) return this.regexp;
+        let A = this.set;
+        if (!A.length) return this.regexp = !1, this.regexp;
+        let t = this.options, E = t.noglobstar ? Yb : t.dot ? Hb : kb, s = new Set(t.nocase ? ["i"] : []),
+            r = A.map(n => {
+                let I = n.map(C => {
+                    if (C instanceof RegExp) for (let a of C.flags.split("")) s.add(a);
+                    return typeof C == "string" ? vb(C) : C === xA ? xA : C._src
+                });
+                return I.forEach((C, a) => {
+                    let R = I[a + 1], T = I[a - 1];
+                    C !== xA || T === xA || (T === void 0 ? R !== void 0 && R !== xA ? I[a + 1] = "(?:\\/|" + E + "\\/)?" + R : I[a] = E : R === void 0 ? I[a - 1] = T + "(?:\\/|" + E + ")?" : R !== xA && (I[a - 1] = T + "(?:\\/|\\/" + E + "\\/)" + R, I[a + 1] = xA))
+                }), I.filter(C => C !== xA).join("/")
+            }).join("|"), [i, o] = A.length > 1 ? ["(?:", ")"] : ["", ""];
+        r = "^" + i + r + o + "$", this.negate && (r = "^(?!" + r + ").+$");
+        try {
+            this.regexp = new RegExp(r, [...s].join(""))
+        } catch {
+            this.regexp = !1
+        }
+        return this.regexp
+    }
+
+    slashSplit(A) {
+        return this.preserveMultipleSlashes ? A.split("/") : this.isWindows && /^\/\/[^\/]+/.test(A) ? ["", ...A.split(/\/+/)] : A.split(/\/+/)
+    }
+
+    match(A, t = this.partial) {
+        if (this.debug("match", A, this.pattern), this.comment) return !1;
+        if (this.empty) return A === "";
+        if (A === "/" && t) return !0;
+        let E = this.options;
+        this.isWindows && (A = A.split("\\").join("/"));
+        let s = this.slashSplit(A);
+        this.debug(this.pattern, "split", s);
+        let r = this.set;
+        this.debug(this.pattern, "set", r);
+        let i = s[s.length - 1];
+        if (!i) for (let o = s.length - 2; !i && o >= 0; o--) i = s[o];
+        for (let o = 0; o < r.length; o++) {
+            let n = r[o], I = s;
+            if (E.matchBase && n.length === 1 && (I = [i]), this.matchOne(I, n, t)) return E.flipNegate ? !0 : !this.negate
+        }
+        return E.flipNegate ? !1 : this.negate
+    }
+};
+re.AST = CE;
+re.Minimatch = _e;
+re.escape = vs;
+re.unescape = je;
+var Xs = typeof performance == "object" && performance && typeof performance.now == "function" ? performance : Date,
+    Au = new Set, yR = typeof process == "object" && process ? process : {}, eu = (e, A, t, E) => {
+        typeof yR.emitWarning == "function" ? yR.emitWarning(e, A, t, E) : console.error(`[${t}] ${A}: ${e}`)
+    }, Go = globalThis.AbortController, $Q = globalThis.AbortSignal;
+if (typeof Go > "u") {
+    $Q = class {
+        onabort;
+        _onabort = [];
+        reason;
+        aborted = !1;
+
+        addEventListener(E, s) {
+            this._onabort.push(s)
+        }
+    }, Go = class {
+        signal = new $Q;
+
+        constructor() {
+            A()
+        }
+
+        abort(E) {
+            if (!this.signal.aborted) {
+                this.signal.reason = E, this.signal.aborted = !0;
+                for (let s of this.signal._onabort) s(E);
+                this.signal.onabort?.(E)
+            }
+        }
+    };
+    let e = yR.env?.LRU_CACHE_IGNORE_AC_WARNING !== "1", A = () => {
+        e && (e = !1, eu("AbortController is not defined. If using lru-cache in node 14, load an AbortController polyfill from the `node-abort-controller` package. A minimal polyfill is provided for use by LRUCache.fetch(), but it should not be relied upon in other contexts (eg, passing it to other APIs that use AbortController/AbortSignal might have undesirable effects). You may disable this with LRU_CACHE_IGNORE_AC_WARNING=1 in the env.", "NO_ABORT_CONTROLLER", "ENOTSUP", A))
+    }
+}
+var Xb = e => !Au.has(e), VV = Symbol("type"), aE = e => e && e === Math.floor(e) && e > 0 && isFinite(e),
+    tu = e => aE(e) ? e <= Math.pow(2, 8) ? Uint8Array : e <= Math.pow(2, 16) ? Uint16Array : e <= Math.pow(2, 32) ? Uint32Array : e <= Number.MAX_SAFE_INTEGER ? Ks : null : null,
+    Ks = class extends Array {
+        constructor(A) {
+            super(A), this.fill(0)
+        }
+    }, Zs, qs = class {
+        heap;
+        length;
+
+        constructor(A, t) {
+            if (!O(qs, Zs)) throw new TypeError("instantiate Stack using Stack.create(n)");
+            this.heap = new t(A), this.length = 0
+        }
+
+        static create(A) {
+            let t = tu(A);
+            if (!t) return [];
+            rA(qs, Zs, !0);
+            let E = new qs(A, t);
+            return rA(qs, Zs, !1), E
+        }
+
+        push(A) {
+            this.heap[this.length++] = A
+        }
+
+        pop() {
+            return this.heap[--this.length]
+        }
+    }, mo = qs;
+Zs = new WeakMap, DA(mo, Zs, !1);
+var VE = class {
+    #A;
+    #t;
+    #E;
+    #e;
+    #I;
+    ttl;
+    ttlResolution;
+    ttlAutopurge;
+    updateAgeOnGet;
+    updateAgeOnHas;
+    allowStale;
+    noDisposeOnSet;
+    noUpdateTTL;
+    maxEntrySize;
+    sizeCalculation;
+    noDeleteOnFetchRejection;
+    noDeleteOnStaleGet;
+    allowStaleOnFetchAbort;
+    allowStaleOnFetchRejection;
+    ignoreFetchAbort;
+    #C;
+    #h;
+    #o;
+    #i;
+    #s;
+    #c;
+    #l;
+    #B;
+    #R;
+    #L;
+    #T;
+    #f;
+    #D;
+    #N;
+    #S;
+    #_;
+    #a;
+    [Symbol.toStringTag] = "LRUCache";
+
+    constructor(A) {
+        let {
+            max: t = 0,
+            ttl: E,
+            ttlResolution: s = 1,
+            ttlAutopurge: r,
+            updateAgeOnGet: i,
+            updateAgeOnHas: o,
+            allowStale: n,
+            dispose: I,
+            disposeAfter: C,
+            noDisposeOnSet: a,
+            noUpdateTTL: R,
+            maxSize: T = 0,
+            maxEntrySize: h = 0,
+            sizeCalculation: B,
+            fetchMethod: c,
+            noDeleteOnFetchRejection: g,
+            noDeleteOnStaleGet: l,
+            allowStaleOnFetchRejection: Q,
+            allowStaleOnFetchAbort: L,
+            ignoreFetchAbort: w
+        } = A;
+        if (t !== 0 && !aE(t)) throw new TypeError("max option must be a nonnegative integer");
+        let m = t ? tu(t) : Array;
+        if (!m) throw new Error("invalid max value: " + t);
+        if (this.#A = t, this.#t = T, this.maxEntrySize = h || this.#t, this.sizeCalculation = B, this.sizeCalculation) {
+            if (!this.#t && !this.maxEntrySize) throw new TypeError("cannot set sizeCalculation without setting maxSize or maxEntrySize");
+            if (typeof this.sizeCalculation != "function") throw new TypeError("sizeCalculation set to non-function")
+        }
+        if (c !== void 0 && typeof c != "function") throw new TypeError("fetchMethod must be a function if specified");
+        if (this.#I = c, this.#_ = !!c, this.#o = new Map, this.#i = new Array(t).fill(void 0), this.#s = new Array(t).fill(void 0), this.#c = new m(t), this.#l = new m(t), this.#B = 0, this.#R = 0, this.#L = mo.create(t), this.#C = 0, this.#h = 0, typeof I == "function" && (this.#E = I), typeof C == "function" ? (this.#e = C, this.#T = []) : (this.#e = void 0, this.#T = void 0), this.#S = !!this.#E, this.#a = !!this.#e, this.noDisposeOnSet = !!a, this.noUpdateTTL = !!R, this.noDeleteOnFetchRejection = !!g, this.allowStaleOnFetchRejection = !!Q, this.allowStaleOnFetchAbort = !!L, this.ignoreFetchAbort = !!w, this.maxEntrySize !== 0) {
+            if (this.#t !== 0 && !aE(this.#t)) throw new TypeError("maxSize must be a positive integer if specified");
+            if (!aE(this.maxEntrySize)) throw new TypeError("maxEntrySize must be a positive integer if specified");
+            this.#M()
+        }
+        if (this.allowStale = !!n, this.noDeleteOnStaleGet = !!l, this.updateAgeOnGet = !!i, this.updateAgeOnHas = !!o, this.ttlResolution = aE(s) || s === 0 ? s : 1, this.ttlAutopurge = !!r, this.ttl = E || 0, this.ttl) {
+            if (!aE(this.ttl)) throw new TypeError("ttl must be a positive integer if specified");
+            this.#p()
+        }
+        if (this.#A === 0 && this.ttl === 0 && this.#t === 0) throw new TypeError("At least one of max, maxSize, or ttl is required");
+        if (!this.ttlAutopurge && !this.#A && !this.#t) {
+            let W = "LRU_CACHE_UNBOUNDED";
+            Xb(W) && (Au.add(W), eu("TTL caching without ttlAutopurge, max, or maxSize can result in unbounded memory consumption.", "UnboundedCacheWarning", W, VE))
+        }
+    }
+
+    get max() {
+        return this.#A
+    }
+
+    get maxSize() {
+        return this.#t
+    }
+
+    get calculatedSize() {
+        return this.#h
+    }
+
+    get size() {
+        return this.#C
+    }
+
+    get fetchMethod() {
+        return this.#I
+    }
+
+    get dispose() {
+        return this.#E
+    }
+
+    get disposeAfter() {
+        return this.#e
+    }
+
+    static unsafeExposeInternals(A) {
+        return {
+            starts: A.#D,
+            ttls: A.#N,
+            sizes: A.#f,
+            keyMap: A.#o,
+            keyList: A.#i,
+            valList: A.#s,
+            next: A.#c,
+            prev: A.#l,
+            get head() {
+                return A.#B
+            },
+            get tail() {
+                return A.#R
+            },
+            free: A.#L,
+            isBackgroundFetch: t => A.#n(t),
+            backgroundFetch: (t, E, s, r) => A.#F(t, E, s, r),
+            moveToTail: t => A.#P(t),
+            indexes: t => A.#O(t),
+            rindexes: t => A.#U(t),
+            isStale: t => A.#g(t)
+        }
+    }
+
+    getRemainingTTL(A) {
+        return this.#o.has(A) ? 1 / 0 : 0
+    }
+
+    #p() {
+        let A = new Ks(this.#A), t = new Ks(this.#A);
+        this.#N = A, this.#D = t, this.#r = (r, i, o = Xs.now()) => {
+            if (t[r] = i !== 0 ? o : 0, A[r] = i, i !== 0 && this.ttlAutopurge) {
+                let n = setTimeout(() => {
+                    this.#g(r) && this.delete(this.#i[r])
+                }, i + 1);
+                n.unref && n.unref()
+            }
+        }, this.#d = r => {
+            t[r] = A[r] !== 0 ? Xs.now() : 0
+        }, this.#Q = (r, i) => {
+            if (A[i]) {
+                let o = A[i], n = t[i];
+                if (!o || !n) return;
+                r.ttl = o, r.start = n, r.now = E || s();
+                let I = r.now - n;
+                r.remainingTTL = o - I
+            }
+        };
+        let E = 0, s = () => {
+            let r = Xs.now();
+            if (this.ttlResolution > 0) {
+                E = r;
+                let i = setTimeout(() => E = 0, this.ttlResolution);
+                i.unref && i.unref()
+            }
+            return r
+        };
+        this.getRemainingTTL = r => {
+            let i = this.#o.get(r);
+            if (i === void 0) return 0;
+            let o = A[i], n = t[i];
+            if (!o || !n) return 1 / 0;
+            let I = (E || s()) - n;
+            return o - I
+        }, this.#g = r => {
+            let i = t[r], o = A[r];
+            return !!o && !!i && (E || s()) - i > o
+        }
+    }
+
+    #d = () => {
+    };
+
+    #Q = () => {
+    };
+
+    #r = () => {
+    };
+
+    #g = () => !1;
+
+    #M() {
+        let A = new Ks(this.#A);
+        this.#h = 0, this.#f = A, this.#u = t => {
+            this.#h -= A[t], A[t] = 0
+        }, this.#m = (t, E, s, r) => {
+            if (this.#n(E)) return 0;
+            if (!aE(s)) if (r) {
+                if (typeof r != "function") throw new TypeError("sizeCalculation must be a function");
+                if (s = r(E, t), !aE(s)) throw new TypeError("sizeCalculation return invalid (expect positive integer)")
+            } else throw new TypeError("invalid size value (must be positive integer). When maxSize or maxEntrySize is used, sizeCalculation or size must be set.");
+            return s
+        }, this.#w = (t, E, s) => {
+            if (A[t] = E, this.#t) {
+                let r = this.#t - A[t];
+                for (; this.#h > r;) this.#y(!0)
+            }
+            this.#h += A[t], s && (s.entrySize = E, s.totalCalculatedSize = this.#h)
+        }
+    }
+
+    #u = A => {
+    };
+
+    #w = (A, t, E) => {
+    };
+
+    #m = (A, t, E, s) => {
+        if (E || s) throw new TypeError("cannot set size without setting maxSize or maxEntrySize on cache");
+        return 0
+    };
+
+    * #O({allowStale: A = this.allowStale} = {}) {
+        if (this.#C) for (let t = this.#R; !(!this.#G(t) || ((A || !this.#g(t)) && (yield t), t === this.#B));) t = this.#l[t]
+    }
+
+    * #U({allowStale: A = this.allowStale} = {}) {
+        if (this.#C) for (let t = this.#B; !(!this.#G(t) || ((A || !this.#g(t)) && (yield t), t === this.#R));) t = this.#c[t]
+    }
+
+    #G(A) {
+        return A !== void 0 && this.#o.get(this.#i[A]) === A
+    }
+
+    * entries() {
+        for (let A of this.#O()) this.#s[A] !== void 0 && this.#i[A] !== void 0 && !this.#n(this.#s[A]) && (yield[this.#i[A], this.#s[A]])
+    }
+
+    * rentries() {
+        for (let A of this.#U()) this.#s[A] !== void 0 && this.#i[A] !== void 0 && !this.#n(this.#s[A]) && (yield[this.#i[A], this.#s[A]])
+    }
+
+    * keys() {
+        for (let A of this.#O()) {
+            let t = this.#i[A];
+            t !== void 0 && !this.#n(this.#s[A]) && (yield t)
+        }
+    }
+
+    * rkeys() {
+        for (let A of this.#U()) {
+            let t = this.#i[A];
+            t !== void 0 && !this.#n(this.#s[A]) && (yield t)
+        }
+    }
+
+    * values() {
+        for (let A of this.#O()) this.#s[A] !== void 0 && !this.#n(this.#s[A]) && (yield this.#s[A])
+    }
+
+    * rvalues() {
+        for (let A of this.#U()) this.#s[A] !== void 0 && !this.#n(this.#s[A]) && (yield this.#s[A])
+    }
+
+    [Symbol.iterator]() {
+        return this.entries()
+    }
+
+    find(A, t = {}) {
+        for (let E of this.#O()) {
+            let s = this.#s[E], r = this.#n(s) ? s.__staleWhileFetching : s;
+            if (r !== void 0 && A(r, this.#i[E], this)) return this.get(this.#i[E], t)
+        }
+    }
+
+    forEach(A, t = this) {
+        for (let E of this.#O()) {
+            let s = this.#s[E], r = this.#n(s) ? s.__staleWhileFetching : s;
+            r !== void 0 && A.call(t, r, this.#i[E], this)
+        }
+    }
+
+    rforEach(A, t = this) {
+        for (let E of this.#U()) {
+            let s = this.#s[E], r = this.#n(s) ? s.__staleWhileFetching : s;
+            r !== void 0 && A.call(t, r, this.#i[E], this)
+        }
+    }
+
+    purgeStale() {
+        let A = !1;
+        for (let t of this.#U({allowStale: !0})) this.#g(t) && (this.delete(this.#i[t]), A = !0);
+        return A
+    }
+
+    info(A) {
+        let t = this.#o.get(A);
+        if (t === void 0) return;
+        let E = this.#s[t], s = this.#n(E) ? E.__staleWhileFetching : E;
+        if (s === void 0) return;
+        let r = {value: s};
+        if (this.#N && this.#D) {
+            let i = this.#N[t], o = this.#D[t];
+            if (i && o) {
+                let n = i - (Xs.now() - o);
+                r.ttl = n, r.start = Date.now()
+            }
+        }
+        return this.#f && (r.size = this.#f[t]), r
+    }
+
+    dump() {
+        let A = [];
+        for (let t of this.#O({allowStale: !0})) {
+            let E = this.#i[t], s = this.#s[t], r = this.#n(s) ? s.__staleWhileFetching : s;
+            if (r === void 0 || E === void 0) continue;
+            let i = {value: r};
+            if (this.#N && this.#D) {
+                i.ttl = this.#N[t];
+                let o = Xs.now() - this.#D[t];
+                i.start = Math.floor(Date.now() - o)
+            }
+            this.#f && (i.size = this.#f[t]), A.unshift([E, i])
+        }
+        return A
+    }
+
+    load(A) {
+        this.clear();
+        for (let [t, E] of A) {
+            if (E.start) {
+                let s = Date.now() - E.start;
+                E.start = Xs.now() - s
+            }
+            this.set(t, E.value, E)
+        }
+    }
+
+    set(A, t, E = {}) {
+        if (t === void 0) return this.delete(A), this;
+        let {
+            ttl: s = this.ttl,
+            start: r,
+            noDisposeOnSet: i = this.noDisposeOnSet,
+            sizeCalculation: o = this.sizeCalculation,
+            status: n
+        } = E, {noUpdateTTL: I = this.noUpdateTTL} = E, C = this.#m(A, t, E.size || 0, o);
+        if (this.maxEntrySize && C > this.maxEntrySize) return n && (n.set = "miss", n.maxEntrySizeExceeded = !0), this.delete(A), this;
+        let a = this.#C === 0 ? void 0 : this.#o.get(A);
+        if (a === void 0) a = this.#C === 0 ? this.#R : this.#L.length !== 0 ? this.#L.pop() : this.#C === this.#A ? this.#y(!1) : this.#C, this.#i[a] = A, this.#s[a] = t, this.#o.set(A, a), this.#c[this.#R] = a, this.#l[a] = this.#R, this.#R = a, this.#C++, this.#w(a, C, n), n && (n.set = "add"), I = !1; else {
+            this.#P(a);
+            let R = this.#s[a];
+            if (t !== R) {
+                if (this.#_ && this.#n(R)) {
+                    R.__abortController.abort(new Error("replaced"));
+                    let {__staleWhileFetching: T} = R;
+                    T !== void 0 && !i && (this.#S && this.#E?.(T, A, "set"), this.#a && this.#T?.push([T, A, "set"]))
+                } else i || (this.#S && this.#E?.(R, A, "set"), this.#a && this.#T?.push([R, A, "set"]));
+                if (this.#u(a), this.#w(a, C, n), this.#s[a] = t, n) {
+                    n.set = "replace";
+                    let T = R && this.#n(R) ? R.__staleWhileFetching : R;
+                    T !== void 0 && (n.oldValue = T)
+                }
+            } else n && (n.set = "update")
+        }
+        if (s !== 0 && !this.#N && this.#p(), this.#N && (I || this.#r(a, s, r), n && this.#Q(n, a)), !i && this.#a && this.#T) {
+            let R = this.#T, T;
+            for (; T = R?.shift();) this.#e?.(...T)
+        }
+        return this
+    }
+
+    pop() {
+        try {
+            for (; this.#C;) {
+                let A = this.#s[this.#B];
+                if (this.#y(!0), this.#n(A)) {
+                    if (A.__staleWhileFetching) return A.__staleWhileFetching
+                } else if (A !== void 0) return A
+            }
+        } finally {
+            if (this.#a && this.#T) {
+                let A = this.#T, t;
+                for (; t = A?.shift();) this.#e?.(...t)
+            }
+        }
+    }
+
+    #y(A) {
+        let t = this.#B, E = this.#i[t], s = this.#s[t];
+        return this.#_ && this.#n(s) ? s.__abortController.abort(new Error("evicted")) : (this.#S || this.#a) && (this.#S && this.#E?.(s, E, "evict"), this.#a && this.#T?.push([s, E, "evict"])), this.#u(t), A && (this.#i[t] = void 0, this.#s[t] = void 0, this.#L.push(t)), this.#C === 1 ? (this.#B = this.#R = 0, this.#L.length = 0) : this.#B = this.#c[t], this.#o.delete(E), this.#C--, t
+    }
+
+    has(A, t = {}) {
+        let {updateAgeOnHas: E = this.updateAgeOnHas, status: s} = t, r = this.#o.get(A);
+        if (r !== void 0) {
+            let i = this.#s[r];
+            if (this.#n(i) && i.__staleWhileFetching === void 0) return !1;
+            if (this.#g(r)) s && (s.has = "stale", this.#Q(s, r)); else return E && this.#d(r), s && (s.has = "hit", this.#Q(s, r)), !0
+        } else s && (s.has = "miss");
+        return !1
+    }
+
+    peek(A, t = {}) {
+        let {allowStale: E = this.allowStale} = t, s = this.#o.get(A);
+        if (s === void 0 || !E && this.#g(s)) return;
+        let r = this.#s[s];
+        return this.#n(r) ? r.__staleWhileFetching : r
+    }
+
+    #F(A, t, E, s) {
+        let r = t === void 0 ? void 0 : this.#s[t];
+        if (this.#n(r)) return r;
+        let i = new Go, {signal: o} = E;
+        o?.addEventListener("abort", () => i.abort(o.reason), {signal: i.signal});
+        let n = {signal: i.signal, options: E, context: s}, I = (B, c = !1) => {
+            let {aborted: g} = i.signal, l = E.ignoreFetchAbort && B !== void 0;
+            if (E.status && (g && !c ? (E.status.fetchAborted = !0, E.status.fetchError = i.signal.reason, l && (E.status.fetchAbortIgnored = !0)) : E.status.fetchResolved = !0), g && !l && !c) return a(i.signal.reason);
+            let Q = T;
+            return this.#s[t] === T && (B === void 0 ? Q.__staleWhileFetching ? this.#s[t] = Q.__staleWhileFetching : this.delete(A) : (E.status && (E.status.fetchUpdated = !0), this.set(A, B, n.options))), B
+        }, C = B => (E.status && (E.status.fetchRejected = !0, E.status.fetchError = B), a(B)), a = B => {
+            let {aborted: c} = i.signal, g = c && E.allowStaleOnFetchAbort, l = g || E.allowStaleOnFetchRejection,
+                Q = l || E.noDeleteOnFetchRejection, L = T;
+            if (this.#s[t] === T && (!Q || L.__staleWhileFetching === void 0 ? this.delete(A) : g || (this.#s[t] = L.__staleWhileFetching)), l) return E.status && L.__staleWhileFetching !== void 0 && (E.status.returnedStale = !0), L.__staleWhileFetching;
+            if (L.__returned === L) throw B
+        }, R = (B, c) => {
+            let g = this.#I?.(A, r, n);
+            g && g instanceof Promise && g.then(l => B(l === void 0 ? void 0 : l), c), i.signal.addEventListener("abort", () => {
+                (!E.ignoreFetchAbort || E.allowStaleOnFetchAbort) && (B(void 0), E.allowStaleOnFetchAbort && (B = l => I(l, !0)))
+            })
+        };
+        E.status && (E.status.fetchDispatched = !0);
+        let T = new Promise(R).then(I, C),
+            h = Object.assign(T, {__abortController: i, __staleWhileFetching: r, __returned: void 0});
+        return t === void 0 ? (this.set(A, h, {...n.options, status: void 0}), t = this.#o.get(A)) : this.#s[t] = h, h
+    }
+
+    #n(A) {
+        if (!this.#_) return !1;
+        let t = A;
+        return !!t && t instanceof Promise && t.hasOwnProperty("__staleWhileFetching") && t.__abortController instanceof Go
+    }
+
+    async fetch(A, t = {}) {
+        let {
+            allowStale: E = this.allowStale,
+            updateAgeOnGet: s = this.updateAgeOnGet,
+            noDeleteOnStaleGet: r = this.noDeleteOnStaleGet,
+            ttl: i = this.ttl,
+            noDisposeOnSet: o = this.noDisposeOnSet,
+            size: n = 0,
+            sizeCalculation: I = this.sizeCalculation,
+            noUpdateTTL: C = this.noUpdateTTL,
+            noDeleteOnFetchRejection: a = this.noDeleteOnFetchRejection,
+            allowStaleOnFetchRejection: R = this.allowStaleOnFetchRejection,
+            ignoreFetchAbort: T = this.ignoreFetchAbort,
+            allowStaleOnFetchAbort: h = this.allowStaleOnFetchAbort,
+            context: B,
+            forceRefresh: c = !1,
+            status: g,
+            signal: l
+        } = t;
+        if (!this.#_) return g && (g.fetch = "get"), this.get(A, {
+            allowStale: E,
+            updateAgeOnGet: s,
+            noDeleteOnStaleGet: r,
+            status: g
+        });
+        let Q = {
+            allowStale: E,
+            updateAgeOnGet: s,
+            noDeleteOnStaleGet: r,
+            ttl: i,
+            noDisposeOnSet: o,
+            size: n,
+            sizeCalculation: I,
+            noUpdateTTL: C,
+            noDeleteOnFetchRejection: a,
+            allowStaleOnFetchRejection: R,
+            allowStaleOnFetchAbort: h,
+            ignoreFetchAbort: T,
+            status: g,
+            signal: l
+        }, L = this.#o.get(A);
+        if (L === void 0) {
+            g && (g.fetch = "miss");
+            let w = this.#F(A, L, Q, B);
+            return w.__returned = w
+        } else {
+            let w = this.#s[L];
+            if (this.#n(w)) {
+                let LA = E && w.__staleWhileFetching !== void 0;
+                return g && (g.fetch = "inflight", LA && (g.returnedStale = !0)), LA ? w.__staleWhileFetching : w.__returned = w
+            }
+            let m = this.#g(L);
+            if (!c && !m) return g && (g.fetch = "hit"), this.#P(L), s && this.#d(L), g && this.#Q(g, L), w;
+            let W = this.#F(A, L, Q, B), oA = W.__staleWhileFetching !== void 0 && E;
+            return g && (g.fetch = m ? "stale" : "refresh", oA && m && (g.returnedStale = !0)), oA ? W.__staleWhileFetching : W.__returned = W
+        }
+    }
+
+    get(A, t = {}) {
+        let {
+            allowStale: E = this.allowStale,
+            updateAgeOnGet: s = this.updateAgeOnGet,
+            noDeleteOnStaleGet: r = this.noDeleteOnStaleGet,
+            status: i
+        } = t, o = this.#o.get(A);
+        if (o !== void 0) {
+            let n = this.#s[o], I = this.#n(n);
+            return i && this.#Q(i, o), this.#g(o) ? (i && (i.get = "stale"), I ? (i && E && n.__staleWhileFetching !== void 0 && (i.returnedStale = !0), E ? n.__staleWhileFetching : void 0) : (r || this.delete(A), i && E && (i.returnedStale = !0), E ? n : void 0)) : (i && (i.get = "hit"), I ? n.__staleWhileFetching : (this.#P(o), s && this.#d(o), n))
+        } else i && (i.get = "miss")
+    }
+
+    #b(A, t) {
+        this.#l[t] = A, this.#c[A] = t
+    }
+
+    #P(A) {
+        A !== this.#R && (A === this.#B ? this.#B = this.#c[A] : this.#b(this.#l[A], this.#c[A]), this.#b(this.#R, A), this.#R = A)
+    }
+
+    delete(A) {
+        let t = !1;
+        if (this.#C !== 0) {
+            let E = this.#o.get(A);
+            if (E !== void 0) if (t = !0, this.#C === 1) this.clear(); else {
+                this.#u(E);
+                let s = this.#s[E];
+                if (this.#n(s) ? s.__abortController.abort(new Error("deleted")) : (this.#S || this.#a) && (this.#S && this.#E?.(s, A, "delete"), this.#a && this.#T?.push([s, A, "delete"])), this.#o.delete(A), this.#i[E] = void 0, this.#s[E] = void 0, E === this.#R) this.#R = this.#l[E]; else if (E === this.#B) this.#B = this.#c[E]; else {
+                    let r = this.#l[E];
+                    this.#c[r] = this.#c[E];
+                    let i = this.#c[E];
+                    this.#l[i] = this.#l[E]
+                }
+                this.#C--, this.#L.push(E)
+            }
+        }
+        if (this.#a && this.#T?.length) {
+            let E = this.#T, s;
+            for (; s = E?.shift();) this.#e?.(...s)
+        }
+        return t
+    }
+
+    clear() {
+        for (let A of this.#U({allowStale: !0})) {
+            let t = this.#s[A];
+            if (this.#n(t)) t.__abortController.abort(new Error("deleted")); else {
+                let E = this.#i[A];
+                this.#S && this.#E?.(t, E, "delete"), this.#a && this.#T?.push([t, E, "delete"])
+            }
+        }
+        if (this.#o.clear(), this.#s.fill(void 0), this.#i.fill(void 0), this.#N && this.#D && (this.#N.fill(0), this.#D.fill(0)), this.#f && this.#f.fill(0), this.#B = 0, this.#R = 0, this.#L.length = 0, this.#h = 0, this.#C = 0, this.#a && this.#T) {
+            let A = this.#T, t;
+            for (; t = A?.shift();) this.#e?.(...t)
+        }
+    }
+};
+var $s = require("path"), Ru = require("url"), EY = ut(require("fs"), 1), Nt = require("fs"),
+    hE = require("fs/promises");
+var Wo = require("events"), YR = ut(require("stream"), 1), nu = require("string_decoder"),
+    Eu = typeof process == "object" && process ? process : {stdout: null, stderr: null},
+    qb = e => !!e && typeof e == "object" && (e instanceof TE || e instanceof YR.default || Kb(e) || Zb(e)),
+    Kb = e => !!e && typeof e == "object" && e instanceof Wo.EventEmitter && typeof e.pipe == "function" && e.pipe !== YR.default.Writable.prototype.pipe,
+    Zb = e => !!e && typeof e == "object" && e instanceof Wo.EventEmitter && typeof e.write == "function" && typeof e.end == "function",
+    Yt = Symbol("EOF"), Ht = Symbol("maybeEmitEnd"), RE = Symbol("emittedEnd"), bo = Symbol("emittingEnd"),
+    Oi = Symbol("emittedError"), Yo = Symbol("closed"), su = Symbol("read"), Ho = Symbol("flush"),
+    ru = Symbol("flushChunk"), $e = Symbol("encoding"), zs = Symbol("decoder"), PA = Symbol("flowing"),
+    Li = Symbol("paused"), js = Symbol("resume"), FA = Symbol("buffer"), ie = Symbol("pipes"),
+    wA = Symbol("bufferLength"), PR = Symbol("bufferPush"), ko = Symbol("bufferShift"), qA = Symbol("objectMode"),
+    SA = Symbol("destroyed"), FR = Symbol("error"), wR = Symbol("emitData"), iu = Symbol("emitEnd"),
+    mR = Symbol("emitEnd2"), St = Symbol("async"), GR = Symbol("abort"), Vo = Symbol("aborted"), fi = Symbol("signal"),
+    xE = Symbol("dataListeners"), Ue = Symbol("discarded"), Di = e => Promise.resolve().then(e), zb = e => e(),
+    jb = e => e === "end" || e === "finish" || e === "prefinish",
+    $b = e => e instanceof ArrayBuffer || !!e && typeof e == "object" && e.constructor && e.constructor.name === "ArrayBuffer" && e.byteLength >= 0,
+    AY = e => !Buffer.isBuffer(e) && ArrayBuffer.isView(e), xo = class {
+        src;
+        dest;
+        opts;
+        ondrain;
+
+        constructor(A, t, E) {
+            this.src = A, this.dest = t, this.opts = E, this.ondrain = () => A[js](), this.dest.on("drain", this.ondrain)
+        }
+
+        unpipe() {
+            this.dest.removeListener("drain", this.ondrain)
+        }
+
+        proxyErrors(A) {
+        }
+
+        end() {
+            this.unpipe(), this.opts.end && this.dest.end()
+        }
+    }, bR = class extends xo {
+        constructor(A, t, E) {
+            super(A, t, E), this.proxyErrors = s => t.emit("error", s), A.on("error", this.proxyErrors)
+        }
+
+        unpipe() {
+            this.src.removeListener("error", this.proxyErrors), super.unpipe()
+        }
+    }, eY = e => !!e.objectMode, tY = e => !e.objectMode && !!e.encoding && e.encoding !== "buffer",
+    TE = class extends Wo.EventEmitter {
+        [PA] = !1;
+        [Li] = !1;
+        [ie] = [];
+        [FA] = [];
+        [qA];
+        [$e];
+        [St];
+        [zs];
+        [Yt] = !1;
+        [RE] = !1;
+        [bo] = !1;
+        [Yo] = !1;
+        [Oi] = null;
+        [wA] = 0;
+        [SA] = !1;
+        [fi];
+        [Vo] = !1;
+        [xE] = 0;
+        [Ue] = !1;
+        writable = !0;
+        readable = !0;
+
+        constructor(...A) {
+            let t = A[0] || {};
+            if (super(), t.objectMode && typeof t.encoding == "string") throw new TypeError("Encoding and objectMode may not be used together");
+            eY(t) ? (this[qA] = !0, this[$e] = null) : tY(t) ? (this[$e] = t.encoding, this[qA] = !1) : (this[qA] = !1, this[$e] = null), this[St] = !!t.async, this[zs] = this[$e] ? new nu.StringDecoder(this[$e]) : null, t && t.debugExposeBuffer === !0 && Object.defineProperty(this, "buffer", {get: () => this[FA]}), t && t.debugExposePipes === !0 && Object.defineProperty(this, "pipes", {get: () => this[ie]});
+            let {signal: E} = t;
+            E && (this[fi] = E, E.aborted ? this[GR]() : E.addEventListener("abort", () => this[GR]()))
+        }
+
+        static get isStream() {
+            return qb
+        }
+
+        get bufferLength() {
+            return this[wA]
+        }
+
+        get encoding() {
+            return this[$e]
+        }
+
+        set encoding(A) {
+            throw new Error("Encoding must be set at instantiation time")
+        }
+
+        get objectMode() {
+            return this[qA]
+        }
+
+        set objectMode(A) {
+            throw new Error("objectMode must be set at instantiation time")
+        }
+
+        get async() {
+            return this[St]
+        }
+
+        set async(A) {
+            this[St] = this[St] || !!A
+        }
+
+        get aborted() {
+            return this[Vo]
+        }
+
+        set aborted(A) {
+        }
+
+        get destroyed() {
+            return this[SA]
+        }
+
+        get flowing() {
+            return this[PA]
+        }
+
+        get paused() {
+            return this[Li]
+        }
+
+        get emittedEnd() {
+            return this[RE]
+        }
+
+        setEncoding(A) {
+            throw new Error("Encoding must be set at instantiation time")
+        }
+
+        [GR]() {
+            this[Vo] = !0, this.emit("abort", this[fi]?.reason), this.destroy(this[fi]?.reason)
+        }
+
+        write(A, t, E) {
+            if (this[Vo]) return !1;
+            if (this[Yt]) throw new Error("write after end");
+            if (this[SA]) return this.emit("error", Object.assign(new Error("Cannot call write after a stream was destroyed"), {code: "ERR_STREAM_DESTROYED"})), !0;
+            typeof t == "function" && (E = t, t = "utf8"), t || (t = "utf8");
+            let s = this[St] ? Di : zb;
+            if (!this[qA] && !Buffer.isBuffer(A)) {
+                if (AY(A)) A = Buffer.from(A.buffer, A.byteOffset, A.byteLength); else if ($b(A)) A = Buffer.from(A); else if (typeof A != "string") throw new Error("Non-contiguous data written to non-objectMode stream")
+            }
+            return this[qA] ? (this[PA] && this[wA] !== 0 && this[Ho](!0), this[PA] ? this.emit("data", A) : this[PR](A), this[wA] !== 0 && this.emit("readable"), E && s(E), this[PA]) : A.length ? (typeof A == "string" && !(t === this[$e] && !this[zs]?.lastNeed) && (A = Buffer.from(A, t)), Buffer.isBuffer(A) && this[$e] && (A = this[zs].write(A)), this[PA] && this[wA] !== 0 && this[Ho](!0), this[PA] ? this.emit("data", A) : this[PR](A), this[wA] !== 0 && this.emit("readable"), E && s(E), this[PA]) : (this[wA] !== 0 && this.emit("readable"), E && s(E), this[PA])
+        }
+
+        read(A) {
+            if (this[SA]) return null;
+            if (this[Ue] = !1, this[wA] === 0 || A === 0 || A && A > this[wA]) return this[Ht](), null;
+            this[qA] && (A = null), this[FA].length > 1 && !this[qA] && (this[FA] = [this[$e] ? this[FA].join("") : Buffer.concat(this[FA], this[wA])]);
+            let t = this[su](A || null, this[FA][0]);
+            return this[Ht](), t
+        }
+
+        [su](A, t) {
+            if (this[qA]) this[ko](); else {
+                let E = t;
+                A === E.length || A === null ? this[ko]() : typeof E == "string" ? (this[FA][0] = E.slice(A), t = E.slice(0, A), this[wA] -= A) : (this[FA][0] = E.subarray(A), t = E.subarray(0, A), this[wA] -= A)
+            }
+            return this.emit("data", t), !this[FA].length && !this[Yt] && this.emit("drain"), t
+        }
+
+        end(A, t, E) {
+            return typeof A == "function" && (E = A, A = void 0), typeof t == "function" && (E = t, t = "utf8"), A !== void 0 && this.write(A, t), E && this.once("end", E), this[Yt] = !0, this.writable = !1, (this[PA] || !this[Li]) && this[Ht](), this
+        }
+
+        [js]() {
+            this[SA] || (!this[xE] && !this[ie].length && (this[Ue] = !0), this[Li] = !1, this[PA] = !0, this.emit("resume"), this[FA].length ? this[Ho]() : this[Yt] ? this[Ht]() : this.emit("drain"))
+        }
+
+        resume() {
+            return this[js]()
+        }
+
+        pause() {
+            this[PA] = !1, this[Li] = !0, this[Ue] = !1
+        }
+
+        [PR](A) {
+            this[qA] ? this[wA] += 1 : this[wA] += A.length, this[FA].push(A)
+        }
+
+        [ko]() {
+            return this[qA] ? this[wA] -= 1 : this[wA] -= this[FA][0].length, this[FA].shift()
+        }
+
+        [Ho](A = !1) {
+            do ; while (this[ru](this[ko]()) && this[FA].length);
+            !A && !this[FA].length && !this[Yt] && this.emit("drain")
+        }
+
+        [ru](A) {
+            return this.emit("data", A), this[PA]
+        }
+
+        pipe(A, t) {
+            if (this[SA]) return A;
+            this[Ue] = !1;
+            let E = this[RE];
+            return t = t || {}, A === Eu.stdout || A === Eu.stderr ? t.end = !1 : t.end = t.end !== !1, t.proxyErrors = !!t.proxyErrors, E ? t.end && A.end() : (this[ie].push(t.proxyErrors ? new bR(this, A, t) : new xo(this, A, t)), this[St] ? Di(() => this[js]()) : this[js]()), A
+        }
+
+        unpipe(A) {
+            let t = this[ie].find(E => E.dest === A);
+            t && (this[ie].length === 1 ? (this[PA] && this[xE] === 0 && (this[PA] = !1), this[ie] = []) : this[ie].splice(this[ie].indexOf(t), 1), t.unpipe())
+        }
+
+        addListener(A, t) {
+            return this.on(A, t)
+        }
+
+        on(A, t) {
+            let E = super.on(A, t);
+            if (A === "data") this[Ue] = !1, this[xE]++, !this[ie].length && !this[PA] && this[js](); else if (A === "readable" && this[wA] !== 0) super.emit("readable"); else if (jb(A) && this[RE]) super.emit(A), this.removeAllListeners(A); else if (A === "error" && this[Oi]) {
+                let s = t;
+                this[St] ? Di(() => s.call(this, this[Oi])) : s.call(this, this[Oi])
+            }
+            return E
+        }
+
+        removeListener(A, t) {
+            return this.off(A, t)
+        }
+
+        off(A, t) {
+            let E = super.off(A, t);
+            return A === "data" && (this[xE] = this.listeners("data").length, this[xE] === 0 && !this[Ue] && !this[ie].length && (this[PA] = !1)), E
+        }
+
+        removeAllListeners(A) {
+            let t = super.removeAllListeners(A);
+            return (A === "data" || A === void 0) && (this[xE] = 0, !this[Ue] && !this[ie].length && (this[PA] = !1)), t
+        }
+
+        [Ht]() {
+            !this[bo] && !this[RE] && !this[SA] && this[FA].length === 0 && this[Yt] && (this[bo] = !0, this.emit("end"), this.emit("prefinish"), this.emit("finish"), this[Yo] && this.emit("close"), this[bo] = !1)
+        }
+
+        emit(A, ...t) {
+            let E = t[0];
+            if (A !== "error" && A !== "close" && A !== SA && this[SA]) return !1;
+            if (A === "data") return !this[qA] && !E ? !1 : this[St] ? (Di(() => this[wR](E)), !0) : this[wR](E);
+            if (A === "end") return this[iu]();
+            if (A === "close") {
+                if (this[Yo] = !0, !this[RE] && !this[SA]) return !1;
+                let r = super.emit("close");
+                return this.removeAllListeners("close"), r
+            } else if (A === "error") {
+                this[Oi] = E, super.emit(FR, E);
+                let r = !this[fi] || this.listeners("error").length ? super.emit("error", E) : !1;
+                return this[Ht](), r
+            } else if (A === "resume") {
+                let r = super.emit("resume");
+                return this[Ht](), r
+            } else if (A === "finish" || A === "prefinish") {
+                let r = super.emit(A);
+                return this.removeAllListeners(A), r
+            }
+            let s = super.emit(A, ...t);
+            return this[Ht](), s
+        }
+
+        [wR](A) {
+            for (let E of this[ie]) E.dest.write(A) === !1 && this.pause();
+            let t = this[Ue] ? !1 : super.emit("data", A);
+            return this[Ht](), t
+        }
+
+        [iu]() {
+            return this[RE] ? !1 : (this[RE] = !0, this.readable = !1, this[St] ? (Di(() => this[mR]()), !0) : this[mR]())
+        }
+
+        [mR]() {
+            if (this[zs]) {
+                let t = this[zs].end();
+                if (t) {
+                    for (let E of this[ie]) E.dest.write(t);
+                    this[Ue] || super.emit("data", t)
+                }
+            }
+            for (let t of this[ie]) t.end();
+            let A = super.emit("end");
+            return this.removeAllListeners("end"), A
+        }
+
+        async collect() {
+            let A = Object.assign([], {dataLength: 0});
+            this[qA] || (A.dataLength = 0);
+            let t = this.promise();
+            return this.on("data", E => {
+                A.push(E), this[qA] || (A.dataLength += E.length)
+            }), await t, A
+        }
+
+        async concat() {
+            if (this[qA]) throw new Error("cannot concat in objectMode");
+            let A = await this.collect();
+            return this[$e] ? A.join("") : Buffer.concat(A, A.dataLength)
+        }
+
+        async promise() {
+            return new Promise((A, t) => {
+                this.on(SA, () => t(new Error("stream destroyed"))), this.on("error", E => t(E)), this.on("end", () => A())
+            })
+        }
+
+        [Symbol.asyncIterator]() {
+            this[Ue] = !1;
+            let A = !1, t = async () => (this.pause(), A = !0, {value: void 0, done: !0});
+            return {
+                next: () => {
+                    if (A) return t();
+                    let s = this.read();
+                    if (s !== null) return Promise.resolve({done: !1, value: s});
+                    if (this[Yt]) return t();
+                    let r, i, o = a => {
+                        this.off("data", n), this.off("end", I), this.off(SA, C), t(), i(a)
+                    }, n = a => {
+                        this.off("error", o), this.off("end", I), this.off(SA, C), this.pause(), r({
+                            value: a,
+                            done: !!this[Yt]
+                        })
+                    }, I = () => {
+                        this.off("error", o), this.off("data", n), this.off(SA, C), t(), r({done: !0, value: void 0})
+                    }, C = () => o(new Error("stream destroyed"));
+                    return new Promise((a, R) => {
+                        i = R, r = a, this.once(SA, C), this.once("error", o), this.once("end", I), this.once("data", n)
+                    })
+                }, throw: t, return: t, [Symbol.asyncIterator]() {
+                    return this
+                }
+            }
+        }
+
+        [Symbol.iterator]() {
+            this[Ue] = !1;
+            let A = !1, t = () => (this.pause(), this.off(FR, t), this.off(SA, t), this.off("end", t), A = !0, {
+                done: !0,
+                value: void 0
+            }), E = () => {
+                if (A) return t();
+                let s = this.read();
+                return s === null ? t() : {done: !1, value: s}
+            };
+            return this.once("end", t), this.once(FR, t), this.once(SA, t), {
+                next: E,
+                throw: t,
+                return: t,
+                [Symbol.iterator]() {
+                    return this
+                }
+            }
+        }
+
+        destroy(A) {
+            if (this[SA]) return A ? this.emit("error", A) : this.emit(SA), this;
+            this[SA] = !0, this[Ue] = !0, this[FA].length = 0, this[wA] = 0;
+            let t = this;
+            return typeof t.close == "function" && !this[Yo] && t.close(), A ? this.emit("error", A) : this.emit(SA), this
+        }
+    };
+var sY = Nt.realpathSync.native, _i = {
+        lstatSync: Nt.lstatSync,
+        readdir: Nt.readdir,
+        readdirSync: Nt.readdirSync,
+        readlinkSync: Nt.readlinkSync,
+        realpathSync: sY,
+        promises: {lstat: hE.lstat, readdir: hE.readdir, readlink: hE.readlink, realpath: hE.realpath}
+    }, Tu = e => !e || e === _i || e === EY ? _i : {..._i, ...e, promises: {..._i.promises, ...e.promises || {}}},
+    hu = /^\\\\\?\\([a-z]:)\\?$/i, rY = e => e.replace(/\//g, "\\").replace(hu, "$1\\"), iY = /[\\\/]/, Je = 0, Bu = 1,
+    cu = 2, lt = 4, gu = 6, Su = 8, WE = 10, lu = 12, We = 15, di = ~We, HR = 16, ou = 32, Ui = 64, At = 128, Jo = 256,
+    Xo = 512, Iu = Ui | At | Xo, nY = 1023,
+    kR = e => e.isFile() ? Su : e.isDirectory() ? lt : e.isSymbolicLink() ? WE : e.isCharacterDevice() ? cu : e.isBlockDevice() ? gu : e.isSocket() ? lu : e.isFIFO() ? Bu : Je,
+    Cu = new Map, pi = e => {
+        let A = Cu.get(e);
+        if (A) return A;
+        let t = e.normalize("NFKD");
+        return Cu.set(e, t), t
+    }, au = new Map, vo = e => {
+        let A = au.get(e);
+        if (A) return A;
+        let t = pi(e.toLowerCase());
+        return au.set(e, t), t
+    }, qo = class extends VE {
+        constructor() {
+            super({max: 256})
+        }
+    }, VR = class extends VE {
+        constructor(A = 16 * 1024) {
+            super({maxSize: A, sizeCalculation: t => t.length + 1})
+        }
+    }, Nu = Symbol("PathScurry setAsCwd"), KA = class {
+        name;
+        root;
+        roots;
+        parent;
+        nocase;
+        #A;
+        #t;
+        #E;
+        #e;
+        #I;
+        #C;
+        #h;
+        #o;
+        #i;
+        #s;
+        #c;
+        #l;
+        #B;
+        #R;
+        #L;
+        #T;
+        #f;
+        #D;
+        #N;
+        #S;
+        #_;
+        #a;
+        #p;
+        #d;
+        #Q;
+        #r;
+        #g;
+        #M;
+        #u;
+        #H = [];
+        #k = !1;
+        #Y;
+
+        constructor(A, t = Je, E, s, r, i, o) {
+            this.name = A, this.#S = r ? vo(A) : pi(A), this.#r = t & nY, this.nocase = r, this.roots = s, this.root = E || this, this.#g = i, this.#a = o.fullpath, this.#d = o.relative, this.#Q = o.relativePosix, this.parent = o.parent, this.parent ? this.#A = this.parent.#A : this.#A = Tu(o.fs)
+        }
+
+        get dev() {
+            return this.#t
+        }
+
+        get mode() {
+            return this.#E
+        }
+
+        get nlink() {
+            return this.#e
+        }
+
+        get uid() {
+            return this.#I
+        }
+
+        get gid() {
+            return this.#C
+        }
+
+        get rdev() {
+            return this.#h
+        }
+
+        get blksize() {
+            return this.#o
+        }
+
+        get ino() {
+            return this.#i
+        }
+
+        get size() {
+            return this.#s
+        }
+
+        get blocks() {
+            return this.#c
+        }
+
+        get atimeMs() {
+            return this.#l
+        }
+
+        get mtimeMs() {
+            return this.#B
+        }
+
+        get ctimeMs() {
+            return this.#R
+        }
+
+        get birthtimeMs() {
+            return this.#L
+        }
+
+        get atime() {
+            return this.#T
+        }
+
+        get mtime() {
+            return this.#f
+        }
+
+        get ctime() {
+            return this.#D
+        }
+
+        get birthtime() {
+            return this.#N
+        }
+
+        get path() {
+            return (this.parent || this).fullpath()
+        }
+
+        depth() {
+            return this.#_ !== void 0 ? this.#_ : this.parent ? this.#_ = this.parent.depth() + 1 : this.#_ = 0
+        }
+
+        childrenCache() {
+            return this.#g
+        }
+
+        resolve(A) {
+            if (!A) return this;
+            let t = this.getRootString(A), s = A.substring(t.length).split(this.splitSep);
+            return t ? this.getRoot(t).#w(s) : this.#w(s)
+        }
+
+        #w(A) {
+            let t = this;
+            for (let E of A) t = t.child(E);
+            return t
+        }
+
+        children() {
+            let A = this.#g.get(this);
+            if (A) return A;
+            let t = Object.assign([], {provisional: 0});
+            return this.#g.set(this, t), this.#r &= ~HR, t
+        }
+
+        child(A, t) {
+            if (A === "" || A === ".") return this;
+            if (A === "..") return this.parent || this;
+            let E = this.children(), s = this.nocase ? vo(A) : pi(A);
+            for (let n of E) if (n.#S === s) return n;
+            let r = this.parent ? this.sep : "", i = this.#a ? this.#a + r + A : void 0,
+                o = this.newChild(A, Je, {...t, parent: this, fullpath: i});
+            return this.canReaddir() || (o.#r |= At), E.push(o), o
+        }
+
+        relative() {
+            if (this.#d !== void 0) return this.#d;
+            let A = this.name, t = this.parent;
+            if (!t) return this.#d = this.name;
+            let E = t.relative();
+            return E + (!E || !t.parent ? "" : this.sep) + A
+        }
+
+        relativePosix() {
+            if (this.sep === "/") return this.relative();
+            if (this.#Q !== void 0) return this.#Q;
+            let A = this.name, t = this.parent;
+            if (!t) return this.#Q = this.fullpathPosix();
+            let E = t.relativePosix();
+            return E + (!E || !t.parent ? "" : "/") + A
+        }
+
+        fullpath() {
+            if (this.#a !== void 0) return this.#a;
+            let A = this.name, t = this.parent;
+            if (!t) return this.#a = this.name;
+            let s = t.fullpath() + (t.parent ? this.sep : "") + A;
+            return this.#a = s
+        }
+
+        fullpathPosix() {
+            if (this.#p !== void 0) return this.#p;
+            if (this.sep === "/") return this.#p = this.fullpath();
+            if (!this.parent) {
+                let s = this.fullpath().replace(/\\/g, "/");
+                return /^[a-z]:\//i.test(s) ? this.#p = `//?/${s}` : this.#p = s
+            }
+            let A = this.parent, t = A.fullpathPosix(), E = t + (!t || !A.parent ? "" : "/") + this.name;
+            return this.#p = E
+        }
+
+        isUnknown() {
+            return (this.#r & We) === Je
+        }
+
+        isType(A) {
+            return this[`is${A}`]()
+        }
+
+        getType() {
+            return this.isUnknown() ? "Unknown" : this.isDirectory() ? "Directory" : this.isFile() ? "File" : this.isSymbolicLink() ? "SymbolicLink" : this.isFIFO() ? "FIFO" : this.isCharacterDevice() ? "CharacterDevice" : this.isBlockDevice() ? "BlockDevice" : this.isSocket() ? "Socket" : "Unknown"
+        }
+
+        isFile() {
+            return (this.#r & We) === Su
+        }
+
+        isDirectory() {
+            return (this.#r & We) === lt
+        }
+
+        isCharacterDevice() {
+            return (this.#r & We) === cu
+        }
+
+        isBlockDevice() {
+            return (this.#r & We) === gu
+        }
+
+        isFIFO() {
+            return (this.#r & We) === Bu
+        }
+
+        isSocket() {
+            return (this.#r & We) === lu
+        }
+
+        isSymbolicLink() {
+            return (this.#r & WE) === WE
+        }
+
+        lstatCached() {
+            return this.#r & ou ? this : void 0
+        }
+
+        readlinkCached() {
+            return this.#M
+        }
+
+        realpathCached() {
+            return this.#u
+        }
+
+        readdirCached() {
+            let A = this.children();
+            return A.slice(0, A.provisional)
+        }
+
+        canReadlink() {
+            if (this.#M) return !0;
+            if (!this.parent) return !1;
+            let A = this.#r & We;
+            return !(A !== Je && A !== WE || this.#r & Jo || this.#r & At)
+        }
+
+        calledReaddir() {
+            return !!(this.#r & HR)
+        }
+
+        isENOENT() {
+            return !!(this.#r & At)
+        }
+
+        isNamed(A) {
+            return this.nocase ? this.#S === vo(A) : this.#S === pi(A)
+        }
+
+        async readlink() {
+            let A = this.#M;
+            if (A) return A;
+            if (this.canReadlink() && this.parent) try {
+                let t = await this.#A.promises.readlink(this.fullpath()), E = this.parent.resolve(t);
+                if (E) return this.#M = E
+            } catch (t) {
+                this.#b(t.code);
+
+            }
+        }
+
+        readlinkSync() {
+            let A = this.#M;
+            if (A) return A;
+            if (this.canReadlink() && this.parent) try {
+                let t = this.#A.readlinkSync(this.fullpath()), E = this.parent.resolve(t);
+                if (E) return this.#M = E
+            } catch (t) {
+                this.#b(t.code);
+
+            }
+        }
+
+        #m(A) {
+            this.#r |= HR;
+            for (let t = A.provisional; t < A.length; t++) A[t].#O()
+        }
+
+        #O() {
+            this.#r & At || (this.#r = (this.#r | At) & di, this.#U())
+        }
+
+        #U() {
+            let A = this.children();
+            A.provisional = 0;
+            for (let t of A) t.#O()
+        }
+
+        #G() {
+            this.#r |= Xo, this.#y()
+        }
+
+        #y() {
+            if (this.#r & Ui) return;
+            let A = this.#r;
+            (A & We) === lt && (A &= di), this.#r = A | Ui, this.#U()
+        }
+
+        #F(A = "") {
+            A === "ENOTDIR" || A === "EPERM" ? this.#y() : A === "ENOENT" ? this.#O() : this.children().provisional = 0
+        }
+
+        #n(A = "") {
+            A === "ENOTDIR" ? this.parent.#y() : A === "ENOENT" && this.#O()
+        }
+
+        #b(A = "") {
+            let t = this.#r;
+            t |= Jo, A === "ENOENT" && (t |= At), (A === "EINVAL" || A === "UNKNOWN") && (t &= di), this.#r = t, A === "ENOTDIR" && this.parent && this.parent.#y()
+        }
+
+        #P(A, t) {
+            return this.#W(A, t) || this.#x(A, t)
+        }
+
+        #x(A, t) {
+            let E = kR(A), s = this.newChild(A.name, E, {parent: this}), r = s.#r & We;
+            return r !== lt && r !== WE && r !== Je && (s.#r |= Ui), t.unshift(s), t.provisional++, s
+        }
+
+        #W(A, t) {
+            for (let E = t.provisional; E < t.length; E++) {
+                let s = t[E];
+                if ((this.nocase ? vo(A.name) : pi(A.name)) === s.#S) return this.#J(A, s, E, t)
+            }
+        }
+
+        #J(A, t, E, s) {
+            let r = t.name;
+            return t.#r = t.#r & di | kR(A), r !== A.name && (t.name = A.name), E !== s.provisional && (E === s.length - 1 ? s.pop() : s.splice(E, 1), s.unshift(t)), s.provisional++, t
+        }
+
+        async lstat() {
+            if (!(this.#r & At)) try {
+                return this.#V(await this.#A.promises.lstat(this.fullpath())), this
+            } catch (A) {
+                this.#n(A.code)
+            }
+        }
+
+        lstatSync() {
+            if (!(this.#r & At)) try {
+                return this.#V(this.#A.lstatSync(this.fullpath())), this
+            } catch (A) {
+                this.#n(A.code)
+            }
+        }
+
+        #V(A) {
+            let {
+                atime: t,
+                atimeMs: E,
+                birthtime: s,
+                birthtimeMs: r,
+                blksize: i,
+                blocks: o,
+                ctime: n,
+                ctimeMs: I,
+                dev: C,
+                gid: a,
+                ino: R,
+                mode: T,
+                mtime: h,
+                mtimeMs: B,
+                nlink: c,
+                rdev: g,
+                size: l,
+                uid: Q
+            } = A;
+            this.#T = t, this.#l = E, this.#N = s, this.#L = r, this.#o = i, this.#c = o, this.#D = n, this.#R = I, this.#t = C, this.#C = a, this.#i = R, this.#E = T, this.#f = h, this.#B = B, this.#e = c, this.#h = g, this.#s = l, this.#I = Q;
+            let L = kR(A);
+            this.#r = this.#r & di | L | ou, L !== Je && L !== lt && L !== WE && (this.#r |= Ui)
+        }
+
+        #v(A) {
+            this.#k = !1;
+            let t = this.#H.slice();
+            this.#H.length = 0, t.forEach(E => E(null, A))
+        }
+
+        readdirCB(A, t = !1) {
+            if (!this.canReaddir()) {
+                t ? A(null, []) : queueMicrotask(() => A(null, []));
+                return
+            }
+            let E = this.children();
+            if (this.calledReaddir()) {
+                let r = E.slice(0, E.provisional);
+                t ? A(null, r) : queueMicrotask(() => A(null, r));
+                return
+            }
+            if (this.#H.push(A), this.#k) return;
+            this.#k = !0;
+            let s = this.fullpath();
+            this.#A.readdir(s, {withFileTypes: !0}, (r, i) => {
+                if (r) this.#F(r.code), E.provisional = 0; else {
+                    for (let o of i) this.#P(o, E);
+                    this.#m(E)
+                }
+                this.#v(E.slice(0, E.provisional))
+            })
+        }
+
+        async readdir() {
+            if (!this.canReaddir()) return [];
+            let A = this.children();
+            if (this.calledReaddir()) return A.slice(0, A.provisional);
+            let t = this.fullpath();
+            if (this.#Y) await this.#Y; else {
+                let E = () => {
+                };
+                this.#Y = new Promise(s => E = s);
+                try {
+                    for (let s of await this.#A.promises.readdir(t, {withFileTypes: !0})) this.#P(s, A);
+                    this.#m(A)
+                } catch (s) {
+                    this.#F(s.code), A.provisional = 0
+                }
+                this.#Y = void 0, E()
+            }
+            return A.slice(0, A.provisional)
+        }
+
+        readdirSync() {
+            if (!this.canReaddir()) return [];
+            let A = this.children();
+            if (this.calledReaddir()) return A.slice(0, A.provisional);
+            let t = this.fullpath();
+            try {
+                for (let E of this.#A.readdirSync(t, {withFileTypes: !0})) this.#P(E, A);
+                this.#m(A)
+            } catch (E) {
+                this.#F(E.code), A.provisional = 0
+            }
+            return A.slice(0, A.provisional)
+        }
+
+        canReaddir() {
+            if (this.#r & Iu) return !1;
+            let A = We & this.#r;
+            return A === Je || A === lt || A === WE
+        }
+
+        shouldWalk(A, t) {
+            return (this.#r & lt) === lt && !(this.#r & Iu) && !A.has(this) && (!t || t(this))
+        }
+
+        async realpath() {
+            if (this.#u) return this.#u;
+            if (!((Xo | Jo | At) & this.#r)) try {
+                let A = await this.#A.promises.realpath(this.fullpath());
+                return this.#u = this.resolve(A)
+            } catch {
+                this.#G()
+            }
+        }
+
+        realpathSync() {
+            if (this.#u) return this.#u;
+            if (!((Xo | Jo | At) & this.#r)) try {
+                let A = this.#A.realpathSync(this.fullpath());
+                return this.#u = this.resolve(A)
+            } catch {
+                this.#G()
+            }
+        }
+
+        [Nu](A) {
+            if (A === this) return;
+            let t = new Set([]), E = [], s = this;
+            for (; s && s.parent;) t.add(s), s.#d = E.join(this.sep), s.#Q = E.join("/"), s = s.parent, E.push("..");
+            for (s = A; s && s.parent && !t.has(s);) s.#d = void 0, s.#Q = void 0, s = s.parent
+        }
+    }, Ar = class extends KA {
+        sep = "\\";
+        splitSep = iY;
+
+        constructor(A, t = Je, E, s, r, i, o) {
+            super(A, t, E, s, r, i, o)
+        }
+
+        newChild(A, t = Je, E = {}) {
+            return new Ar(A, t, this.root, this.roots, this.nocase, this.childrenCache(), E)
+        }
+
+        getRootString(A) {
+            return $s.win32.parse(A).root
+        }
+
+        getRoot(A) {
+            if (A = rY(A.toUpperCase()), A === this.root.name) return this.root;
+            for (let [t, E] of Object.entries(this.roots)) if (this.sameRoot(A, t)) return this.roots[A] = E;
+            return this.roots[A] = new tr(A, this).root
+        }
+
+        sameRoot(A, t = this.root.name) {
+            return A = A.toUpperCase().replace(/\//g, "\\").replace(hu, "$1\\"), A === t
+        }
+    }, er = class extends KA {
+        splitSep = "/";
+        sep = "/";
+
+        constructor(A, t = Je, E, s, r, i, o) {
+            super(A, t, E, s, r, i, o)
+        }
+
+        getRootString(A) {
+            return A.startsWith("/") ? "/" : ""
+        }
+
+        getRoot(A) {
+            return this.root
+        }
+
+        newChild(A, t = Je, E = {}) {
+            return new er(A, t, this.root, this.roots, this.nocase, this.childrenCache(), E)
+        }
+    }, Ko = class {
+        root;
+        rootPath;
+        roots;
+        cwd;
+        #A;
+        #t;
+        #E;
+        nocase;
+        #e;
+
+        constructor(A = process.cwd(), t, E, {nocase: s, childrenCacheSize: r = 16 * 1024, fs: i = _i} = {}) {
+            this.#e = Tu(i), (A instanceof URL || A.startsWith("file://")) && (A = (0, Ru.fileURLToPath)(A));
+            let o = t.resolve(A);
+            this.roots = Object.create(null), this.rootPath = this.parseRootPath(o), this.#A = new qo, this.#t = new qo, this.#E = new VR(r);
+            let n = o.substring(this.rootPath.length).split(E);
+            if (n.length === 1 && !n[0] && n.pop(), s === void 0) throw new TypeError("must provide nocase setting to PathScurryBase ctor");
+            this.nocase = s, this.root = this.newRoot(this.#e), this.roots[this.rootPath] = this.root;
+            let I = this.root, C = n.length - 1, a = t.sep, R = this.rootPath, T = !1;
+            for (let h of n) {
+                let B = C--;
+                I = I.child(h, {
+                    relative: new Array(B).fill("..").join(a),
+                    relativePosix: new Array(B).fill("..").join("/"),
+                    fullpath: R += (T ? "" : a) + h
+                }), T = !0
+            }
+            this.cwd = I
+        }
+
+        depth(A = this.cwd) {
+            return typeof A == "string" && (A = this.cwd.resolve(A)), A.depth()
+        }
+
+        childrenCache() {
+            return this.#E
+        }
+
+        resolve(...A) {
+            let t = "";
+            for (let r = A.length - 1; r >= 0; r--) {
+                let i = A[r];
+                if (!(!i || i === ".") && (t = t ? `${i}/${t}` : i, this.isAbsolute(i))) break
+            }
+            let E = this.#A.get(t);
+            if (E !== void 0) return E;
+            let s = this.cwd.resolve(t).fullpath();
+            return this.#A.set(t, s), s
+        }
+
+        resolvePosix(...A) {
+            let t = "";
+            for (let r = A.length - 1; r >= 0; r--) {
+                let i = A[r];
+                if (!(!i || i === ".") && (t = t ? `${i}/${t}` : i, this.isAbsolute(i))) break
+            }
+            let E = this.#t.get(t);
+            if (E !== void 0) return E;
+            let s = this.cwd.resolve(t).fullpathPosix();
+            return this.#t.set(t, s), s
+        }
+
+        relative(A = this.cwd) {
+            return typeof A == "string" && (A = this.cwd.resolve(A)), A.relative()
+        }
+
+        relativePosix(A = this.cwd) {
+            return typeof A == "string" && (A = this.cwd.resolve(A)), A.relativePosix()
+        }
+
+        basename(A = this.cwd) {
+            return typeof A == "string" && (A = this.cwd.resolve(A)), A.name
+        }
+
+        dirname(A = this.cwd) {
+            return typeof A == "string" && (A = this.cwd.resolve(A)), (A.parent || A).fullpath()
+        }
+
+        async readdir(A = this.cwd, t = {withFileTypes: !0}) {
+            typeof A == "string" ? A = this.cwd.resolve(A) : A instanceof KA || (t = A, A = this.cwd);
+            let {withFileTypes: E} = t;
+            if (A.canReaddir()) {
+                let s = await A.readdir();
+                return E ? s : s.map(r => r.name)
+            } else return []
+        }
+
+        readdirSync(A = this.cwd, t = {withFileTypes: !0}) {
+            typeof A == "string" ? A = this.cwd.resolve(A) : A instanceof KA || (t = A, A = this.cwd);
+            let {withFileTypes: E = !0} = t;
+            return A.canReaddir() ? E ? A.readdirSync() : A.readdirSync().map(s => s.name) : []
+        }
+
+        async lstat(A = this.cwd) {
+            return typeof A == "string" && (A = this.cwd.resolve(A)), A.lstat()
+        }
+
+        lstatSync(A = this.cwd) {
+            return typeof A == "string" && (A = this.cwd.resolve(A)), A.lstatSync()
+        }
+
+        async readlink(A = this.cwd, {withFileTypes: t} = {withFileTypes: !1}) {
+            typeof A == "string" ? A = this.cwd.resolve(A) : A instanceof KA || (t = A.withFileTypes, A = this.cwd);
+            let E = await A.readlink();
+            return t ? E : E?.fullpath()
+        }
+
+        readlinkSync(A = this.cwd, {withFileTypes: t} = {withFileTypes: !1}) {
+            typeof A == "string" ? A = this.cwd.resolve(A) : A instanceof KA || (t = A.withFileTypes, A = this.cwd);
+            let E = A.readlinkSync();
+            return t ? E : E?.fullpath()
+        }
+
+        async realpath(A = this.cwd, {withFileTypes: t} = {withFileTypes: !1}) {
+            typeof A == "string" ? A = this.cwd.resolve(A) : A instanceof KA || (t = A.withFileTypes, A = this.cwd);
+            let E = await A.realpath();
+            return t ? E : E?.fullpath()
+        }
+
+        realpathSync(A = this.cwd, {withFileTypes: t} = {withFileTypes: !1}) {
+            typeof A == "string" ? A = this.cwd.resolve(A) : A instanceof KA || (t = A.withFileTypes, A = this.cwd);
+            let E = A.realpathSync();
+            return t ? E : E?.fullpath()
+        }
+
+        async walk(A = this.cwd, t = {}) {
+            typeof A == "string" ? A = this.cwd.resolve(A) : A instanceof KA || (t = A, A = this.cwd);
+            let {withFileTypes: E = !0, follow: s = !1, filter: r, walkFilter: i} = t, o = [];
+            (!r || r(A)) && o.push(E ? A : A.fullpath());
+            let n = new Set, I = (a, R) => {
+                n.add(a), a.readdirCB((T, h) => {
+                    if (T) return R(T);
+                    let B = h.length;
+                    if (!B) return R();
+                    let c = () => {
+                        --B === 0 && R()
+                    };
+                    for (let g of h) (!r || r(g)) && o.push(E ? g : g.fullpath()), s && g.isSymbolicLink() ? g.realpath().then(l => l?.isUnknown() ? l.lstat() : l).then(l => l?.shouldWalk(n, i) ? I(l, c) : c()) : g.shouldWalk(n, i) ? I(g, c) : c()
+                }, !0)
+            }, C = A;
+            return new Promise((a, R) => {
+                I(C, T => {
+                    if (T) return R(T);
+                    a(o)
+                })
+            })
+        }
+
+        walkSync(A = this.cwd, t = {}) {
+            typeof A == "string" ? A = this.cwd.resolve(A) : A instanceof KA || (t = A, A = this.cwd);
+            let {withFileTypes: E = !0, follow: s = !1, filter: r, walkFilter: i} = t, o = [];
+            (!r || r(A)) && o.push(E ? A : A.fullpath());
+            let n = new Set([A]);
+            for (let I of n) {
+                let C = I.readdirSync();
+                for (let a of C) {
+                    (!r || r(a)) && o.push(E ? a : a.fullpath());
+                    let R = a;
+                    if (a.isSymbolicLink()) {
+                        if (!(s && (R = a.realpathSync()))) continue;
+                        R.isUnknown() && R.lstatSync()
+                    }
+                    R.shouldWalk(n, i) && n.add(R)
+                }
+            }
+            return o
+        }
+
+        [Symbol.asyncIterator]() {
+            return this.iterate()
+        }
+
+        iterate(A = this.cwd, t = {}) {
+            return typeof A == "string" ? A = this.cwd.resolve(A) : A instanceof KA || (t = A, A = this.cwd), this.stream(A, t)[Symbol.asyncIterator]()
+        }
+
+        [Symbol.iterator]() {
+            return this.iterateSync()
+        }
+
+        * iterateSync(A = this.cwd, t = {}) {
+            typeof A == "string" ? A = this.cwd.resolve(A) : A instanceof KA || (t = A, A = this.cwd);
+            let {withFileTypes: E = !0, follow: s = !1, filter: r, walkFilter: i} = t;
+            (!r || r(A)) && (yield E ? A : A.fullpath());
+            let o = new Set([A]);
+            for (let n of o) {
+                let I = n.readdirSync();
+                for (let C of I) {
+                    (!r || r(C)) && (yield E ? C : C.fullpath());
+                    let a = C;
+                    if (C.isSymbolicLink()) {
+                        if (!(s && (a = C.realpathSync()))) continue;
+                        a.isUnknown() && a.lstatSync()
+                    }
+                    a.shouldWalk(o, i) && o.add(a)
+                }
+            }
+        }
+
+        stream(A = this.cwd, t = {}) {
+            typeof A == "string" ? A = this.cwd.resolve(A) : A instanceof KA || (t = A, A = this.cwd);
+            let {withFileTypes: E = !0, follow: s = !1, filter: r, walkFilter: i} = t, o = new TE({objectMode: !0});
+            (!r || r(A)) && o.write(E ? A : A.fullpath());
+            let n = new Set, I = [A], C = 0, a = () => {
+                let R = !1;
+                for (; !R;) {
+                    let T = I.shift();
+                    if (!T) {
+                        C === 0 && o.end();
+                        return
+                    }
+                    C++, n.add(T);
+                    let h = (c, g, l = !1) => {
+                        if (c) return o.emit("error", c);
+                        if (s && !l) {
+                            let Q = [];
+                            for (let L of g) L.isSymbolicLink() && Q.push(L.realpath().then(w => w?.isUnknown() ? w.lstat() : w));
+                            if (Q.length) {
+                                Promise.all(Q).then(() => h(null, g, !0));
+                                return
+                            }
+                        }
+                        for (let Q of g) Q && (!r || r(Q)) && (o.write(E ? Q : Q.fullpath()) || (R = !0));
+                        C--;
+                        for (let Q of g) {
+                            let L = Q.realpathCached() || Q;
+                            L.shouldWalk(n, i) && I.push(L)
+                        }
+                        R && !o.flowing ? o.once("drain", a) : B || a()
+                    }, B = !0;
+                    T.readdirCB(h, !0), B = !1
+                }
+            };
+            return a(), o
+        }
+
+        streamSync(A = this.cwd, t = {}) {
+            typeof A == "string" ? A = this.cwd.resolve(A) : A instanceof KA || (t = A, A = this.cwd);
+            let {withFileTypes: E = !0, follow: s = !1, filter: r, walkFilter: i} = t, o = new TE({objectMode: !0}),
+                n = new Set;
+            (!r || r(A)) && o.write(E ? A : A.fullpath());
+            let I = [A], C = 0, a = () => {
+                let R = !1;
+                for (; !R;) {
+                    let T = I.shift();
+                    if (!T) {
+                        C === 0 && o.end();
+                        return
+                    }
+                    C++, n.add(T);
+                    let h = T.readdirSync();
+                    for (let B of h) (!r || r(B)) && (o.write(E ? B : B.fullpath()) || (R = !0));
+                    C--;
+                    for (let B of h) {
+                        let c = B;
+                        if (B.isSymbolicLink()) {
+                            if (!(s && (c = B.realpathSync()))) continue;
+                            c.isUnknown() && c.lstatSync()
+                        }
+                        c.shouldWalk(n, i) && I.push(c)
+                    }
+                }
+                R && !o.flowing && o.once("drain", a)
+            };
+            return a(), o
+        }
+
+        chdir(A = this.cwd) {
+            let t = this.cwd;
+            this.cwd = typeof A == "string" ? this.cwd.resolve(A) : A, this.cwd[Nu](t)
+        }
+    }, tr = class extends Ko {
+        sep = "\\";
+
+        constructor(A = process.cwd(), t = {}) {
+            let {nocase: E = !0} = t;
+            super(A, $s.win32, "\\", {...t, nocase: E}), this.nocase = E;
+            for (let s = this.cwd; s; s = s.parent) s.nocase = this.nocase
+        }
+
+        parseRootPath(A) {
+            return $s.win32.parse(A).root.toUpperCase()
+        }
+
+        newRoot(A) {
+            return new Ar(this.rootPath, lt, void 0, this.roots, this.nocase, this.childrenCache(), {fs: A})
+        }
+
+        isAbsolute(A) {
+            return A.startsWith("/") || A.startsWith("\\") || /^[a-z]:(\/|\\)/i.test(A)
+        }
+    }, Er = class extends Ko {
+        sep = "/";
+
+        constructor(A = process.cwd(), t = {}) {
+            let {nocase: E = !1} = t;
+            super(A, $s.posix, "/", {...t, nocase: E}), this.nocase = E
+        }
+
+        parseRootPath(A) {
+            return "/"
+        }
+
+        newRoot(A) {
+            return new er(this.rootPath, lt, void 0, this.roots, this.nocase, this.childrenCache(), {fs: A})
+        }
+
+        isAbsolute(A) {
+            return A.startsWith("/")
+        }
+    }, Mi = class extends Er {
+        constructor(A = process.cwd(), t = {}) {
+            let {nocase: E = !0} = t;
+            super(A, {...t, nocase: E})
+        }
+    }, qV = process.platform === "win32" ? Ar : er,
+    Qu = process.platform === "win32" ? tr : process.platform === "darwin" ? Mi : Er;
+var uu = require("url");
+var oY = e => e.length >= 1, IY = e => e.length >= 1, BE = class {
+    #A;
+    #t;
+    #E;
+    length;
+    #e;
+    #I;
+    #C;
+    #h;
+    #o;
+    #i;
+    #s = !0;
+
+    constructor(A, t, E, s) {
+        if (!oY(A)) throw new TypeError("empty pattern list");
+        if (!IY(t)) throw new TypeError("empty glob list");
+        if (t.length !== A.length) throw new TypeError("mismatched pattern list and glob list lengths");
+        if (this.length = A.length, E < 0 || E >= this.length) throw new TypeError("index out of range");
+        if (this.#A = A, this.#t = t, this.#E = E, this.#e = s, this.#E === 0) {
+            if (this.isUNC()) {
+                let [r, i, o, n, ...I] = this.#A, [C, a, R, T, ...h] = this.#t;
+                I[0] === "" && (I.shift(), h.shift());
+                let B = [r, i, o, n, ""].join("/"), c = [C, a, R, T, ""].join("/");
+                this.#A = [B, ...I], this.#t = [c, ...h], this.length = this.#A.length
+            } else if (this.isDrive() || this.isAbsolute()) {
+                let [r, ...i] = this.#A, [o, ...n] = this.#t;
+                i[0] === "" && (i.shift(), n.shift());
+                let I = r + "/", C = o + "/";
+                this.#A = [I, ...i], this.#t = [C, ...n], this.length = this.#A.length
+            }
+        }
+    }
+
+    pattern() {
+        return this.#A[this.#E]
+    }
+
+    isString() {
+        return typeof this.#A[this.#E] == "string"
+    }
+
+    isGlobstar() {
+        return this.#A[this.#E] === xA
+    }
+
+    isRegExp() {
+        return this.#A[this.#E] instanceof RegExp
+    }
+
+    globString() {
+        return this.#C = this.#C || (this.#E === 0 ? this.isAbsolute() ? this.#t[0] + this.#t.slice(1).join("/") : this.#t.join("/") : this.#t.slice(this.#E).join("/"))
+    }
+
+    hasMore() {
+        return this.length > this.#E + 1
+    }
+
+    rest() {
+        return this.#I !== void 0 ? this.#I : this.hasMore() ? (this.#I = new BE(this.#A, this.#t, this.#E + 1, this.#e), this.#I.#i = this.#i, this.#I.#o = this.#o, this.#I.#h = this.#h, this.#I) : this.#I = null
+    }
+
+    isUNC() {
+        let A = this.#A;
+        return this.#o !== void 0 ? this.#o : this.#o = this.#e === "win32" && this.#E === 0 && A[0] === "" && A[1] === "" && typeof A[2] == "string" && !!A[2] && typeof A[3] == "string" && !!A[3]
+    }
+
+    isDrive() {
+        let A = this.#A;
+        return this.#h !== void 0 ? this.#h : this.#h = this.#e === "win32" && this.#E === 0 && this.length > 1 && typeof A[0] == "string" && /^[a-z]:$/i.test(A[0])
+    }
+
+    isAbsolute() {
+        let A = this.#A;
+        return this.#i !== void 0 ? this.#i : this.#i = A[0] === "" && A.length > 1 || this.isDrive() || this.isUNC()
+    }
+
+    root() {
+        let A = this.#A[0];
+        return typeof A == "string" && this.isAbsolute() && this.#E === 0 ? A : ""
+    }
+
+    checkFollowGlobstar() {
+        return !(this.#E === 0 || !this.isGlobstar() || !this.#s)
+    }
+
+    markFollowGlobstar() {
+        return this.#E === 0 || !this.isGlobstar() || !this.#s ? !1 : (this.#s = !1, !0)
+    }
+};
+var CY = typeof process == "object" && process && typeof process.platform == "string" ? process.platform : "linux",
+    yi = class {
+        relative;
+        relativeChildren;
+        absolute;
+        absoluteChildren;
+
+        constructor(A, {nobrace: t, nocase: E, noext: s, noglobstar: r, platform: i = CY}) {
+            this.relative = [], this.absolute = [], this.relativeChildren = [], this.absoluteChildren = [];
+            let o = {
+                dot: !0,
+                nobrace: t,
+                nocase: E,
+                noext: s,
+                noglobstar: r,
+                optimizationLevel: 2,
+                platform: i,
+                nocomment: !0,
+                nonegate: !0
+            };
+            for (let n of A) {
+                let I = new _e(n, o);
+                for (let C = 0; C < I.set.length; C++) {
+                    let a = I.set[C], R = I.globParts[C];
+                    if (!a || !R) throw new Error("invalid pattern object");
+                    let T = new BE(a, R, 0, i), h = new _e(T.globString(), o), B = R[R.length - 1] === "**",
+                        c = T.isAbsolute();
+                    c ? this.absolute.push(h) : this.relative.push(h), B && (c ? this.absoluteChildren.push(h) : this.relativeChildren.push(h))
+                }
+            }
+        }
+
+        ignored(A) {
+            let t = A.fullpath(), E = `${t}/`, s = A.relative() || ".", r = `${s}/`;
+            for (let i of this.relative) if (i.match(s) || i.match(r)) return !0;
+            for (let i of this.absolute) if (i.match(t) || i.match(E)) return !0;
+            return !1
+        }
+
+        childrenIgnored(A) {
+            let t = A.fullpath() + "/", E = (A.relative() || ".") + "/";
+            for (let s of this.relativeChildren) if (s.match(E)) return !0;
+            for (let s of this.absoluteChildren) if (s.match(t)) return !0;
+            return !1
+        }
+    };
+var Pi = class {
+    store;
+
+    constructor(A = new Map) {
+        this.store = A
+    }
+
+    copy() {
+        return new Pi(new Map(this.store))
+    }
+
+    hasWalked(A, t) {
+        return this.store.get(A.fullpath())?.has(t.globString())
+    }
+
+    storeWalked(A, t) {
+        let E = A.fullpath(), s = this.store.get(E);
+        s ? s.add(t.globString()) : this.store.set(E, new Set([t.globString()]))
+    }
+}, xR = class {
+    store = new Map;
+
+    add(A, t, E) {
+        let s = (t ? 2 : 0) | (E ? 1 : 0), r = this.store.get(A);
+        this.store.set(A, r === void 0 ? s : s & r)
+    }
+
+    entries() {
+        return [...this.store.entries()].map(([A, t]) => [A, !!(t & 2), !!(t & 1)])
+    }
+}, WR = class {
+    store = new Map;
+
+    add(A, t) {
+        if (!A.canReaddir()) return;
+        let E = this.store.get(A);
+        E ? E.find(s => s.globString() === t.globString()) || E.push(t) : this.store.set(A, [t])
+    }
+
+    get(A) {
+        let t = this.store.get(A);
+        if (!t) throw new Error("attempting to walk unknown path");
+        return t
+    }
+
+    entries() {
+        return this.keys().map(A => [A, this.store.get(A)])
+    }
+
+    keys() {
+        return [...this.store.keys()].filter(A => A.canReaddir())
+    }
+}, JE = class {
+    hasWalkedCache;
+    matches = new xR;
+    subwalks = new WR;
+    patterns;
+    follow;
+    dot;
+    opts;
+
+    constructor(A, t) {
+        this.opts = A, this.follow = !!A.follow, this.dot = !!A.dot, this.hasWalkedCache = t ? t.copy() : new Pi
+    }
+
+    processPatterns(A, t) {
+        this.patterns = t;
+        let E = t.map(s => [A, s]);
+        for (let [s, r] of E) {
+            this.hasWalkedCache.storeWalked(s, r);
+            let i = r.root(), o = r.isAbsolute() && this.opts.absolute !== !1;
+            if (i) {
+                s = s.resolve(i === "/" && this.opts.root !== void 0 ? this.opts.root : i);
+                let a = r.rest();
+                if (a) r = a; else {
+                    this.matches.add(s, !0, !1);
+                    continue
+                }
+            }
+            if (s.isENOENT()) continue;
+            let n, I, C = !1;
+            for (; typeof (n = r.pattern()) == "string" && (I = r.rest());) s = s.resolve(n), r = I, C = !0;
+            if (n = r.pattern(), I = r.rest(), C) {
+                if (this.hasWalkedCache.hasWalked(s, r)) continue;
+                this.hasWalkedCache.storeWalked(s, r)
+            }
+            if (typeof n == "string") {
+                let a = n === ".." || n === "" || n === ".";
+                this.matches.add(s.resolve(n), o, a);
+
+            } else if (n === xA) {
+                (!s.isSymbolicLink() || this.follow || r.checkFollowGlobstar()) && this.subwalks.add(s, r);
+                let a = I?.pattern(), R = I?.rest();
+                if (!I || (a === "" || a === ".") && !R) this.matches.add(s, o, a === "" || a === "."); else if (a === "..") {
+                    let T = s.parent || s;
+                    R ? this.hasWalkedCache.hasWalked(T, R) || this.subwalks.add(T, R) : this.matches.add(T, o, !0)
+                }
+            } else n instanceof RegExp && this.subwalks.add(s, r)
+        }
+        return this
+    }
+
+    subwalkTargets() {
+        return this.subwalks.keys()
+    }
+
+    child() {
+        return new JE(this.opts, this.hasWalkedCache)
+    }
+
+    filterEntries(A, t) {
+        let E = this.subwalks.get(A), s = this.child();
+        for (let r of t) for (let i of E) {
+            let o = i.isAbsolute(), n = i.pattern(), I = i.rest();
+            n === xA ? s.testGlobstar(r, i, I, o) : n instanceof RegExp ? s.testRegExp(r, n, I, o) : s.testString(r, n, I, o)
+        }
+        return s
+    }
+
+    testGlobstar(A, t, E, s) {
+        if ((this.dot || !A.name.startsWith(".")) && (t.hasMore() || this.matches.add(A, s, !1), A.canReaddir() && (this.follow || !A.isSymbolicLink() ? this.subwalks.add(A, t) : A.isSymbolicLink() && (E && t.checkFollowGlobstar() ? this.subwalks.add(A, E) : t.markFollowGlobstar() && this.subwalks.add(A, t)))), E) {
+            let r = E.pattern();
+            if (typeof r == "string" && r !== ".." && r !== "" && r !== ".") this.testString(A, r, E.rest(), s); else if (r === "..") {
+                let i = A.parent || A;
+                this.subwalks.add(i, E)
+            } else r instanceof RegExp && this.testRegExp(A, r, E.rest(), s)
+        }
+    }
+
+    testRegExp(A, t, E, s) {
+        t.test(A.name) && (E ? this.subwalks.add(A, E) : this.matches.add(A, s, !1))
+    }
+
+    testString(A, t, E, s) {
+        A.isNamed(t) && (E ? this.subwalks.add(A, E) : this.matches.add(A, s, !1))
+    }
+};
+var aY = (e, A) => typeof e == "string" ? new yi([e], A) : Array.isArray(e) ? new yi(e, A) : e, Zo = class {
+    path;
+    patterns;
+    opts;
+    seen = new Set;
+    paused = !1;
+    aborted = !1;
+    #A = [];
+    #t;
+    #E;
+    signal;
+    maxDepth;
+
+    constructor(A, t, E) {
+        this.patterns = A, this.path = t, this.opts = E, this.#E = !E.posix && E.platform === "win32" ? "\\" : "/", E.ignore && (this.#t = aY(E.ignore, E)), this.maxDepth = E.maxDepth || 1 / 0, E.signal && (this.signal = E.signal, this.signal.addEventListener("abort", () => {
+            this.#A.length = 0
+        }))
+    }
+
+    #e(A) {
+        return this.seen.has(A) || !!this.#t?.ignored?.(A)
+    }
+
+    #I(A) {
+        return !!this.#t?.childrenIgnored?.(A)
+    }
+
+    pause() {
+        this.paused = !0
+    }
+
+    resume() {
+        if (this.signal?.aborted) return;
+        this.paused = !1;
+        let A;
+        for (; !this.paused && (A = this.#A.shift());) A()
+    }
+
+    onResume(A) {
+        this.signal?.aborted || (this.paused ? this.#A.push(A) : A())
+    }
+
+    async matchCheck(A, t) {
+        if (t && this.opts.nodir) return;
+        let E;
+        if (this.opts.realpath) {
+            if (E = A.realpathCached() || await A.realpath(), !E) return;
+            A = E
+        }
+        let s = A.isUnknown() || this.opts.stat;
+        return this.matchCheckTest(s ? await A.lstat() : A, t)
+    }
+
+    matchCheckTest(A, t) {
+        return A && (this.maxDepth === 1 / 0 || A.depth() <= this.maxDepth) && (!t || A.canReaddir()) && (!this.opts.nodir || !A.isDirectory()) && !this.#e(A) ? A : void 0
+    }
+
+    matchCheckSync(A, t) {
+        if (t && this.opts.nodir) return;
+        let E;
+        if (this.opts.realpath) {
+            if (E = A.realpathCached() || A.realpathSync(), !E) return;
+            A = E
+        }
+        let s = A.isUnknown() || this.opts.stat;
+        return this.matchCheckTest(s ? A.lstatSync() : A, t)
+    }
+
+    matchFinish(A, t) {
+        if (this.#e(A)) return;
+        let E = this.opts.absolute === void 0 ? t : this.opts.absolute;
+        this.seen.add(A);
+        let s = this.opts.mark && A.isDirectory() ? this.#E : "";
+        if (this.opts.withFileTypes) this.matchEmit(A); else if (E) {
+            let r = this.opts.posix ? A.fullpathPosix() : A.fullpath();
+            this.matchEmit(r + s)
+        } else {
+            let r = this.opts.posix ? A.relativePosix() : A.relative(),
+                i = this.opts.dotRelative && !r.startsWith(".." + this.#E) ? "." + this.#E : "";
+            this.matchEmit(r ? i + r + s : "." + s)
+        }
+    }
+
+    async match(A, t, E) {
+        let s = await this.matchCheck(A, E);
+        s && this.matchFinish(s, t)
+    }
+
+    matchSync(A, t, E) {
+        let s = this.matchCheckSync(A, E);
+        s && this.matchFinish(s, t)
+    }
+
+    walkCB(A, t, E) {
+        this.signal?.aborted && E(), this.walkCB2(A, t, new JE(this.opts), E)
+    }
+
+    walkCB2(A, t, E, s) {
+        if (this.#I(A)) return s();
+        if (this.signal?.aborted && s(), this.paused) {
+            this.onResume(() => this.walkCB2(A, t, E, s));
+            return
+        }
+        E.processPatterns(A, t);
+        let r = 1, i = () => {
+            --r === 0 && s()
+        };
+        for (let [o, n, I] of E.matches.entries()) this.#e(o) || (r++, this.match(o, n, I).then(() => i()));
+        for (let o of E.subwalkTargets()) {
+            if (this.maxDepth !== 1 / 0 && o.depth() >= this.maxDepth) continue;
+            r++;
+            let n = o.readdirCached();
+            o.calledReaddir() ? this.walkCB3(o, n, E, i) : o.readdirCB((I, C) => this.walkCB3(o, C, E, i), !0)
+        }
+        i()
+    }
+
+    walkCB3(A, t, E, s) {
+        E = E.filterEntries(A, t);
+        let r = 1, i = () => {
+            --r === 0 && s()
+        };
+        for (let [o, n, I] of E.matches.entries()) this.#e(o) || (r++, this.match(o, n, I).then(() => i()));
+        for (let [o, n] of E.subwalks.entries()) r++, this.walkCB2(o, n, E.child(), i);
+        i()
+    }
+
+    walkCBSync(A, t, E) {
+        this.signal?.aborted && E(), this.walkCB2Sync(A, t, new JE(this.opts), E)
+    }
+
+    walkCB2Sync(A, t, E, s) {
+        if (this.#I(A)) return s();
+        if (this.signal?.aborted && s(), this.paused) {
+            this.onResume(() => this.walkCB2Sync(A, t, E, s));
+            return
+        }
+        E.processPatterns(A, t);
+        let r = 1, i = () => {
+            --r === 0 && s()
+        };
+        for (let [o, n, I] of E.matches.entries()) this.#e(o) || this.matchSync(o, n, I);
+        for (let o of E.subwalkTargets()) {
+            if (this.maxDepth !== 1 / 0 && o.depth() >= this.maxDepth) continue;
+            r++;
+            let n = o.readdirSync();
+            this.walkCB3Sync(o, n, E, i)
+        }
+        i()
+    }
+
+    walkCB3Sync(A, t, E, s) {
+        E = E.filterEntries(A, t);
+        let r = 1, i = () => {
+            --r === 0 && s()
+        };
+        for (let [o, n, I] of E.matches.entries()) this.#e(o) || this.matchSync(o, n, I);
+        for (let [o, n] of E.subwalks.entries()) r++, this.walkCB2Sync(o, n, E.child(), i);
+        i()
+    }
+}, Fi = class extends Zo {
+    matches;
+
+    constructor(A, t, E) {
+        super(A, t, E), this.matches = new Set
+    }
+
+    matchEmit(A) {
+        this.matches.add(A)
+    }
+
+    async walk() {
+        if (this.signal?.aborted) throw this.signal.reason;
+        return this.path.isUnknown() && await this.path.lstat(), await new Promise((A, t) => {
+            this.walkCB(this.path, this.patterns, () => {
+                this.signal?.aborted ? t(this.signal.reason) : A(this.matches)
+            })
+        }), this.matches
+    }
+
+    walkSync() {
+        if (this.signal?.aborted) throw this.signal.reason;
+        return this.path.isUnknown() && this.path.lstatSync(), this.walkCBSync(this.path, this.patterns, () => {
+            if (this.signal?.aborted) throw this.signal.reason
+        }), this.matches
+    }
+}, wi = class extends Zo {
+    results;
+
+    constructor(A, t, E) {
+        super(A, t, E), this.results = new TE({
+            signal: this.signal,
+            objectMode: !0
+        }), this.results.on("drain", () => this.resume()), this.results.on("resume", () => this.resume())
+    }
+
+    matchEmit(A) {
+        this.results.write(A), this.results.flowing || this.pause()
+    }
+
+    stream() {
+        let A = this.path;
+        return A.isUnknown() ? A.lstat().then(() => {
+            this.walkCB(A, this.patterns, () => this.results.end())
+        }) : this.walkCB(A, this.patterns, () => this.results.end()), this.results
+    }
+
+    streamSync() {
+        return this.path.isUnknown() && this.path.lstatSync(), this.walkCBSync(this.path, this.patterns, () => this.results.end()), this.results
+    }
+};
+var RY = typeof process == "object" && process && typeof process.platform == "string" ? process.platform : "linux",
+    et = class {
+        absolute;
+        cwd;
+        root;
+        dot;
+        dotRelative;
+        follow;
+        ignore;
+        magicalBraces;
+        mark;
+        matchBase;
+        maxDepth;
+        nobrace;
+        nocase;
+        nodir;
+        noext;
+        noglobstar;
+        pattern;
+        platform;
+        realpath;
+        scurry;
+        stat;
+        signal;
+        windowsPathsNoEscape;
+        withFileTypes;
+        opts;
+        patterns;
+
+        constructor(A, t) {
+            if (!t) throw new TypeError("glob options required");
+            if (this.withFileTypes = !!t.withFileTypes, this.signal = t.signal, this.follow = !!t.follow, this.dot = !!t.dot, this.dotRelative = !!t.dotRelative, this.nodir = !!t.nodir, this.mark = !!t.mark, t.cwd ? (t.cwd instanceof URL || t.cwd.startsWith("file://")) && (t.cwd = (0, uu.fileURLToPath)(t.cwd)) : this.cwd = "", this.cwd = t.cwd || "", this.root = t.root, this.magicalBraces = !!t.magicalBraces, this.nobrace = !!t.nobrace, this.noext = !!t.noext, this.realpath = !!t.realpath, this.absolute = t.absolute, this.noglobstar = !!t.noglobstar, this.matchBase = !!t.matchBase, this.maxDepth = typeof t.maxDepth == "number" ? t.maxDepth : 1 / 0, this.stat = !!t.stat, this.ignore = t.ignore, this.withFileTypes && this.absolute !== void 0) throw new Error("cannot set absolute and withFileTypes:true");
+            if (typeof A == "string" && (A = [A]), this.windowsPathsNoEscape = !!t.windowsPathsNoEscape || t.allowWindowsEscape === !1, this.windowsPathsNoEscape && (A = A.map(n => n.replace(/\\/g, "/"))), this.matchBase) {
+                if (t.noglobstar) throw new TypeError("base matching requires globstar");
+                A = A.map(n => n.includes("/") ? n : `./**/${n}`)
+            }
+            if (this.pattern = A, this.platform = t.platform || RY, this.opts = {
+                ...t,
+                platform: this.platform
+            }, t.scurry) {
+                if (this.scurry = t.scurry, t.nocase !== void 0 && t.nocase !== t.scurry.nocase) throw new Error("nocase option contradicts provided scurry option")
+            } else {
+                let n = t.platform === "win32" ? tr : t.platform === "darwin" ? Mi : t.platform ? Er : Qu;
+                this.scurry = new n(this.cwd, {nocase: t.nocase, fs: t.fs})
+            }
+            this.nocase = this.scurry.nocase;
+            let E = this.platform === "darwin" || this.platform === "win32", s = {
+                    ...t,
+                    dot: this.dot,
+                    matchBase: this.matchBase,
+                    nobrace: this.nobrace,
+                    nocase: this.nocase,
+                    nocaseMagicOnly: E,
+                    nocomment: !0,
+                    noext: this.noext,
+                    nonegate: !0,
+                    optimizationLevel: 2,
+                    platform: this.platform,
+                    windowsPathsNoEscape: this.windowsPathsNoEscape,
+                    debug: !!this.opts.debug
+                },
+                r = this.pattern.map(n => new _e(n, s)), [i, o] = r.reduce((n, I) => (n[0].push(...I.set), n[1].push(...I.globParts), n), [[], []]);
+            this.patterns = i.map((n, I) => {
+                let C = o[I];
+                if (!C) throw new Error("invalid pattern object");
+                return new BE(n, C, 0, this.platform)
+            })
+        }
+
+        async walk() {
+            return [...await new Fi(this.patterns, this.scurry.cwd, {
+                ...this.opts,
+                maxDepth: this.maxDepth !== 1 / 0 ? this.maxDepth + this.scurry.cwd.depth() : 1 / 0,
+                platform: this.platform,
+                nocase: this.nocase
+            }).walk()]
+        }
+
+        walkSync() {
+            return [...new Fi(this.patterns, this.scurry.cwd, {
+                ...this.opts,
+                maxDepth: this.maxDepth !== 1 / 0 ? this.maxDepth + this.scurry.cwd.depth() : 1 / 0,
+                platform: this.platform,
+                nocase: this.nocase
+            }).walkSync()]
+        }
+
+        stream() {
+            return new wi(this.patterns, this.scurry.cwd, {
+                ...this.opts,
+                maxDepth: this.maxDepth !== 1 / 0 ? this.maxDepth + this.scurry.cwd.depth() : 1 / 0,
+                platform: this.platform,
+                nocase: this.nocase
+            }).stream()
+        }
+
+        streamSync() {
+            return new wi(this.patterns, this.scurry.cwd, {
+                ...this.opts,
+                maxDepth: this.maxDepth !== 1 / 0 ? this.maxDepth + this.scurry.cwd.depth() : 1 / 0,
+                platform: this.platform,
+                nocase: this.nocase
+            }).streamSync()
+        }
+
+        iterateSync() {
+            return this.streamSync()[Symbol.iterator]()
+        }
+
+        [Symbol.iterator]() {
+            return this.iterateSync()
+        }
+
+        iterate() {
+            return this.stream()[Symbol.asyncIterator]()
+        }
+
+        [Symbol.asyncIterator]() {
+            return this.iterate()
+        }
+    };
+var JR = (e, A = {}) => {
+    Array.isArray(e) || (e = [e]);
+    for (let t of e) if (new _e(t, A).hasMagic()) return !0;
+    return !1
+};
+
+function jo(e, A = {}) {
+    return new et(e, A).streamSync()
+}
+
+function Lu(e, A = {}) {
+    return new et(e, A).stream()
+}
+
+function fu(e, A = {}) {
+    return new et(e, A).walkSync()
+}
+
+async function Ou(e, A = {}) {
+    return new et(e, A).walk()
+}
+
+function $o(e, A = {}) {
+    return new et(e, A).iterateSync()
+}
+
+function Du(e, A = {}) {
+    return new et(e, A).iterate()
+}
+
+var TY = jo, hY = Object.assign(Lu, {sync: jo}), BY = $o, cY = Object.assign(Du, {sync: $o}),
+    gY = Object.assign(fu, {stream: jo, iterate: $o}), zo = Object.assign(Ou, {
+        glob: Ou,
+        globSync: fu,
+        sync: gY,
+        globStream: Lu,
+        stream: hY,
+        globStreamSync: jo,
+        streamSync: TY,
+        globIterate: Du,
+        iterate: cY,
+        globIterateSync: $o,
+        iterateSync: BY,
+        Glob: et,
+        hasMagic: JR,
+        escape: vs,
+        unescape: je
+    });
+zo.glob = zo;
+
+function SY(e) {
+    let A = e.toLowerCase();
+    if (A === "tsql" && (A = "transactsql"), A === "bigquery" || A === "db2" || A === "db2i" || A === "hive" || A === "mariadb" || A === "mysql" || A === "n1ql" || A === "plsql" || A === "postgresql" || A === "redshift" || A === "singlestoredb" || A === "snowflake" || A === "spark" || A === "sql" || A === "sqlite" || A === "transactsql" || A === "trino") return {
+        tabWidth: 2,
+        useTabs: !1,
+        keywordCase: "upper",
+        identifierCase: "preserve",
+        dataTypeCase: "upper",
+        functionCase: "preserve",
+        indentStyle: "standard",
+        logicalOperatorNewline: "before",
+        expressionWidth: 50,
+        linesBetweenQueries: 1,
+        denseOperators: !0,
+        newlineBeforeSemicolon: !1,
+        language: A
+    };
+    throw new Error("Invalid language")
+}
+
+function lY(e) {
+    try {
+        return du.default.getInput("dialect")
+    } catch {
+        return "tsql"
+    }
+}
+
+var _u = async () => {
+    console.log("reformatter");
+    try {
+        let e = lY("dialect");
+        console.log(`Dialect: ${e}`);
+        let A = SY(e);
+        console.log("looking for files");
+        let t = await zo("**/*.sql", {ignore: "node_modules/**"});
+        console.log(`found ${t.length} files`);
+        for (let E of t) {
+            console.log(`${E}:`);
+            let s = AI.readFileSync(E, "utf8"), r = vT(s, A);
+            s === r ? console.log(" * Unchanged") : (console.log(" * Changed"), AI.writeFileSync(E, r, "utf8"))
+        }
+    } catch (e) {
+        console.error(e.toString())
+    }
+};
+(async () => await _u())();
+0 && (module.exports = {main});
 /*! Bundled license information:
 
 undici/lib/fetch/body.js:

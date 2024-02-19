@@ -1,10 +1,13 @@
 -- Needs Reformatting
 SET
 NOCOUNT ON;
+
 SET
 ANSI_NULLS ON;
+
 SET
 TRANSACTION ISOLATION LEVEL READ COMMITTED;
+
 SELECT
   [id],
   [name]

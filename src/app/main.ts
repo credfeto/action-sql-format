@@ -22,7 +22,7 @@ function buildOptions(dialect: string): FormatOptionsWithLanguage {
             indentStyle: 'standard',
             logicalOperatorNewline: 'before',
             expressionWidth: 50,
-            linesBetweenQueries: 0,
+            linesBetweenQueries: 1,
             denseOperators: true,
             newlineBeforeSemicolon: false,
             language: language
