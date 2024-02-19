@@ -1,4 +1,4 @@
-FROM python:3.12.0-alpine3.17
+FROM alpine:3.19
 
 WORKDIR /app
 COPY reformat .
