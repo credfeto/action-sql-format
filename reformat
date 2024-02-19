@@ -21,7 +21,7 @@ process() {
   (expand -t 4 "$FILE" | sponge "$FILE") || die "ERROR: expand failed"
 }
 
-for(FOUND in $(find ./ -iname '*.sql' -type f)); do
+for FOUND in $(find ./ -iname '*.sql' -type f); do
   process "$FOUND"
 done
 
