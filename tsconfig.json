@@ -1,0 +1,19 @@
+{
+  "compilerOptions": {
+    "target": "es2020",
+    "strict": true,
+    "strictNullChecks": true,
+    "preserveConstEnums": true,
+    "inlineSourceMap": true,
+    "module": "CommonJS",
+    "moduleResolution": "node",
+    "esModuleInterop": true,
+    "resolveJsonModule": true,
+    "skipLibCheck": true,
+    "forceConsistentCasingInFileNames": true,
+    "outDir": "./src/build"
+  },
+  "exclude": [
+    "node_modules"
+  ]
+}

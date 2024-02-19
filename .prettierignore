@@ -1,0 +1,18 @@
+# Add files here to ignore them from prettier formatting
+
+# Build and build configuration
+/build/
+.github
+.octopus
+.husky
+
+# Markdown files
+CHANGELOG.md
+
+# Thirdparty libraries
+/node_modules/
+
+# SQL Files
+/db/
+/accounts/
+/migration/

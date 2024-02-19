@@ -3,6 +3,11 @@ description: 'Reformats SQL files'
 branding:
   icon: 'git-merge'
   color: 'gray-dark'
+inputs:
+  dialect:
+    description: The dialect of SQL to format
+    required: true
+    default: "tsql"
 runs:
-  using: 'docker'
-  image: 'Dockerfile'
+  using: node20
+  image: main.js
