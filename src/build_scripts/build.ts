@@ -37,7 +37,7 @@ console.log(`Output file: ${outfile}`);
 // Actually do the compilation
 console.log('Compiling...');
 child.execSync(
-    `esbuild ${fullPathToMain} --bundle --platform=node --define:process.env.NODE_ENV=\\\"production\\\" --outfile=${outfile}`,
+    `esbuild ${fullPathToMain} --bundle --platform=node --define:process.env.NODE_ENV=\\\"production\\\" --outfile=${outfile} --minify`,
     {stdio: 'inherit'},
 );
 
