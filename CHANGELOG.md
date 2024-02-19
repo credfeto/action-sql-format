@@ -7,6 +7,7 @@ Please ADD ALL Changes to the UNRELEASED SECTION and not a specific release
 
 ## [Unreleased]
 ### Added
+- Used poor mans tsql formatter again
 ### Fixed
 ### Changed
 ### Removed
