@@ -1,9 +1,6 @@
 #! /bin/sh
 
 set -eu
-ls -la
-echo "App"
-ls /app -la
 
 die() {
     echo
