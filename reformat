@@ -7,7 +7,4 @@ find ./ -iname '*.sql' -type f -exec bash -c 'python "$0"' {} \;
 echo Converting tabs to spaces
 find ./ -iname '*.sql' -type f -exec bash -c 'expand -t 4 "$0" | sponge "$0"' {} \;
 
-rm -fr sqlformatter
-rm -fr sqlformatter.zip
-
 echo "Done"
