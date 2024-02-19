@@ -6,7 +6,7 @@ COPY reformat.py .
 COPY requirements.txt .
 COPY config/Sqlformatter.exe.config /SqlFormatter.exe.config
 
-RUN apk --no-cache add bash moreutils curl unzip -complete
+RUN apk --no-cache add bash moreutils curl unzip mono-complete
 RUN curl http://architectshack.com/GetFile.aspx?Page=PoorMansTSqlFormatter\&File=SqlFormatter.1.6.10.zip --output sqlformatter.zip
 RUN nzip sqlformatter.zip *.exe -d /
 RUN chmod +x /SqlFormatter.exe
