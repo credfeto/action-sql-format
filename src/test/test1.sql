@@ -3,9 +3,8 @@ SET NOCOUNT ON;
 SET ANSI_NULLS ON;
 SET TRANSACTION ISOLATION LEVEL READ COMMITTED;
 
-SELECT [id],
-    [name]
+SELECT [id], [name]
 FROM [dbo].[Example] ex
 WHERE ex.[id] < 252
 ORDER BY ex.[name] DESC,
-    ex.[date_created] ASC;
+         ex.[date_created] ASC;
