@@ -1,7 +1,7 @@
 #! /bin/sh
 
 set -eu
-find ./ -iname '*.sql' -type f -exec bash -c 'python "$0" /is:"    " /tc /sk /r /sac /mw:999999999 /b- /bjo /cb:1 /st:4 /eil- /ecs- /ecl /uk /sb:2 /ebc /ebe' {} \;
+find ./ -iname '*.sql' -type f -exec bash -c 'mono SqlFormatter.exe "$0" /is:"    " /tc /sk /r /sac /mw:999999999 /b- /bjo /cb:1 /st:4 /eil- /ecs- /ecl /uk /sb:2 /ebc /ebe' {} \;
 find ./ -iname '*.sql' -type f -exec bash -c 'python "$0"' {} \;
 
 echo Converting tabs to spaces
