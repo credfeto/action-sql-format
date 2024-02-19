@@ -57,3 +57,7 @@ export const main = async (): Promise<void> => {
 
 
 }
+
+(async () => {
+    await main();
+})();
