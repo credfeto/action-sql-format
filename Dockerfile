@@ -10,6 +10,6 @@ RUN apk --no-cache add bash moreutils && \
     apk add --no-cache --virtual=.build-dependencies ca-certificates && \
     cert-sync /etc/ssl/certs/ca-certificates.crt && \
     apk del .build-dependencies && \
-    chmod +x Sqlformatter.exe &&
+    chmod +x Sqlformatter.exe
 
 ENTRYPOINT ["/app/reformat"]
