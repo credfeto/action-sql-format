@@ -9,12 +9,12 @@ SET
   TRANSACTION ISOLATION LEVEL READ COMMITTED;
 
 SELECT
-  ex.id,
-  ex.name
+  ex.[id],
+  ex.[name]
 FROM
-  dbo.example ex
+  [dbo].[example] ex
 WHERE
-  ex.id<252
+  ex.[id]<252
 ORDER BY
-  ex.name DESC,
-  ex.date_created ASC;
+  ex.[name] DESC,
+  ex.[date_created] ASC;

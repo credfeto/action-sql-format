@@ -1,37 +1,37 @@
-import {format, FormatOptionsWithLanguage} from 'sql-formatter';
+import {
+    bigquery,
+    DialectOptions,
+    format,
+    FormatOptionsWithDialect,
+    FormatOptionsWithLanguage,
+    hive
+} from 'sql-formatter';
 import core from '@actions/core';
 import * as fs from 'fs';
 import {glob} from "glob";
+import {getSqlDialect} from "./getDialect";
 
+function buildOptions(dialect: string): FormatOptionsWithDialect {
 
-function buildOptions(dialect: string): FormatOptionsWithLanguage {
-    let language = dialect.toLowerCase();
-    if (language === 'tsql') {
-        language = 'transactsql';
-    }
+    const options: FormatOptionsWithDialect = {
+        tabWidth: 2,
+        useTabs: false,
+        keywordCase: 'upper',
+        identifierCase: 'preserve',
+        dataTypeCase: 'upper',
+        functionCase: 'preserve',
+        indentStyle: 'standard',
+        logicalOperatorNewline: 'before',
+        expressionWidth: 50,
+        linesBetweenQueries: 1,
+        denseOperators: true,
+        newlineBeforeSemicolon: false,
+        dialect: getSqlDialect(dialect)
+    };
 
-    if (language === 'bigquery' || language === 'db2' || language === 'db2i' || language === 'hive' || language === 'mariadb' || language === 'mysql' || language === 'n1ql' || language === 'plsql' || language === 'postgresql' || language === 'redshift' || language === 'singlestoredb' || language === 'snowflake' || language === 'spark' || language === 'sql' || language === 'sqlite' || language === 'transactsql' || language === 'trino') {
+    console.log(`Using Dialect: ${options.dialect.name}`);
 
-        const options: FormatOptionsWithLanguage = {
-            tabWidth: 2,
-            useTabs: false,
-            keywordCase: 'upper',
-            identifierCase: 'preserve',
-            dataTypeCase: 'upper',
-            functionCase: 'preserve',
-            indentStyle: 'standard',
-            logicalOperatorNewline: 'before',
-            expressionWidth: 50,
-            linesBetweenQueries: 1,
-            denseOperators: true,
-            newlineBeforeSemicolon: false,
-            language: language
-        };
-
-        return options;
-    }
-
-    throw new Error('Invalid language');
+    return options;
 }
 
 function getInput(name: string): string {
@@ -62,21 +62,24 @@ export const main = async (): Promise<void> => {
         for (const file of sqlFiles) {
             console.log(`${file}:`);
             const content = fs.readFileSync(file, 'utf8');
-            const formatted = format(content, options);
-            if (content === formatted) {
-                console.log(` * Unchanged`)
-            } else {
-                console.log(` * Changed`)
-                //console.log(formatted);
-                fs.writeFileSync(file, formatted, 'utf8');
+            try {
+                const formatted = format(content, options);
+                if (content === formatted) {
+                    console.log(` * Unchanged`)
+                } else {
+                    console.log(` * Changed`)
+                    //console.log(formatted);
+                    fs.writeFileSync(file, formatted, 'utf8');
+                }
             }
-
+            catch(e) {
+                console.error(` * Error: ${e}`);
+            }
         }
 
 
     } catch (error) {
         console.error(error!.toString());
-        //core.setFailed(error!.toString());
     }
 
 
