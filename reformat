@@ -14,11 +14,18 @@ die() {
 process() {
   FILE=$1
   echo "Processing $FILE..."
+  ORIGINAL_HASH=$(sha256sum --quiet "$FILE")
   echo " * Sqlformatter"
   mono /app/Sqlformatter.exe "$FILE" /is:"    " /tc /sk /r /sac /mw:999999999 /b- /bjo /cb:1 /st:4 /eil- /ecs- /ecl /uk /sb:2 /ebc /ebe || die "ERROR: Sqlformatter failed"
+  FORMAT_HASH=$(sha256sum --quiet "$FILE")
 
   echo " * Converting tabs to spaces"
   (expand -t 4 "$FILE" | sponge "$FILE") || die "ERROR: expand failed"
+  SPONGE_HASH=$(sha256sum --quiet "$FILE")
+
+  echo " - Original hash: $ORIGINAL_HASH"
+  echo " - Format hash:   $FORMAT_HASH"
+  echo " - Sponge hash:   $SPONGE_HASH"
 }
 
 for FOUND in $(find ./ -iname '*.sql' -type f); do
