@@ -14,7 +14,8 @@ RUN apk --no-cache add bash moreutils unzip && \
     apk del .build-dependencies
 
 RUN unzip sqlformatter.zip *.exe -d / && \
-    chmod +x /SqlFormatter.exe
+    chmod +x /SqlFormatter.exe && \
+    rm -f sqlformatter.zip
 
 # pip install --no-cache-dir -r requirements.txt
 
