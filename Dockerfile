@@ -5,7 +5,7 @@ COPY reformat .
 COPY reformat.py .
 COPY requirements.txt .
 COPY config/Sqlformatter.exe.config /SqlFormatter.exe.config
-COPY config/sqlformatter.zip
+COPY config/sqlformatter.zip .
 
 RUN apk --no-cache add bash moreutils unzip && \
     apk add --no-cache mono --repository https://dl-cdn.alpinelinux.org/alpine/edge/testing && \
