@@ -1,12 +1,12 @@
 -- Needs Reformatting
 SET
-  NOCOUNT ON;
+NOCOUNT ON;
 
 SET
-  ANSI_NULLS ON;
+ANSI_NULLS ON;
 
 SET
-  TRANSACTION ISOLATION LEVEL READ COMMITTED;
+TRANSACTION ISOLATION LEVEL READ COMMITTED;
 
 SELECT
   ex.[id],
@@ -14,7 +14,7 @@ SELECT
 FROM
   [dbo].[example] ex
 WHERE
-  ex.[id]<252
+  ex.[id] < 252
 ORDER BY
   ex.[name] DESC,
   ex.[date_created] ASC;

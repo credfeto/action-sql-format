@@ -1,7 +1,7 @@
 import {
     bigquery,
     DialectOptions,
-    format,
+    format, formatDialect, FormatOptions,
     FormatOptionsWithDialect,
     FormatOptionsWithLanguage,
     hive
@@ -11,21 +11,25 @@ import * as fs from 'fs';
 import {glob} from "glob";
 import {getSqlDialect} from "./getDialect";
 
+const defaultOptions: FormatOptions = {
+    tabWidth: 2,
+    useTabs: false,
+    keywordCase: 'upper',
+    identifierCase: 'preserve',
+    dataTypeCase: 'upper',
+    functionCase: 'preserve',
+    indentStyle: 'standard',
+    logicalOperatorNewline: 'before',
+    expressionWidth: 50,
+    linesBetweenQueries: 1,
+    denseOperators: false,
+    newlineBeforeSemicolon: false,
+};
+
 function buildOptions(dialect: string): FormatOptionsWithDialect {
 
     const options: FormatOptionsWithDialect = {
-        tabWidth: 2,
-        useTabs: false,
-        keywordCase: 'upper',
-        identifierCase: 'preserve',
-        dataTypeCase: 'upper',
-        functionCase: 'preserve',
-        indentStyle: 'standard',
-        logicalOperatorNewline: 'before',
-        expressionWidth: 50,
-        linesBetweenQueries: 1,
-        denseOperators: false,
-        newlineBeforeSemicolon: false,
+        ...defaultOptions,
         dialect: getSqlDialect(dialect)
     };
 
@@ -63,7 +67,7 @@ export const main = async (): Promise<void> => {
             console.log(`${file}:`);
             const content = fs.readFileSync(file, 'utf8');
             try {
-                const formatted = format(content, options);
+                const formatted = formatDialect(content, options);
                 if (content === formatted) {
                     console.log(` * Unchanged`)
                 } else {

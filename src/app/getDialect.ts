@@ -12,6 +12,7 @@ import {
     trino
 } from "sql-formatter";
 
+
 export function getSqlDialect(dialect: string): DialectOptions {
 
     switch (dialect.toLowerCase())
@@ -53,7 +54,8 @@ export function getSqlDialect(dialect: string): DialectOptions {
             };
 
             d.tokenizerOptions.reservedKeywords = [...d.tokenizerOptions.reservedKeywords, 'GO']
-            d.tokenizerOptions.identTypes = [ ...d.tokenizerOptions.identTypes ]
+            d.formatOptions.onelineClauses = [...d.formatOptions.onelineClauses, 'CREATE FUNCTION', 'GO']
+
             return d;
         }
 
