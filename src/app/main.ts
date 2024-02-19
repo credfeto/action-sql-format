@@ -24,7 +24,7 @@ function buildOptions(dialect: string): FormatOptionsWithDialect {
         logicalOperatorNewline: 'before',
         expressionWidth: 50,
         linesBetweenQueries: 1,
-        denseOperators: true,
+        denseOperators: false,
         newlineBeforeSemicolon: false,
         dialect: getSqlDialect(dialect)
     };
