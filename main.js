@@ -19181,7 +19181,8 @@ var require_core = __commonJS({
       process.env["PATH"] = `${inputPath}${path2.delimiter}${process.env["PATH"]}`;
     }
     exports.addPath = addPath;
-    function getInput(name, options) {
+
+      function getInput2(name, options) {
       const val = process.env[`INPUT_${name.replace(/ /g, "_").toUpperCase()}`] || "";
       if (options && options.required && !val) {
         throw new Error(`Input required and not supplied: ${name}`);
@@ -19191,9 +19192,10 @@ var require_core = __commonJS({
       }
       return val.trim();
     }
-    exports.getInput = getInput;
+
+      exports.getInput = getInput2;
     function getMultilineInput(name, options) {
-      const inputs = getInput(name, options).split("\n").filter((x) => x !== "");
+        const inputs = getInput2(name, options).split("\n").filter((x) => x !== "");
       if (options && options.trimWhitespace === false) {
         return inputs;
       }
@@ -19203,7 +19205,7 @@ var require_core = __commonJS({
     function getBooleanInput(name, options) {
       const trueValue = ["true", "True", "TRUE"];
       const falseValue = ["false", "False", "FALSE"];
-      const val = getInput(name, options);
+        const val = getInput2(name, options);
       if (trueValue.includes(val))
         return true;
       if (falseValue.includes(val))
@@ -42498,7 +42500,10 @@ glob.glob = glob;
 
 // src/app/main.ts
 function buildOptions(dialect) {
-  const language = dialect.toLowerCase();
+    let language = dialect.toLowerCase();
+    if (language === "tsql") {
+        language = "transactsql";
+    }
   if (language === "bigquery" || language === "db2" || language === "db2i" || language === "hive" || language === "mariadb" || language === "mysql" || language === "n1ql" || language === "plsql" || language === "postgresql" || language === "redshift" || language === "singlestoredb" || language === "snowflake" || language === "spark" || language === "sql" || language === "sqlite" || language === "transactsql" || language === "trino") {
     const options = {
       tabWidth: 2,
@@ -42510,8 +42515,8 @@ function buildOptions(dialect) {
       indentStyle: "standard",
       logicalOperatorNewline: "before",
       expressionWidth: 50,
-      linesBetweenQueries: 1,
-      denseOperators: false,
+        linesBetweenQueries: 0,
+        denseOperators: true,
       newlineBeforeSemicolon: false,
       language
     };
@@ -42519,22 +42524,37 @@ function buildOptions(dialect) {
   }
   throw new Error("Invalid language");
 }
+
+function getInput(name) {
+    try {
+        return import_core.default.getInput("dialect");
+    } catch {
+        return "tsql";
+    }
+}
 var main = async () => {
   console.log("reformatter");
   try {
-      const dialect = import_core.default.getInput("dialect");
+      const dialect = getInput("dialect");
       console.log(`Dialect: ${dialect}`);
     const options = buildOptions(dialect);
     console.log("looking for files");
     const sqlFiles = await glob("**/*.sql", { ignore: "node_modules/**" });
     console.log(`found ${sqlFiles.length} files`);
-    for (const file in sqlFiles) {
-      console.log(file);
+      for (const file of sqlFiles) {
+          console.log(`${file}:`);
       const content = fs.readFileSync(file, "utf8");
       const formatted = format(content, options);
+          if (content === formatted) {
+              console.log(` * Unchanged`);
+          } else {
+              console.log(` * Changed`);
+              console.log(formatted);
+              fs.writeFileSync(file, formatted, "utf8");
+          }
     }
   } catch (error) {
-    import_core.default.setFailed(error.toString());
+      console.error(error.toString());
   }
 };
 (async () => {

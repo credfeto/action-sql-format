@@ -5,7 +5,11 @@ import {glob} from "glob";
 
 
 function buildOptions(dialect: string): FormatOptionsWithLanguage {
-    const language = dialect.toLowerCase();
+    let language = dialect.toLowerCase();
+    if (language === 'tsql') {
+        language = 'transactsql';
+    }
+
     if (language === 'bigquery' || language === 'db2' || language === 'db2i' || language === 'hive' || language === 'mariadb' || language === 'mysql' || language === 'n1ql' || language === 'plsql' || language === 'postgresql' || language === 'redshift' || language === 'singlestoredb' || language === 'snowflake' || language === 'spark' || language === 'sql' || language === 'sqlite' || language === 'transactsql' || language === 'trino') {
 
         const options: FormatOptionsWithLanguage = {
@@ -18,8 +22,8 @@ function buildOptions(dialect: string): FormatOptionsWithLanguage {
             indentStyle: 'standard',
             logicalOperatorNewline: 'before',
             expressionWidth: 50,
-            linesBetweenQueries: 1,
-            denseOperators: false,
+            linesBetweenQueries: 0,
+            denseOperators: true,
             newlineBeforeSemicolon: false,
             language: language
         };
@@ -30,11 +34,20 @@ function buildOptions(dialect: string): FormatOptionsWithLanguage {
     throw new Error('Invalid language');
 }
 
+function getInput(name: string): string {
+    try {
+        return core.getInput('dialect');
+    } catch {
+        return 'tsql';
+    }
+}
+
 
 export const main = async (): Promise<void> => {
     console.log('reformatter')
     try {
-        const dialect = core.getInput('dialect');
+
+        const dialect = getInput('dialect');
 
         console.log(`Dialect: ${dialect}`);
 
@@ -46,15 +59,24 @@ export const main = async (): Promise<void> => {
 
         console.log(`found ${sqlFiles.length} files`);
 
-        for (const file in sqlFiles) {
-            console.log(file);
+        for (const file of sqlFiles) {
+            console.log(`${file}:`);
             const content = fs.readFileSync(file, 'utf8');
             const formatted = format(content, options);
+            if (content === formatted) {
+                console.log(` * Unchanged`)
+            } else {
+                console.log(` * Changed`)
+                //console.log(formatted);
+                fs.writeFileSync(file, formatted, 'utf8');
+            }
+
         }
 
 
     } catch (error) {
-        core.setFailed(error!.toString());
+        console.error(error!.toString());
+        //core.setFailed(error!.toString());
     }
 
 
