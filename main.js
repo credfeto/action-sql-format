@@ -17291,7 +17291,7 @@ var require_receiver = __commonJS({
             }
           }
           if (this.#byteOffset > 0) {
-            continue;
+
           } else {
             callback();
             break;
@@ -40596,7 +40596,7 @@ var PathBase = class {
         this.#readdirSuccess(children);
       }
       this.#callOnReaddirCB(children.slice(0, children.provisional));
-      return;
+
     });
   }
   #asyncReaddirInFlight;
@@ -41834,7 +41834,7 @@ var Processor = class {
       if (typeof p === "string") {
         const ifDir = p === ".." || p === "" || p === ".";
         this.matches.add(t.resolve(p), absolute, ifDir);
-        continue;
+
       } else if (p === GLOBSTAR) {
         if (!t.isSymbolicLink() || this.follow || pattern.checkFollowGlobstar()) {
           this.subwalks.add(t, pattern);
@@ -42522,7 +42522,8 @@ function buildOptions(dialect) {
 var main = async () => {
   console.log("reformatter");
   try {
-    const dialect = import_core.default.getInput("dialect") ?? "tsql";
+      const dialect = import_core.default.getInput("dialect");
+      console.log(`Dialect: ${dialect}`);
     const options = buildOptions(dialect);
     console.log("looking for files");
     const sqlFiles = await glob("**/*.sql", { ignore: "node_modules/**" });
@@ -42536,6 +42537,9 @@ var main = async () => {
     import_core.default.setFailed(error.toString());
   }
 };
+(async () => {
+    await main();
+})();
 // Annotate the CommonJS export names for ESM import in node:
 0 && (module.exports = {
   main

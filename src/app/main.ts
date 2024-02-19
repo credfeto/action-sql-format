@@ -34,7 +34,9 @@ function buildOptions(dialect: string): FormatOptionsWithLanguage {
 export const main = async (): Promise<void> => {
     console.log('reformatter')
     try {
-        const dialect = core.getInput('dialect') ?? 'tsql';
+        const dialect = core.getInput('dialect');
+
+        console.log(`Dialect: ${dialect}`);
 
         const options = buildOptions(dialect);
 
