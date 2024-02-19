@@ -4,9 +4,25 @@ set -eu
 ls -la
 echo "App"
 ls /app -la
-find ./ -iname '*.sql' -type f -exec bash -c 'mono /app/Sqlformatter.exe "$0" /is:"    " /tc /sk /r /sac /mw:999999999 /b- /bjo /cb:1 /st:4 /eil- /ecs- /ecl /uk /sb:2 /ebc /ebe' {} \;
 
-echo Converting tabs to spaces
-find ./ -iname '*.sql' -type f -exec bash -c 'expand -t 4 "$0" | sponge "$0"' {} \;
+die() {
+    echo
+    echo "$@"
+    exit 1
+}
+
+process() {
+  FILE=$1
+  echo "Processing $FILE..."
+  echo " * Sqlformatter"
+  mono /app/Sqlformatter.exe "$FILE" /is:"    " /tc /sk /r /sac /mw:999999999 /b- /bjo /cb:1 /st:4 /eil- /ecs- /ecl /uk /sb:2 /ebc /ebe
+
+  echo " * Converting tabs to spaces"
+  expand -t 4 "$FILE" | sponge "$FILE"
+}
+
+for($FOUND in $(find ./ -iname '*.sql' -type f)); do
+  process "$FOUND"
+done
 
 echo "Done"
