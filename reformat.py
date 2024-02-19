@@ -40,4 +40,5 @@ for file in sys.argv[1:]:
         print("  - Unchanged")
     else:
         print("  - Changed")
-        //write_file(file, formatted)
+        print(formatted)
+        #write_file(file, formatted)
