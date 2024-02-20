@@ -20,7 +20,7 @@ jobs:
       - name: "Initialise Workspace"
         shell: bash
         run: sudo chown -R "$USER:$USER" "$GITHUB_WORKSPACE"
-      - name: "Rebase"
-        uses: bbeesley/gha-auto-dependabot-rebase@v1.3.345
-        env:
-          GITHUB_TOKEN: ${{secrets.SOURCE_PUSH_TOKEN}}
+#      - name: "Rebase"
+#        uses: bbeesley/gha-auto-dependabot-rebase@v1.3.345
+#        env:
+#          GITHUB_TOKEN: ${{secrets.SOURCE_PUSH_TOKEN}}
