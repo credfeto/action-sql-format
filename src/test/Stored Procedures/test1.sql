@@ -7,10 +7,13 @@ GO
 CREATE PROCEDURE [TokenPrice].[Token_Get]
 AS
 BEGIN
-  SET NOCOUNT ON;
+    SET NOCOUNT ON;
 
-  SELECT [CoinMarketCapTokenId], [Token], [Enabled]
-  FROM TokenPrice.Token (NOLOCK)
-
+    SELECT [CoinMarketCapTokenId],
+        [Token],
+        [Enabled]
+    FROM TokenPrice.Token(NOLOCK)
 END
 GO
+
+
