@@ -15,6 +15,10 @@ Please ADD ALL Changes to the UNRELEASED SECTION and not a specific release
 <!-- 
 Releases that have at least been deployed to staging, BUT NOT necessarily released to live.  Changes should be moved from [Unreleased] into here as they are merged into the appropriate release branch
 -->
+## [1.5.1] - 2024-02-20
+### Fixed
+- Spaces in filenames
+
 ## [1.5.0] - 2024-02-19
 ### Added
 - Used poor mans tsql formatter again
