@@ -9,7 +9,7 @@ die() {
 }
 
 process() {
-  FILE=$1
+  FILE="$1"
   echo "Processing $FILE..."
   ORIGINAL_HASH=$(sha256sum "$FILE")
   echo " * Sqlformatter"
@@ -25,8 +25,11 @@ process() {
   echo " - Sponge hash:   $SPONGE_HASH"
 }
 
+OIFS="$IFS"
+IFS=$'\n'
 for FOUND in $(find ./ -iname '*.sql' -type f); do
   process "$FOUND"
 done
+IFS="$OIFS"
 
 echo "Done"
