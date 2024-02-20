@@ -14,17 +14,17 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       # Checkout the source code there are have some files to look at.
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v4.1.1
         with:
           fetch-depth: 0
           token: ${{secrets.SOURCE_PUSH_TOKEN}}
           
       # Run the reformat action
       - name: Reformat SQL Files
-        uses: credfeto/action-sql-format@v1.5.0
+        uses: credfeto/action-sql-format@v1.5.1
         
       # Commit any changes to the repo
-      - uses: stefanzweifel/git-auto-commit-action@v4.16.0
+      - uses: stefanzweifel/git-auto-commit-action@v5.0.0
         with:
           commit_message: "[Reformat] SQL Files to common format"
           file_pattern: "*.sql"
